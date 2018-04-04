@@ -1,2 +1,1 @@
-# ansible-galaxy-odoo-role
-Ansible role provisioning Odoo.
+odoo/README.md
