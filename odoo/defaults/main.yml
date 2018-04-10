@@ -1,2 +1,17 @@
 ---
-# defaults file for odoo
+odoo_default_user: odoo
+odoo_default_group: odoo
+
+odoo_venv_path: /opt/.odoo_venv
+
+odoo_version: 10.0
+odoo_release: 20170914
+odoo_url: "https://nightly.odoo.com/{{ odoo_version }}/nightly/src/odoo_{{ odoo_version }}.{{ odoo_release }}.tar.gz"
+
+odoo_path: /opt/odoo
+odoo_download_path: /tmp/odoo_{{ odoo_version }}.{{ odoo_release }}.tar.gz
+odoo_bin_path: "{{ odoo_path }}/build/scripts-2.7/odoo"
+odoo_python_path: "{{ odoo_venv_path }}/bin/python"
+odoo_config_path: /etc/odoo
+odoo_log_path: /var/log/odoo
+odoo_modules_path: /opt/odoo/modules
