@@ -1,5 +1,6 @@
 ---
 - name: Install system packages
+  become: yes
   apt:
     update_cache: yes
     pkg: "{{ item }}"
@@ -15,45 +16,48 @@
     - wkhtmltopdf
 
 - name: Create Odoo directories
+  become: yes
   file:
     path: "{{ item }}"
     state: directory
-    owner: "{{ default_user }}"
-    group: "{{ default_group }}"
+    owner: "{{ odoo_default_user }}"
+    group: "{{ odoo_default_group }}"
     mode: 02775
   with_items:
     - "{{ odoo_path }}"
     - "{{ odoo_config_path }}"
     - "{{ odoo_modules_path }}"
 
-- name: Create log dir "{{ log_path }}"
+- name: Create log dir
   file:
     path: "{{ odoo_log_path }}"
     state: directory
-    group: "{{ default_group }}"
+    group: "{{ odoo_default_group }}"
     mode: 02777
 
-- name: Create log file "{{ log_path }}"
+- name: Create log file
+  become: yes
   file:
     path: "{{ odoo_log_path }}/odoo.log"
-    group: "{{ default_group }}"
+    group: "{{ odoo_default_group }}"
     state: touch
     mode: 02777
 
 - name: Download Odoo
+  become: yes
   get_url:
     url: "{{ odoo_url }}"
     dest: "{{ odoo_download_path }}"
-    owner: "{{ default_user }}"
-    group: "{{ default_group }}"
+    owner: "{{ odoo_default_user }}"
+    group: "{{  odoo_default_group }}"
     
 - name: Uncompress downloaded Odoo
   unarchive:
     src: "{{ odoo_download_path }}"
     dest: "{{ odoo_path }}"
     remote_src: yes
-    owner: "{{ default_user }}"
-    group: "{{ default_group }}"
+    owner: "{{ odoo_default_user }}"
+    group: "{{ odoo_default_group }}"
     extra_opts: [--strip-components=1]
     creates: "{{ odoo_path }}/setup.py"
 
@@ -94,7 +98,7 @@
     src: odoo.conf.j2
     dest: "{{ odoo_path }}/shared/odoo.conf"
     mode: 0774
-    group: "{{ default_group }}"
+    group: "{{  odoo_default_group }}"
 
 - name: Restart Odoo service
   service:
