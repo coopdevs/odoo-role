@@ -34,7 +34,7 @@
     path: "{{ odoo_log_path }}"
     state: directory
     group: "{{ odoo_default_group }}"
-    mode: 02777
+    mode: 02775
 
 - name: Create log file
   become: yes
@@ -42,7 +42,7 @@
     path: "{{ odoo_log_path }}/odoo.log"
     group: "{{ odoo_default_group }}"
     state: touch
-    mode: 02777
+    mode: 02775
 
 - name: Download Odoo
   get_url:
