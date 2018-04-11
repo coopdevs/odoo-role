@@ -66,6 +66,8 @@
     requirements: "{{ odoo_path }}/requirements.txt"
     virtualenv: "{{ odoo_venv_path }}"
 
+- import_tasks: virtualenv.yml
+
 - name: Install nodejs packages
   become: yes
   apt:
