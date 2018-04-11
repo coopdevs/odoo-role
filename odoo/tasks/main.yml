@@ -29,6 +29,7 @@
     - "{{ odoo_modules_path }}"
 
 - name: Create log dir
+  become: yes
   file:
     path: "{{ odoo_log_path }}"
     state: directory
@@ -44,7 +45,6 @@
     mode: 02777
 
 - name: Download Odoo
-  become: yes
   get_url:
     url: "{{ odoo_url }}"
     dest: "{{ odoo_download_path }}"
@@ -67,6 +67,7 @@
     virtualenv: "{{ odoo_venv_path }}"
 
 - name: Install nodejs packages
+  become: yes
   apt:
     pkg: "{{ item }}"
     state: present
@@ -75,13 +76,18 @@
     - npm
 
 - name: Install Less CSS via nodejs
+  become: yes
   npm:
     name: less
     version: 2.7.2
     global: yes
 
-- name: Create node sym link
-  shell: sudo ln -sf /usr/bin/nodejs /usr/bin/node
+- name: Create node symlink
+  become: yes
+  file:
+    src: /usr/bin/nodejs
+    dest: /usr/bin/node
+    state: link  
 
 - name: Get installed Odoo version (if any)
   shell: "{{ odoo_python_path }} {{ odoo_bin_path }} --version | cut -d ' ' -f 3"
@@ -96,7 +102,7 @@
 - name: Add Odoo config
   template:
     src: odoo.conf.j2
-    dest: "{{ odoo_path }}/shared/odoo.conf"
+    dest: "{{ odoo_config_path }}/odoo.conf"
     mode: 0774
     group: "{{  odoo_default_group }}"
 
