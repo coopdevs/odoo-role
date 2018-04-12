@@ -1,0 +1,10 @@
+[options]
+; Log Settings
+logfile = {{ odoo_log_path }}/odoo.log
+log_level = {{ odoo_log_level }}
+
+; Custom Modules
+addons_path = {{ odoo_modules_path }}
+
+; Master password to manage dbs
+admin_passwd = {{ odoo_db_admin_password }}
