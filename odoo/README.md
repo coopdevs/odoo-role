@@ -6,9 +6,13 @@ This an ansible role for provisioning Odoo. It only has been tested with Odoo 10
 Requirements
 ------------
 
-A PostgreSQL server and one user able to create databases in it (Odoo can't connect to the database with `postgres` user).
+A PostgreSQL server compatible with Odoo.
 
-A python virtualenv to isolate Odoo requirements from the rest of the system.
+By now this role only supports peer authentication for postgreSQL database access. 
+
+So you need to create a database in PostgreSQL, one user with access to that database, and one system user with same username.
+
+For instance, you can create an `odoo` user in PostgreSQL with access to the created database, and an user named `odoo` in your system.
 
 Role Variables
 --------------
@@ -21,7 +25,6 @@ Available variables are listed below, along with default values:
 
     odoo_version: 10.0
     odoo_release: 20170914
-    odoo_url: "https://nightly.odoo.com/{{ odoo_version }}/nightly/src/odoo_{{ odoo_version }}.{{ odoo_release }}.tar.gz"
 
     odoo_path: /opt/odoo
     odoo_download_path: /tmp/odoo_{{ odoo_version }}.{{ odoo_release }}.tar.gz
