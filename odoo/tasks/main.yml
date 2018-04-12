@@ -1,4 +1,6 @@
 ---
+- import_tasks: create-user.yml
+
 - name: Install system packages
   become: yes
   apt:
@@ -68,7 +70,7 @@
 
 - import_tasks: virtualenv.yml
 
-- import_tasks: addservice.yml
+- import_tasks: add-service.yml
 
 - name: Install nodejs packages
   become: yes

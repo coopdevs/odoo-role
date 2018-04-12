@@ -1,0 +1,4 @@
+%odoo ALL=(ALL) NOPASSWD: /bin/systemctl start odoo
+%odoo ALL=(ALL) NOPASSWD: /bin/systemctl stop odoo
+%odoo ALL=(ALL) NOPASSWD: /bin/systemctl restart odoo
+%odoo ALL=(ALL) NOPASSWD: /bin/systemctl reload odoo

@@ -1,0 +1,25 @@
+---
+- name:  Create "{{ odoo_default_group }}" group
+  group:
+    name: "{{ odoo_default_group }}"
+    state: present
+
+- name: Create "{{ odoo_default_user }}" user
+  become: yes
+  user:
+    name: "{{ odoo_default_user }}"
+    groups: "{{ odoo_default_group }}"
+    group: "{{ odoo_default_group }}"
+    append: yes
+    state: present
+    shell: /bin/bash
+
+- name: Create sudoers config for `"{{ odoo_default_user }}"` user
+  become: yes
+  template:
+    dest: /etc/sudoers.d/"{{ odoo_default_user }}"
+    mode: 0440
+    owner: root
+    group: root
+    src: sudoers.odoo
+    validate: "/usr/sbin/visudo -cf %s"
