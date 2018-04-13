@@ -8,6 +8,7 @@
     pkg: "{{ item }}"
     state: present
   with_items:
+    - build-essential
     - python-dev
     - libxml2
     - libxml2-dev
