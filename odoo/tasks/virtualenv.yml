@@ -1,4 +1,13 @@
 ---
+- name: Install virtualenv package
+  become: yes
+  apt:
+    update_cache: yes
+    pkg: "{{ item }}"
+    state: present
+  with_items:
+    - virtualenv
+
 - name: Create virtualenv directory
   file:
     path: "{{ odoo_venv_path }}"
