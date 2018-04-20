@@ -54,7 +54,7 @@
     dest: "{{ odoo_download_path }}"
     owner: "{{ odoo_default_user }}"
     group: "{{  odoo_default_group }}"
-    
+
 - name: Uncompress downloaded Odoo
   unarchive:
     src: "{{ odoo_download_path }}"
@@ -93,7 +93,7 @@
   file:
     src: /usr/bin/nodejs
     dest: /usr/bin/node
-    state: link  
+    state: link
 
 - name: Get installed Odoo version (if any)
   shell: "{{ odoo_python_path }} {{ odoo_bin_path }} --version | cut -d ' ' -f 3"
@@ -117,4 +117,3 @@
   service:
     name: odoo
     state: restarted
-
