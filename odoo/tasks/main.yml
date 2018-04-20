@@ -17,6 +17,8 @@
     - libsasl2-dev
     - wkhtmltopdf
 
+- import_tasks: virtualenv.yml
+
 - name: Create Odoo directories
   become: yes
   file:
@@ -67,8 +69,6 @@
   pip:
     requirements: "{{ odoo_path }}/requirements.txt"
     virtualenv: "{{ odoo_venv_path }}"
-
-- import_tasks: virtualenv.yml
 
 - import_tasks: add-service.yml
 
