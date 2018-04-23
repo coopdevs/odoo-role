@@ -3,7 +3,7 @@ galaxy_info:
   description: Odoo 10+ provisioning role
   company: coopdevs
 
-  license: GPVLv3
+  license: GPLv3
 
   min_ansible_version: 1.2
 
