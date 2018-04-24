@@ -1,5 +1,6 @@
 ---
 - name: Copy systemd service
+  become: yes
   template:
     src: "odoo.service.j2"
     dest: "/etc/systemd/system/odoo.service"

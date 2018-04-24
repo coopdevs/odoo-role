@@ -9,6 +9,7 @@
     - virtualenv
 
 - name: Create virtualenv directory
+  become: yes
   file:
     path: "{{ odoo_venv_path }}"
     state: directory
@@ -25,6 +26,7 @@
   when: env.stat.isdir is undefined
 
 - name: Change virtualenv permissions
+  become: yes
   file:
     path: "{{ odoo_venv_path }}"
     owner: odoo
