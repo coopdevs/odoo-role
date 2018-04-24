@@ -34,6 +34,8 @@ Available variables are listed below, along with default values:
     odoo_log_path: /var/log/odoo
     odoo_modules_path: /opt/odoo/modules
 
+    odoo_db_name: odoo
+
 Dependencies
 ------------
 
@@ -42,9 +44,16 @@ This role is not depending on other roles (yet).
 Example Playbook
 ----------------
 
-- hosts: odooservers
+```yaml
+- hosts: odoo_servers
   roles:
-  - { role: odoo }
+    - role: coopdevs.odoo-role
+      vars:
+        odoo_db_name: odoo-db
+        odoo_db_admin_password: "{{ odoo_admin_password }}"
+        odoo_version: 11.0
+        odoo_release: 20180424
+```
 
 License
 -------

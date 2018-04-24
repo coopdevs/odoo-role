@@ -113,4 +113,9 @@
     owner: "{{ odoo_default_user }}"
     group: "{{  odoo_default_group }}"
 
+- name: Init Odoo database
+  become: yes
+  become_user: "{{ odoo_default_user }}"
+  command: "{{ odoo_python_path }} {{ odoo_bin_path }} -c {{ odoo_config_path }}/odoo.conf -d {{ odoo_db_name }} --init base --stop-after-init"
+
 - import_tasks: add-service.yml
