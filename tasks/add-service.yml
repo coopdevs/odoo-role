@@ -14,3 +14,9 @@
     enabled: yes
     state: started
     daemon_reload: yes
+
+- name: Restart Odoo service
+  become: yes
+  service:
+    name: odoo
+    state: restarted

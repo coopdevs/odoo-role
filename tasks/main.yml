@@ -71,8 +71,6 @@
     requirements: "{{ odoo_path }}/requirements.txt"
     virtualenv: "{{ odoo_venv_path }}"
 
-- import_tasks: add-service.yml
-
 - name: Install nodejs packages
   become: yes
   apt:
@@ -113,8 +111,4 @@
     mode: 0774
     group: "{{  odoo_default_group }}"
 
-- name: Restart Odoo service
-  become: yes
-  service:
-    name: odoo
-    state: restarted
+- import_tasks: add-service.yml
