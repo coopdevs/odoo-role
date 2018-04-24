@@ -1,5 +1,6 @@
 ---
 - name:  Create "{{ odoo_default_group }}" group
+  become: yes
   group:
     name: "{{ odoo_default_group }}"
     state: present

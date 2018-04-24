@@ -105,10 +105,12 @@
   when: not odoo_installed_version.stdout == odoo_required_version
 
 - name: Add Odoo config
+  become: yes
   template:
     src: odoo.conf.j2
     dest: "{{ odoo_config_path }}/odoo.conf"
     mode: 0774
+    owner: "{{ odoo_default_user }}"
     group: "{{  odoo_default_group }}"
 
 - import_tasks: add-service.yml
