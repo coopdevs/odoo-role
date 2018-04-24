@@ -18,5 +18,6 @@ odoo_modules_path: /opt/odoo/modules
 odoo_log_path: /var/log/odoo
 odoo_log_level: warn
 
+odoo_db_name: odoo
 # This not a DB user password, but a password for Odoo to allow Odoo deal with DB.
 odoo_db_admin_password: iT0ohDuoth6ONgahDeepaich0aeka5ul
