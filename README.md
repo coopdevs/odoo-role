@@ -6,7 +6,7 @@ This an ansible role for provisioning Odoo. It has been tested with Odoo 10 and 
 Requirements
 ------------
 
-A PostgreSQL(9.5+) server compatible with Odoo.
+A PostgreSQL(9.5+).
 
 By now this role only supports peer authentication for postgreSQL database access.
 
@@ -18,9 +18,9 @@ Role Variables
 --------------
 Available variables are listed below, along with default values:
 
-* Edition vars
+* Edition
 
-This role allow install Odoo from [Odoo Nightly](http://nightly.odoo.com/) edition or from [OCA/OCB](https://github.com/OCA/OCB.git) edition.
+This role allows to install Odoo in two editions: [Odoo Nightly](http://nightly.odoo.com/) and [OCA/OCB](https://github.com/OCA/OCB.git) edition.
 
     # Vars for the Odoo Nightly edition
     # odoo_edition: "odoo"
@@ -33,7 +33,7 @@ This role allow install Odoo from [Odoo Nightly](http://nightly.odoo.com/) editi
     odoo_git_url: "https://github.com/OCA/OCB.git"
     odoo_head: "8ef3986d58a097a04502d9ca1ee0a860d7230723"
 
-* Users and group vars
+* Users and group
 
     odoo_default_user: odoo
     odoo_default_group: odoo
@@ -50,9 +50,10 @@ This role allow install Odoo from [Odoo Nightly](http://nightly.odoo.com/) editi
     odoo_log_path: /var/log/odoo
     odoo_modules_path: /opt/odoo/modules
 
-* DB vars
+* Database
+
     odoo_db_name: odoo
-    # This not a DB user password, but a password for Odoo to allow Odoo deal with DB.
+    # This not a DB user password, but a password for Odoo to deal with DB.
     odoo_db_admin_password: 1234
 
 * Core modules list to install
