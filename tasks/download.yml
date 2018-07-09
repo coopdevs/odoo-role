@@ -1,11 +1,12 @@
 ---
+# Odoo from the Odoo Nightly: http://nightly.odoo.com/
 - name: Download Odoo
   get_url:
     url: "{{ odoo_url }}"
     dest: "{{ odoo_download_path }}"
     owner: "{{ odoo_default_user }}"
-    group: "{{  odoo_default_group }}"
-  when: odoo_code_from == "nightly"
+    group: "{{ odoo_default_group }}"
+  when: odoo_edition == "odoo"
 
 - name: Uncompress downloaded Odoo
   unarchive:
@@ -16,8 +17,9 @@
     group: "{{ odoo_default_group }}"
     extra_opts: [--strip-components=1]
     creates: "{{ odoo_path }}/setup.py"
-  when: odoo_code_from == "nightly"
+  when: odoo_edition  == "odoo"
 
+# Odoo from the OCA/OCB repository: https://github.com/OCA/OCB
 - name: "Git clone Odoo branch {{ odoo_version }}"
   become_user: "{{ odoo_default_user }}"
   git:
@@ -25,7 +27,7 @@
     dest: "{{ odoo_path }}"
     version: "{{ odoo_version }}"
     depth: 1
-  when: odoo_code_from == "git"
+  when: odoo_edition == "oca"
 
 - name: "Git checkout to the head {{ odoo_head }}"
   become_user: "{{ odoo_default_user }}"
@@ -34,4 +36,4 @@
     repo: "{{ odoo_git_url }}"
     dest: "{{ odoo_path }}"
     version: "{{ odoo_head }}"
-  when: odoo_code_from == "git"
+  when: odoo_edition == "oca"

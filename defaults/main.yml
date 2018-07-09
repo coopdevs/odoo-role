@@ -4,12 +4,17 @@ odoo_default_group: odoo
 
 odoo_venv_path: /opt/.odoo_venv
 
-odoo_code_from: "nightly"
+odoo_edition: oca
+
+# Edition vars
+# Vars for the Odoo Nightly edition
+# odoo_edition: "odoo"
 odoo_version: 11.0
 odoo_release: 20170914
 odoo_url: "https://nightly.odoo.com/{{ odoo_version }}/nightly/src/odoo_{{ odoo_version }}.{{ odoo_release }}.tar.gz"
 
-# code_from: "git"
+# Vars for the OCA/OCB edition
+# odoo_edition: "oca"
 odoo_git_url: "https://github.com/OCA/OCB.git"
 odoo_head: "8ef3986d58a097a04502d9ca1ee0a860d7230723"
 
