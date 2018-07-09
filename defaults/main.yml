@@ -1,7 +1,9 @@
 ---
+# User and group vars
 odoo_default_user: odoo
 odoo_default_group: odoo
 
+# VirtualEnv vars
 odoo_venv_path: /opt/.odoo_venv
 
 odoo_edition: oca
