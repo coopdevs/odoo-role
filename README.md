@@ -23,43 +23,43 @@ Available variables are listed below, along with default values:
 This role allows to install Odoo in two editions: [Odoo Nightly](http://nightly.odoo.com/) and [OCA/OCB](https://github.com/OCA/OCB.git) edition.
 
     # Vars for the Odoo Nightly edition
-    # odoo_edition: "odoo"
-    odoo_version: 11.0
-    odoo_release: 20170914
-    odoo_url: "https://nightly.odoo.com/{{ odoo_version }}/nightly/src/odoo_{{ odoo_version }}.{{ odoo_release }}.tar.gz"
+    # odoo_role_odoo_edition: "odoo"
+    odoo_role_odoo_version: 11.0
+    odoo_role_odoo_release: 20170914
+    odoo_role_odoo_url: "https://nightly.odoo.com/{{ odoo_role_odoo_version }}/nightly/src/odoo_{{ odoo_role_odoo_version }}.{{ odoo_role_odoo_release }}.tar.gz"
+    odoo_role_odoo_download_path: /tmp/odoo_{{ odoo_role_odoo_version }}.{{ odoo_role_odoo_release }}.tar.gz
 
     # Vars for the OCA/OCB edition
-    # odoo_edition: "oca"
-    odoo_git_url: "https://github.com/OCA/OCB.git"
-    odoo_head: "8ef3986d58a097a04502d9ca1ee0a860d7230723"
+    # odoo_role_odoo_edition: "oca"
+    odoo_role_odoo_git_url: "https://github.com/OCA/OCB.git"
+    odoo_role_odoo_head: "8ef3986d58a097a04502d9ca1ee0a860d7230723"
 
 * Users and group
 
-    odoo_default_user: odoo
-    odoo_default_group: odoo
+    odoo_role_odoo_user: odoo
+    odoo_role_odoo_group: odoo
 
-    odoo_venv_path: /opt/.odoo_venv
+    odoo_role_odoo_venv_path: /opt/.odoo_venv
 
 * Directories structure
 
-    odoo_path: /opt/odoo
-    odoo_download_path: /tmp/odoo_{{ odoo_version }}.{{ odoo_release }}.tar.gz
-    odoo_bin_path: "{{ odoo_path }}/build/scripts-2.7/odoo"
-    odoo_python_path: "{{ odoo_venv_path }}/bin/python"
-    odoo_config_path: /etc/odoo
-    odoo_log_path: /var/log/odoo
-    odoo_modules_path: /opt/odoo/modules
+    odoo_role_odoo_path: /opt/odoo
+    odoo_role_odoo_bin_path: "{{ odoo_role_odoo_path }}/build/scripts-2.7/odoo"
+    odoo_role_odoo_python_path: "{{ odoo_venv_path }}/bin/python"
+    odoo_role_odoo_config_path: /etc/odoo
+    odoo_role_odoo_log_path: /var/log/odoo
+    odoo_role_odoo_modules_path: /opt/odoo/modules
 
 * Database
 
-    odoo_db_name: odoo
+    odoo_role_odoo_db_name: odoo
     # This not a DB user password, but a password for Odoo to deal with DB.
-    odoo_db_admin_password: 1234
+    odoo_role_odoo_db_admin_password: 1234
 
 * Core modules list to install
 
     # Comma-separated list of modules to install before running the server
-    odoo_core_modules: "base"
+    odoo_role_odoo_core_modules: "base"
 
 Dependencies
 ------------
@@ -74,10 +74,10 @@ Example Playbook
   roles:
     - role: coopdevs.odoo-role
       vars:
-        odoo_db_name: odoo-db
-        odoo_db_admin_password: "{{ odoo_admin_password }}"
-        odoo_version: 11.0
-        odoo_release: 20180424
+        odoo_role_odoo_db_name: odoo-db
+        odoo_role_odoo_db_admin_password: "{{ odoo_admin_password }}"
+        odoo_role_odoo_version: 11.0
+        odoo_role_odoo_release: 20180424
 ```
 
 License

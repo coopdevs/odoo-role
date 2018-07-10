@@ -11,25 +11,25 @@
 - name: Create virtualenv directory
   become: yes
   file:
-    path: "{{ odoo_venv_path }}"
+    path: "{{ odoo_role_odoo_venv_path }}"
     state: directory
     mode: 02775
-    group: "{{ odoo_default_group }}"
+    group: "{{ odoo_role_odoo_group }}"
 
 - name: Check if virtualenv is already created
   stat:
-    path: "{{ odoo_venv_path }}/bin"
+    path: "{{ odoo_role_odoo_venv_path }}/bin"
   register: env
 
 - name: Manually create the initial virtualenv
-  command: "virtualenv {{ odoo_venv_path }}"
+  command: "virtualenv {{ odoo_role_odoo_venv_path }}"
   when: env.stat.isdir is undefined
 
 - name: Change virtualenv permissions
   become: yes
   file:
-    path: "{{ odoo_venv_path }}"
+    path: "{{ odoo_role_odoo_venv_path }}"
     owner: odoo
-    group: "{{ odoo_default_group }}"
+    group: "{{ odoo_role_odoo_group }}"
     mode: 02775
     recurse: yes
