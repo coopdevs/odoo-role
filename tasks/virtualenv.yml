@@ -6,7 +6,7 @@
     pkg: "{{ item }}"
     state: present
   with_items:
-    - virtualenv
+    - python3-venv
 
 - name: Create virtualenv directory
   become: yes
@@ -22,7 +22,7 @@
   register: env
 
 - name: Manually create the initial virtualenv
-  command: "virtualenv {{ odoo_role_odoo_venv_path }}"
+  command: "python3 -m venv {{ odoo_role_odoo_venv_path }}"
   when: env.stat.isdir is undefined
 
 - name: Change virtualenv permissions
