@@ -26,27 +26,27 @@
   file:
     path: "{{ item }}"
     state: directory
-    owner: "{{ odoo_default_user }}"
-    group: "{{ odoo_default_group }}"
+    owner: "{{ odoo_role_odoo_user }}"
+    group: "{{ odoo_role_odoo_group }}"
     mode: 02775
   with_items:
-    - "{{ odoo_path }}"
-    - "{{ odoo_config_path }}"
-    - "{{ odoo_modules_path }}"
+    - "{{ odoo_role_odoo_path }}"
+    - "{{ odoo_role_odoo_config_path }}"
+    - "{{ odoo_role_odoo_modules_path }}"
 
 - name: Create log dir
   become: yes
   file:
-    path: "{{ odoo_log_path }}"
+    path: "{{ odoo_role_odoo_log_path }}"
     state: directory
-    group: "{{ odoo_default_group }}"
+    group: "{{ odoo_role_odoo_group }}"
     mode: 02775
 
 - name: Create log file
   become: yes
   file:
-    path: "{{ odoo_log_path }}/odoo.log"
-    group: "{{ odoo_default_group }}"
+    path: "{{ odoo_role_odoo_log_path }}/odoo.log"
+    group: "{{ odoo_role_odoo_group }}"
     state: touch
     mode: 02775
 
@@ -54,8 +54,8 @@
 
 - name: Install Odoo python requirements
   pip:
-    requirements: "{{ odoo_path }}/requirements.txt"
-    virtualenv: "{{ odoo_venv_path }}"
+    requirements: "{{ odoo_role_odoo_path }}/requirements.txt"
+    virtualenv: "{{ odoo_role_odoo_venv_path }}"
 
 - name: Install nodejs packages
   become: yes
@@ -81,28 +81,28 @@
     state: link
 
 - name: Get installed Odoo version (if any)
-  shell: "{{ odoo_python_path }} {{ odoo_bin_path }} --version | cut -d ' ' -f 3"
+  shell: "{{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }} --version | cut -d ' ' -f 3"
   register: odoo_installed_version
 
 - name: Install Odoo
-  become_user: "{{ odoo_default_user }}"
+  become_user: "{{ odoo_role_odoo_user }}"
   vars:
-    odoo_required_version: "{{ odoo_version }}-{{ odoo_release }}"
-  shell: "cd {{ odoo_path }} && {{ odoo_python_path }} setup.py install"
+    odoo_required_version: "{{ odoo_role_odoo_version }}-{{ odoo_role_odoo_release }}"
+  shell: "cd {{ odoo_role_odoo_path }} && {{ odoo_role_odoo_python_path }} setup.py install"
   when: not odoo_installed_version.stdout == odoo_required_version
 
 - name: Add Odoo config
   become: yes
   template:
     src: odoo.conf.j2
-    dest: "{{ odoo_config_path }}/odoo.conf"
+    dest: "{{ odoo_role_odoo_config_path }}/odoo.conf"
     mode: 0774
-    owner: "{{ odoo_default_user }}"
-    group: "{{  odoo_default_group }}"
+    owner: "{{ odoo_role_odoo_user }}"
+    group: "{{  odoo_role_odoo_group }}"
 
 - name: Init Odoo database
   become: yes
-  become_user: "{{ odoo_default_user }}"
-  command: "{{ odoo_python_path }} {{ odoo_bin_path }} -c {{ odoo_config_path }}/odoo.conf -d {{ odoo_db_name }} --init {{ odoo_core_modules }} --stop-after-init --without-demo=all"
+  become_user: "{{ odoo_role_odoo_user }}"
+  command: "{{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }} -c {{ odoo_role_odoo_config_path }}/odoo.conf -d {{ odoo_role_odoo_db_name }} --init {{ odoo_role_odoo_core_modules }} --stop-after-init --without-demo=all"
 
 - import_tasks: add-service.yml
