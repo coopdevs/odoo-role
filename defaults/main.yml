@@ -22,7 +22,7 @@ odoo_head: "8ef3986d58a097a04502d9ca1ee0a860d7230723"
 
 odoo_path: /opt/odoo
 odoo_download_path: /tmp/odoo_{{ odoo_version }}.{{ odoo_release }}.tar.gz
-odoo_bin_path: "{{ odoo_path }}/build/scripts-2.7/odoo"
+odoo_bin_path: "{{ odoo_path }}/odoo-bin"
 odoo_python_path: "{{ odoo_venv_path }}/bin/python"
 odoo_config_path: /etc/odoo
 odoo_modules_path: /opt/odoo_modules
