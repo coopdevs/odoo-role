@@ -6,23 +6,18 @@ odoo_role_odoo_group: odoo
 # VirtualEnv vars
 odoo_role_odoo_venv_path: /opt/.odoo_venv
 
+# Odoo nightly edition:
+#   official: odoo
+#   OCA:      oca
 odoo_role_odoo_edition: oca
-
-# Edition vars
-# Vars for the Odoo Nightly edition
-# odoo_role_odoo_edition: "odoo"
+odoo_role_nightly_url: "https://nightly.odoo.com/{{ odoo_role_odoo_version }}/nightly/src/odoo_{{ odoo_role_odoo_version }}.{{ odoo_role_odoo_release }}.tar.gz"
+odoo_role_oca_nightly_url: "https://wheelhouse.odoo-community.org/ocb-nightly/{{ odoo_role_odoo_version }}/src/odoo_{{ odoo_role_odoo_version }}.{{ odoo_role_odoo_release }}.tar.gz"
 odoo_role_odoo_version: 11.0
-odoo_role_odoo_release: 20170914
-odoo_role_odoo_url: "https://nightly.odoo.com/{{ odoo_role_odoo_version }}/nightly/src/odoo_{{ odoo_role_odoo_version }}.{{ odoo_role_odoo_release }}.tar.gz"
+odoo_role_odoo_release: latest
 odoo_role_odoo_download_path: "/tmp/odoo_{{ odoo_role_odoo_version }}.{{ odoo_role_odoo_release }}.tar.gz"
 
-# Vars for the OCA/OCB edition
-# odoo_role_odoo_edition: "oca"
-odoo_role_odoo_git_url: "https://github.com/OCA/OCB.git"
-odoo_role_odoo_head: "8ef3986d58a097a04502d9ca1ee0a860d7230723"
-
 odoo_role_odoo_path: /opt/odoo
-odoo_role_odoo_bin_path: "{{ odoo_role_odoo_path }}/odoo-bin"
+odoo_role_odoo_bin_path: "{{ odoo_role_odoo_path }}/build/scripts-3.5/odoo"
 odoo_role_odoo_python_path: "{{ odoo_role_odoo_venv_path }}/bin/python"
 odoo_role_odoo_config_path: /etc/odoo
 odoo_role_odoo_modules_path: /opt/odoo_modules
