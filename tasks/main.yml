@@ -20,7 +20,6 @@
     - git
 
 - import_tasks: wkhtmltopdf.yml
-  tags: pdf
 
 - import_tasks: virtualenv.yml
 
