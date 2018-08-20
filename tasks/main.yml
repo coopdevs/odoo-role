@@ -17,8 +17,10 @@
     - libssl-dev
     - libldap2-dev
     - libsasl2-dev
-    - wkhtmltopdf
     - git
+
+- import_tasks: wkhtmltopdf.yml
+  tags: pdf
 
 - import_tasks: virtualenv.yml
 

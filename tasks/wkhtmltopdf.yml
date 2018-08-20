@@ -1,0 +1,51 @@
+---
+- name: Check if wkhtmltopdf was install
+  stat:
+    path: "/usr/bin/wkhtmltopdf"
+  register: wkhtmltopdf_was_installed
+
+- name: Check wkhtmltopdf version
+  command: "/usr/bin/wkhtmltopdf --version"
+  register: wkhtmltopdf_version
+  when: "wkhtmltopdf_was_installed.stat.exists"
+  changed_when: False
+  failed_when: False
+
+- name: Remove the wktmltopdf packaged installed to install the correct version
+  become: yes
+  apt:
+    pkg: wkhtmltopdf
+    state: absent
+  register: install_wkhtmltopdf
+  when: "widgetizer_target_version is not defined or 0.12.4 not in wkhtmltopdf_version.stdout"
+
+- name: Download wkhtmltopdf version 0.12.4
+  get_url:
+    url: https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
+    dest: /opt/
+    mode: 0777
+  when: "install_wkhtmltopdf is defined or 0.12.4 not in result_b.stdout"
+
+- name: Untar wkhtmltopdf package
+  command: "/bin/tar xvf /opt/wkhtmltox*.tar.xz"
+  when: "install_wkhtmltopdf is defined or 0.12.4 not in result_b.stdout"
+
+- name: Copy the binaries of wkhtmltopdf
+  command: "sudo mv /opt/wkhtmltox/bin/wkhtmlto* /usr/bin"
+  when: "install_wkhtmltopdf is defined or 0.12.4 not in result_b.stdout"
+
+- name: Install packages needed by wkhtmltopdf
+  become: yes
+  apt:
+    update_cache: yes
+    pkg: "{{ item }}"
+    state: present
+  with_items:
+    - openssl
+    - libxrender-dev
+    - git-core
+    - libx11-dev
+    - libxext-dev
+    - libfontconfig1-dev
+    - libfreetype6-dev
+    - fontconfig
