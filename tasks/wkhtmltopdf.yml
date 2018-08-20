@@ -24,14 +24,18 @@
     url: https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
     dest: /opt/
     mode: 0777
-  when: "install_wkhtmltopdf is defined or 0.12.4 not in result_b.stdout"
+  when: "install_wkhtmltopdf is defined or '0.12.4' not in result_b.stdout"
 
 - name: Untar wkhtmltopdf package
-  command: "/bin/tar xvf /opt/wkhtmltox*.tar.xz"
+  unarchive:
+    src: /opt/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
+    dest: /opt/
+    remote_src: True
   when: "install_wkhtmltopdf is defined or 0.12.4 not in result_b.stdout"
+  tags: mv
 
 - name: Copy the binaries of wkhtmltopdf
-  command: "sudo mv /opt/wkhtmltox/bin/wkhtmlto* /usr/bin"
+  command: "sudo mv /opt/wkhtmltox/bin/wkhtmltopdf /usr/bin"
   when: "install_wkhtmltopdf is defined or 0.12.4 not in result_b.stdout"
 
 - name: Install packages needed by wkhtmltopdf
