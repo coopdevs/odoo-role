@@ -19,7 +19,9 @@
     - libsasl2-dev
     - git
 
-- import_tasks: wkhtmltopdf.yml
+- name: Install wkhtmltopdf
+  apt:
+    deb: https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.xenial_amd64.deb
 
 - import_tasks: virtualenv.yml
 
