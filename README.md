@@ -32,6 +32,7 @@ This role allows to install Odoo in two editions: [Odoo Nightly](http://nightly.
     # Vars for the OCA/OCB edition
     # odoo_role_odoo_edition: "oca"
     odoo_role_odoo_git_url: "https://github.com/OCA/OCB.git"
+    # Use the commit SHA of the required version
     odoo_role_odoo_head: "8ef3986d58a097a04502d9ca1ee0a860d7230723"
 
 * Users and group

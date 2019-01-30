@@ -28,12 +28,3 @@
     version: "{{ odoo_role_odoo_version }}"
     depth: 1
   when: odoo_role_odoo_edition == "oca"
-
-- name: "Git checkout to the head {{ odoo_role_odoo_head }}"
-  become_user: "{{ odoo_role_odoo_user }}"
-  git:
-    clone: no
-    repo: "{{ odoo_role_odoo_git_url }}"
-    dest: "{{ odoo_role_odoo_path }}"
-    version: "{{ odoo_role_odoo_head }}"
-  when: odoo_role_odoo_edition == "oca"
