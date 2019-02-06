@@ -11,13 +11,8 @@
 - name: Enable service
   become: yes
   systemd:
-    name: odoo.service
+    name: "{{ odoo_daemon }}"
     enabled: yes
     state: started
     daemon_reload: yes
-
-- name: Restart Odoo service
-  become: yes
-  service:
-    name: odoo
-    state: restarted
+  notify: restart odoo

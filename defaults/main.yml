@@ -36,3 +36,5 @@ odoo_role_odoo_db_admin_password: iT0ohDuoth6ONgahDeepaich0aeka5ul
 
 # Comma-separated list of modules to install before running the server
 odoo_role_odoo_core_modules: "base"
+
+odoo_daemon: "odoo.service"
