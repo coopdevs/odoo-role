@@ -1,0 +1,22 @@
+---
+- name: Copy requirements.txt
+  copy:
+    src: "{{ inventory_dir }}/../files/requirements.txt"
+    dest: "{{ odoo_role_odoo_modules_path }}/requirements.txt"
+    owner: "{{ odoo_role_odoo_user }}"
+    group: "{{ odoo_role_odoo_group }}"
+
+- name: Deploy community roles with pip
+  pip:
+    requirements: "{{ odoo_role_odoo_modules_path }}/requirements.txt"
+    virtualenv: "{{ odoo_role_odoo_venv_path }}"
+
+- name: Update Odoo modules list
+  become: yes
+  become_user: "{{ odoo_role_odoo_user }}"
+  command: "{{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }} -c {{ odoo_role_odoo_config_path }}/odoo.conf -d {{ odoo_role_odoo_db_name }} --update all --stop-after-init --without-demo=all"
+
+- name: Install community Odoo roles
+  become: yes
+  become_user: "{{ odoo_role_odoo_user }}"
+  command: "{{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }} -c {{ odoo_role_odoo_config_path }}/odoo.conf -d {{ odoo_role_odoo_db_name }} --init {{ odoo_role_odoo_modules }} --stop-after-init --without-demo=all"

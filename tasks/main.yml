@@ -10,7 +10,9 @@
   with_items:
     - build-essential
     - python-dev
+    - python-setuptools
     - python3-dev
+    - python3-setuptools
     - libxml2
     - libxml2-dev
     - libxslt1-dev
@@ -108,5 +110,7 @@
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
   command: "{{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }} -c {{ odoo_role_odoo_config_path }}/odoo.conf -d {{ odoo_role_odoo_db_name }} --init {{ odoo_role_odoo_core_modules }} --stop-after-init --without-demo=all"
+
+- import_tasks: community-modules.yml
 
 - import_tasks: add-service.yml
