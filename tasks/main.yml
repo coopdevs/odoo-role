@@ -17,8 +17,11 @@
     - libssl-dev
     - libldap2-dev
     - libsasl2-dev
-    - wkhtmltopdf
     - git
+
+- name: Install wkhtmltopdf
+  apt:
+    deb: "https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.{{ ansible_distribution_release }}_amd64.deb"
 
 - import_tasks: virtualenv.yml
 
