@@ -71,12 +71,12 @@ Community Roles
 ---------------
 
 #### Deploy
-To use community roles, you need deploy this modules in the server. This role manage the modules deployment with `pip`.
+To use community roles, you need to deploy this modules in the server. This role manage the modules deployment with `pip`.
 
 You can define a `requirements.txt` file to manage the modules and ensure the version installed:
 
 ```
-# requeriments.txt
+# requirements.txt
 odoo11-addon-contract==11.0.2.1.0
 odoo11-addon-contract-sale-invoicing==11.0.1.0.0
 odoo11-addon-contract-variable-qty-timesheet==11.0.1.0.0
@@ -86,7 +86,7 @@ odoo11-addon-contract-variable-quantity==11.0.1.2.1
 > The default the `requirements.txt` file path is `"{{ inventory_dir }}/../files/requirements.txt"`.
 
 # Install
-Once the modules are in the server, you need install them in the database.
+Once the modules are in the server, you need to install them in the database.
 
 Define a `odoo_role_odoo_community_modules` var with the list of the modules names you want to install.
 
