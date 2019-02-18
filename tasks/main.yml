@@ -79,12 +79,14 @@
     version: 2.7.2
     global: yes
 
+# This link is needed in Ubuntu 16.04 and in Ubuntu 18.04 raise and error.
 - name: Create node symlink
   become: yes
   file:
     src: /usr/bin/nodejs
     dest: /usr/bin/node
     state: link
+  ignore_errors: yes
 
 - name: Get installed Odoo version (if any)
   shell: "{{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }} --version | cut -d ' ' -f 3"
