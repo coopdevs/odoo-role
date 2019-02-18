@@ -1,14 +1,14 @@
 An Odoo Ansible Provisioning Role
 =========================================
 
-This an ansible role for provisioning Odoo. It has been tested with Odoo 10 and Odoo 11, but it's probably suitable for Odoo 11+ versions.
+This an Ansible role for provisioning Odoo. It has been tested with Odoo 10 and Odoo 11, but it's probably suitable for Odoo 11+ versions.
 
 Requirements
 ------------
 
 A PostgreSQL(9.5+).
 
-By now this role only supports peer authentication for postgreSQL database access.
+By now this role only supports peer authentication for PostgreSQL database access.
 
 So you need to create a database in PostgreSQL, one user with access to that database, and one system user with same username.
 
@@ -57,10 +57,43 @@ This role allows to install Odoo in two editions: [Odoo Nightly](http://nightly.
     # This not a DB user password, but a password for Odoo to deal with DB.
     odoo_role_odoo_db_admin_password: 1234
 
-* Core modules list to install
+* Core modules list to install/update
 
     # Comma-separated list of modules to install before running the server
     odoo_role_odoo_core_modules: "base"
+
+* Community modules list to install/update
+
+    # Comma-separated list of modules to install before running the server
+    odoo_role_odoo_community_modules: ""
+
+Community Roles
+---------------
+
+#### Deploy
+To use community roles, you need to deploy this modules in the server. This role manage the modules deployment with `pip`.
+
+You can define a `requirements.txt` file to manage the modules and ensure the version installed:
+
+```
+# requirements.txt
+odoo11-addon-contract==11.0.2.1.0
+odoo11-addon-contract-sale-invoicing==11.0.1.0.0
+odoo11-addon-contract-variable-qty-timesheet==11.0.1.0.0
+odoo11-addon-contract-variable-quantity==11.0.1.2.1
+```
+
+> The default the `requirements.txt` file path is `"{{ inventory_dir }}/../files/requirements.txt"`.
+
+# Install
+Once the modules are in the server, you need to install them in the database.
+
+Define a `odoo_role_odoo_community_modules` var with the list of the modules names you want to install.
+
+```
+# invenotry/group_vars/all.yml
+odoo_role_odoo_community_modules: 'contract,contract_sale_invoicing'
+```
 
 Dependencies
 ------------
