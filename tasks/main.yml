@@ -86,7 +86,7 @@
     src: /usr/bin/nodejs
     dest: /usr/bin/node
     state: link
-  ignore_errors: yes
+  when: ansible_distribution == "Ubuntu" and not ansible_distribution_version == "18.04"
 
 - name: Get installed Odoo version (if any)
   shell: "{{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }} --version | cut -d ' ' -f 3"
