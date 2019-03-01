@@ -3,10 +3,8 @@
   become: yes
   apt:
     update_cache: yes
-    pkg: "{{ item }}"
+    pkg: python3-venv
     state: present
-  with_items:
-    - python3-venv
 
 - name: Create virtualenv directory
   become: yes
