@@ -38,3 +38,8 @@ odoo_role_odoo_db_admin_password: iT0ohDuoth6ONgahDeepaich0aeka5ul
 odoo_role_odoo_core_modules: "base"
 
 odoo_daemon: "odoo.service"
+
+# Whether to populate db with example data or not.
+# Use boolean values (True or False) instead of strings,
+#+ as "" is False, but non-empty strings as "True" and "False" are True.
+odoo_role_demo_data: False
