@@ -20,11 +20,11 @@
   when: odoo_role_odoo_edition  == "odoo"
 
 # Odoo from the OCA/OCB repository: https://github.com/OCA/OCB
-- name: "Git clone Odoo branch {{ odoo_role_odoo_version }}"
+- name: "Git clone git reference {{ odoo_role_odoo_git_ref }}"
   become_user: "{{ odoo_role_odoo_user }}"
   git:
     repo: "{{ odoo_role_odoo_git_url }}"
     dest: "{{ odoo_role_odoo_path }}"
-    version: "{{ odoo_role_odoo_version }}"
+    version: "{{ odoo_role_odoo_git_ref }}"
     depth: 1
   when: odoo_role_odoo_edition == "oca"
