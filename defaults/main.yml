@@ -19,9 +19,7 @@ odoo_role_odoo_download_path: "/tmp/odoo_{{ odoo_role_odoo_version }}.{{ odoo_ro
 # Vars for the OCA/OCB edition
 # odoo_role_odoo_edition: "oca"
 odoo_role_odoo_git_url: "https://github.com/OCA/OCB.git"
-# Not used
-# odoo_role_odoo_head: "8ef3986d58a097a04502d9ca1ee0a860d7230723"
-# Must found a better ref
+# OCA/OCB, branch 11.0, June 11 2018
 odoo_role_git_ref: "8ef3986d58a097a04502d9ca1ee0a860d7230723"
 
 odoo_role_odoo_path: /opt/odoo
