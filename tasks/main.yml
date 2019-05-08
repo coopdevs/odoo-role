@@ -91,10 +91,16 @@
     state: link
   when: ansible_distribution == "Ubuntu" and not ansible_distribution_version == "18.04"
 
+- name: Get installed Odoo version (if any)
+  shell: "{{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }} --version | cut -d ' ' -f 3"
+  register: odoo_installed_version
+
 - name: Install Odoo
   become_user: "{{ odoo_role_odoo_user }}"
+  vars:
+    odoo_required_version: "{{ odoo_role_odoo_version }}-{{ odoo_role_odoo_release }}"
   shell: "cd {{ odoo_role_odoo_path }} && {{ odoo_role_odoo_python_path }} setup.py install"
-  when: odoo_installed_version.changed
+  when: not odoo_installed_version.stdout == odoo_required_version
 
 - name: Add Odoo config
   become: yes
