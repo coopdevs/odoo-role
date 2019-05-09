@@ -94,7 +94,7 @@
 - name: Install Odoo
   become_user: "{{ odoo_role_odoo_user }}"
   shell: "cd {{ odoo_role_odoo_path }} && {{ odoo_role_odoo_python_path }} setup.py install"
-  when: odoo_installed_version.changed
+  when: odoo_role_desired_download.changed
 
 - name: Add Odoo config
   become: yes

@@ -1,22 +1,21 @@
 ---
-
-- name: Search hint to find out which Odoo version is installed
-  command: "cat {{ odoo_role_odoo_version_file }}"
-  register: odoo_installed_version
-  changed_when:
-    - odoo_installed_version.stdout != odoo_role_odoo_release
-    - odoo_installed_version.stdout != odoo_role_odoo_git_ref
-  failed_when: false
-
 # Odoo from the Odoo Nightly: http://nightly.odoo.com/
 - name: Download an Odoo release tar packet
   block:
+  - name: Ensure download path exists
+    file:
+      path: "{{ odoo_role_odoo_download_path  | dirname }}"
+      state: directory
+      owner: "{{ odoo_role_odoo_user }}"
+      group: "{{ odoo_role_odoo_group }}"
+
   - name: Download Odoo
     get_url:
       url: "{{ odoo_role_odoo_url }}"
       dest: "{{ odoo_role_odoo_download_path }}"
       owner: "{{ odoo_role_odoo_user }}"
       group: "{{ odoo_role_odoo_group }}"
+    register: odoo_role_desired_download
 
   - name: Uncompress downloaded Odoo
     unarchive:
@@ -26,36 +25,20 @@
       owner: "{{ odoo_role_odoo_user }}"
       group: "{{ odoo_role_odoo_group }}"
       extra_opts: [--strip-components=1]
+    when: odoo_role_desired_download.changed
 
-  - set_fact: odoo_role_downloaded_version = "{{ odoo_role_odoo_release }}"
-
-  when:
-    - odoo_role_odoo_edition  == "odoo" or odoo_role_odoo_edition == "coopdevs"
-    - odoo_installed_version.changed
+  when: odoo_role_download_strategy == "tar"
 
 
 # Odoo from the OCA/OCB repository: https://github.com/OCA/OCB
-- block:
-  - name: "Git clone git reference {{ odoo_role_odoo_git_ref }}"
-    become_user: "{{ odoo_role_odoo_user }}"
-    git:
-      repo: "{{ odoo_role_odoo_git_url }}"
-      dest: "{{ odoo_role_odoo_path }}"
-      version: "{{ odoo_role_odoo_git_ref }}"
-      depth: 1
+- name: "Git clone git reference {{ odoo_role_odoo_git_ref }}"
+  become_user: "{{ odoo_role_odoo_user }}"
+  git:
+    repo: "{{ odoo_role_odoo_git_url }}"
+    dest: "{{ odoo_role_odoo_path }}"
+    version: "{{ odoo_role_odoo_git_ref }}"
+    depth: 1
+    force: yes
 
-  - set_fact: odoo_role_downloaded_version = "{{ odoo_role_git_ref }}"
-
-  when:
-    - odoo_role_odoo_edition == "oca"
-    - odoo_installed_version.changed
-
-
-- name: Write down the version we just downloaded
-  copy:
-    content: "{{ odoo_role_odoo_release }}"
-    dest: "{{ odoo_role_odoo_version_file }}"
-    owner: "{{ odoo_role_odoo_user }}"
-    group: "{{ odoo_role_odoo_group }}"
-    mode: 0644
+  when: odoo_role_download_strategy == "git"
 
