@@ -26,7 +26,6 @@ odoo_role_odoo_bin_path: "{{ odoo_role_odoo_path }}/odoo-bin"
 odoo_role_odoo_python_path: "{{ odoo_role_odoo_venv_path }}/bin/python"
 odoo_role_odoo_config_path: /etc/odoo
 odoo_role_odoo_modules_path: /opt/odoo_modules
-odoo_role_odoo_version_file: "{{ odoo_role_odoo_path }}/.odoo_version.txt"
 
 odoo_role_odoo_log_path: /var/log/odoo
 odoo_role_odoo_log_level: debug
