@@ -1,5 +1,5 @@
 ---
-# Odoo from the Odoo Nightly: http://nightly.odoo.com/
+# Odoo release packed in a compressed file supported by gtar or unzip
 - name: Download an Odoo release tar packet
   block:
   - name: Ensure download path exists

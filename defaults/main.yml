@@ -18,8 +18,8 @@ odoo_role_odoo_download_path: "{{ odoo_role_odoo_path }}/../odoo_releases/odoo_{
 # Vars for the OCA/OCB edition
 # odoo_role_download_strategy: git
 odoo_role_odoo_git_url: "https://github.com/OCA/OCB.git"
-# OCA/OCB, branch 11.0, May 1 2019
-odoo_role_odoo_git_ref: "903fec011d64cd50a4e925d4046757afacf1363a"
+# OCA/OCB, branch 11.0. LTS probably until 14.0 release. 13.0 is scheduled for October 2019.
+odoo_role_odoo_git_ref: "11.0"
 
 odoo_role_odoo_path: /opt/odoo
 odoo_role_odoo_bin_path: "{{ odoo_role_odoo_path }}/odoo-bin"
