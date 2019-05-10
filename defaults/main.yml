@@ -8,7 +8,7 @@ odoo_role_odoo_venv_path: /opt/.odoo_venv
 
 # Edition vars
 
-# Vars for the Odoo Nightly edition
+# Vars for tar download strategy (or other formats supported by ansible unarchive, i.e. by unzip or gtar)
 odoo_role_download_strategy: tar
 odoo_role_odoo_version: 11.0
 odoo_role_odoo_release: 20190501
