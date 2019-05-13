@@ -51,6 +51,6 @@
     version: "{{ odoo_role_odoo_git_ref }}"
     depth: 1
     force: yes
-
+  register: odoo_role_desired_download
   when: odoo_role_download_strategy == "git"
 
