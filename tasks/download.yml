@@ -4,7 +4,7 @@
   block:
   - name: Ensure download path exists
     file:
-      path: "{{ odoo_role_odoo_download_path  | dirname }}"
+      path: "{{ odoo_role_odoo_download_path | dirname }}"
       state: directory
       owner: "{{ odoo_role_odoo_user }}"
       group: "{{ odoo_role_odoo_group }}"
@@ -19,13 +19,13 @@
 
   - name: Clean older release packets
     vars:
-      dirname: {{ odoo_role_odoo_download_path | dirname }}
-      basename: {{ odoo_role_odoo_download_path | basename }}
+      dirname: "{{ odoo_role_odoo_download_path | dirname }}"
+      basename: "{{ odoo_role_odoo_download_path | basename }}"
     # Find under download path dir, all elements of type file, such that
     # they don't have a name that it's the one of the file we just downloaded.
     # For each match, delete it and print it's path, so that
     # we can tell from the output wether anything got found-deleted or not.
-    command: "find "{{ dir }}" -type f -not -name '{{ basename }}' -delete -print"
+    command: "find {{ dirname }} -type f -not -name '{{ basename }}' -delete -print"
     register: find
     changed_when: find.stdout != ""
 
