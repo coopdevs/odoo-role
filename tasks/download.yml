@@ -15,7 +15,7 @@
       dest: "{{ odoo_role_odoo_download_path }}"
       owner: "{{ odoo_role_odoo_user }}"
       group: "{{ odoo_role_odoo_group }}"
-    register: odoo_role_desired_download
+    register: odoo_role_desired_tar_download
 
   - name: Clean older release packets
     vars:
@@ -37,7 +37,7 @@
       owner: "{{ odoo_role_odoo_user }}"
       group: "{{ odoo_role_odoo_group }}"
       extra_opts: [--strip-components=1]
-    when: odoo_role_desired_download.changed
+    when: odoo_role_desired_tar_download.changed
 
   when: odoo_role_download_strategy == "tar"
 
@@ -51,6 +51,6 @@
     version: "{{ odoo_role_odoo_git_ref }}"
     depth: 1
     force: yes
-  register: odoo_role_desired_download
+  register: odoo_role_desired_git_download
   when: odoo_role_download_strategy == "git"
 
