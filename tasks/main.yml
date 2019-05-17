@@ -109,7 +109,7 @@
 - name: Init Odoo database
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
-  command: "{{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }} -c {{ odoo_role_odoo_config_path }}/odoo.conf -d {{ odoo_role_odoo_db_name }} --init {{ odoo_role_odoo_core_modules }} --stop-after-init --without-demo=all --logfile=/dev/stdout --log-level=warn"
+  command: "{{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }} -c {{ odoo_role_odoo_config_path }}/odoo.conf -d {{ odoo_role_odoo_db_name }} --init {{ odoo_role_odoo_core_modules }} --stop-after-init --without-demo=all"
   notify: restart odoo
 
 - import_tasks: community-modules.yml
