@@ -106,12 +106,62 @@
     group: "{{  odoo_role_odoo_group }}"
   notify: restart odoo
 
+- name: Check if Odoo database has been initialized ("0" false, "1" true)
+  become: yes
+  become_user: "{{ odoo_role_odoo_user }}"
+  shell: >
+    psql {{ odoo_role_odoo_db_name }} -tAc
+    "SELECT COUNT(*)
+    FROM information_schema.tables
+    WHERE table_name='ir_module_module';"
+  register: db_initialized
+
 - name: Init Odoo database
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
-  command: "{{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }} -c {{ odoo_role_odoo_config_path }}/odoo.conf -d {{ odoo_role_odoo_db_name }} --init {{ odoo_role_odoo_core_modules }} --stop-after-init --without-demo=all --logfile=/dev/stdout --log-level=warn"
+  command: >
+    {{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }}
+    -c {{ odoo_role_odoo_config_path }}/odoo.conf
+    -d {{ odoo_role_odoo_db_name }}
+    --init base
+    --stop-after-init
+    --without-demo=all
+    --logfile=/dev/stdout
+    --log-level=warn
+  when: db_initialized.stdout == "0"
   notify: restart odoo
 
 - import_tasks: community-modules.yml
+
+- name: Build the list of new modules to install
+  become: yes
+  become_user: "{{ odoo_role_odoo_user }}"
+  shell: >
+    psql {{ odoo_role_odoo_db_name }} -tAc
+    "SELECT name
+    FROM (VALUES ('{{ (odoo_role_odoo_core_modules + ',' + odoo_role_community_odoo_modules).split(',') | join(separator) }}'))
+    AS t (name)
+    EXCEPT
+    SELECT name
+    FROM ir_module_module
+    WHERE state = 'installed';"
+  register: modules_to_install
+  vars:
+    - separator: "'), ('"
+
+- name: Install only new Odoo modules
+  become: yes
+  become_user: "{{ odoo_role_odoo_user }}"
+  command: >
+    {{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }}
+    -c {{ odoo_role_odoo_config_path }}/odoo.conf
+    -d {{ odoo_role_odoo_db_name }}
+    --init {{ modules_to_install.stdout_lines | join(',') }}
+    --stop-after-init
+    --without-demo=all
+    --logfile=/dev/stdout
+    --log-level=warn
+  when: modules_to_install.stdout
+  notify: restart odoo
 
 - import_tasks: add-service.yml
