@@ -106,6 +106,7 @@
     group: "{{  odoo_role_odoo_group }}"
   notify: restart odoo
 
+# TODO: manage multiple DB
 - name: Check if Odoo database has been initialized ("0" false, "1" true)
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
@@ -116,6 +117,7 @@
     WHERE table_name='ir_module_module';"
   register: db_initialized
 
+# TODO: manage multiple DB
 - name: Init Odoo database
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
@@ -133,6 +135,7 @@
 
 - import_tasks: community-modules.yml
 
+# TODO: manage multiple DB
 - name: Build the list of new modules to install
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
@@ -149,6 +152,7 @@
   vars:
     - separator: "'), ('"
 
+# TODO: manage multiple DB
 - name: Install only new Odoo modules
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
