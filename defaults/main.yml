@@ -39,3 +39,5 @@ odoo_role_odoo_core_modules: "base"
 
 odoo_daemon: "odoo.service"
 
+# Whether to populate db with example data or not.
+odoo_role_demo_data: false
