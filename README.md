@@ -68,6 +68,15 @@ odoo_role_odoo_db_admin_password: 1234
 odoo_role_demo_data: false
 ```
 
+* Odoo HTTP server settings
+
+```
+# Set this to 127.0.0.1 when Odoo runs behind a reverse proxy
+odoo_role_odoo_http_interface: 0.0.0.0
+# Set this to true when Odoo runs behind a reverse proxy
+odoo_role_odoo_proxy_mode: false
+```
+
 * Core modules list to install/update
 
 ```
