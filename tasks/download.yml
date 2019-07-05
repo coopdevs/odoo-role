@@ -29,6 +29,17 @@
     register: find
     changed_when: find.stdout != ""
 
+  - name: Clean target directory
+    file:
+      path: "{{ odoo_role_odoo_path }}"
+      state: "{{ item }}"
+      owner: "{{ odoo_role_odoo_user }}"
+      group: "{{ odoo_role_odoo_group }}"
+    with_items:
+      - absent
+      - directory
+    when: odoo_role_desired_tar_download.changed
+
   - name: Uncompress downloaded Odoo
     unarchive:
       src: "{{ odoo_role_odoo_download_path }}"
