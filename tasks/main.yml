@@ -39,7 +39,7 @@
     owner: "{{ odoo_role_odoo_user }}"
     group: "{{ odoo_role_odoo_group }}"
     mode: 02775
-  with_items:
+  loop:
     - "{{ odoo_role_odoo_path }}"
     - "{{ odoo_role_odoo_config_path }}"
     - "{{ odoo_role_odoo_modules_path }}"
@@ -110,19 +110,20 @@
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
   shell: >
-    psql {{ odoo_role_odoo_db_name }} -tAc
+    psql {{ item }} -tAc
     "SELECT COUNT(*)
     FROM information_schema.tables
     WHERE table_name='ir_module_module';"
   register: db_initialized
+  with_items: "{{ odoo_role_odoo_dbs }}"
 
-- name: Init Odoo database
+- name: "Init Odoo database(s): odoo_role_odoo_dbs"
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
   command: >
     {{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }}
     -c {{ odoo_role_odoo_config_path }}/odoo.conf
-    -d {{ odoo_role_odoo_db_name }}
+    -d {{ item }}
     --init base
     --stop-after-init
     {% if not odoo_role_demo_data %}
@@ -130,8 +131,11 @@
     {% endif %}
     --logfile=/dev/stdout
     --log-level=warn
-  when: db_initialized.stdout == "0"
+  when: db_initialized.results[index].stdout == "0"
   notify: restart odoo
+  with_items: "{{ odoo_role_odoo_dbs }}"
+  loop_control:
+    index_var: index
 
 - import_tasks: community-modules.yml
 
@@ -139,7 +143,7 @@
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
   shell: >
-    psql {{ odoo_role_odoo_db_name }} -tAc
+    psql {{ item }} -tAc
     "SELECT name
     FROM (VALUES ('{{ (odoo_role_odoo_core_modules + ',' + odoo_role_community_odoo_modules).split(',') | join(separator) }}'))
     AS t (name)
@@ -150,6 +154,7 @@
   register: modules_to_install
   vars:
     - separator: "'), ('"
+  with_items: "{{ odoo_role_odoo_dbs }}"
 
 - name: Install only new Odoo modules
   become: yes
@@ -157,15 +162,18 @@
   command: >
     {{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }}
     -c {{ odoo_role_odoo_config_path }}/odoo.conf
-    -d {{ odoo_role_odoo_db_name }}
-    --init {{ modules_to_install.stdout_lines | join(',') }}
+    -d {{ item }}
+    --init {{ modules_to_install.results[index].stdout_lines | join(',') }}
     --stop-after-init
     {% if not odoo_role_demo_data %}
     --without-demo=all
     {% endif %}
     --logfile=/dev/stdout
     --log-level=warn
-  when: modules_to_install.stdout
+  when: modules_to_install.results[index].stdout
+  with_items: "{{ odoo_role_odoo_dbs }}"
+  loop_control:
+    index_var: index
   notify: restart odoo
 
 - import_tasks: add-service.yml
