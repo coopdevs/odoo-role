@@ -125,7 +125,9 @@
     -d {{ odoo_role_odoo_db_name }}
     --init base
     --stop-after-init
+    {% if not odoo_role_demo_data %}
     --without-demo=all
+    {% endif %}
     --logfile=/dev/stdout
     --log-level=warn
   when: db_initialized.stdout == "0"
@@ -158,7 +160,9 @@
     -d {{ odoo_role_odoo_db_name }}
     --init {{ modules_to_install.stdout_lines | join(',') }}
     --stop-after-init
+    {% if not odoo_role_demo_data %}
     --without-demo=all
+    {% endif %}
     --logfile=/dev/stdout
     --log-level=warn
   when: modules_to_install.stdout

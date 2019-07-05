@@ -64,6 +64,8 @@ odoo_role_odoo_modules_path: /opt/odoo/modules
 odoo_role_odoo_db_name: odoo
 # This not a DB user password, but a password for Odoo to deal with DB.
 odoo_role_odoo_db_admin_password: 1234
+# Whether to populate db with example data or not.
+odoo_role_demo_data: false
 ```
 
 * Core modules list to install/update
