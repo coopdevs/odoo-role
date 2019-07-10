@@ -131,6 +131,7 @@ Example Playbook
       vars:
         odoo_role_odoo_db_name: odoo-db
         odoo_role_odoo_db_admin_password: "{{ odoo_admin_password }}"
+        odoo_role_download_strategy: tar
         odoo_role_odoo_version: 11.0
         odoo_role_odoo_release: 20180424
 ```
