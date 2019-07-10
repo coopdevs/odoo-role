@@ -20,21 +20,27 @@ Available variables are listed below, along with default values:
 
 * Edition
 
-This role allows to install Odoo in two editions: [Odoo Nightly](http://nightly.odoo.com/) and [OCA/OCB](https://github.com/OCA/OCB.git) edition.
+This role supports installing Odoo following two different strategies: `git` (from a git repository) and `tar` (a package or compressed release file).
 
 ```
-# Vars for the Odoo Nightly edition
-# odoo_role_odoo_edition: "odoo"
-odoo_role_odoo_version: 11.0
-odoo_role_odoo_release: 20170914
-odoo_role_odoo_url: "https://nightly.odoo.com/{{ odoo_role_odoo_version }}/nightly/src/odoo_{{ odoo_role_odoo_version }}.{{ odoo_role_odoo_release }}.tar.gz"
-odoo_role_odoo_download_path: /tmp/odoo_{{ odoo_role_odoo_version }}.{{ odoo_role_odoo_release }}.tar.gz
+# Odoo releases download strategy: tar or git
+odoo_role_download_strategy: tar
 
-# Vars for the OCA/OCB edition
-# odoo_role_odoo_edition: "oca"
+# Vars for tar download strategy
+# supported any other formats supported by ansible unarchive, i.e. by unzip or gtar)
+# Releases from Odoo.com odoo nightly
+odoo_role_odoo_version: 11.0 # not used outside this file
+odoo_role_odoo_release: 20190505 # not used outside this file
+odoo_role_odoo_url: "https://nightly.odoo.com/{{ odoo_role_odoo_version }}/nightly/src/odoo_{{ odoo_role_odoo_version }}.{{ odoo_role_odoo_release }}.tar.gz"
+# Releases from an Odoo comunity backports updated fork
+# odoo_role_odoo_release: "11.0_2019-05-05"
+# odoo_role_odoo_url: "https://gitlab.com/coopdevs/OCB/-/archive/{{ odoo_role_odoo_release }}/OCB-{{ odoo_role_odoo_release }}.tar.gz"
+odoo_role_odoo_download_path: "{{ odoo_role_odoo_path }}/../odoo_releases/odoo_{{ odoo_role_odoo_version }}.{{ odoo_role_odoo_release }}.tar.gz"
+
+# Vars for git download strategy
 odoo_role_odoo_git_url: "https://github.com/OCA/OCB.git"
-# Use the commit SHA of the required version
-odoo_role_odoo_head: "8ef3986d58a097a04502d9ca1ee0a860d7230723"
+# OCA's OCB, branch 11.0. LTS probably until 14.0 release. 13.0 is scheduled for October 2019.
+odoo_role_odoo_git_ref: "11.0"
 ```
 
 * Users and group
