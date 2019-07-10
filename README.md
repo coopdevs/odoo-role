@@ -22,7 +22,7 @@ Available variables are listed below, along with default values:
 
 This role supports installing Odoo following two different strategies: `git` (from a git repository) and `tar` (a package or compressed release file).
 
-```
+```yml
 # Odoo releases download strategy: tar or git
 odoo_role_download_strategy: tar
 
@@ -45,7 +45,7 @@ odoo_role_odoo_git_ref: "11.0"
 
 * Users and group
 
-```
+```yml
 odoo_role_odoo_user: odoo
 odoo_role_odoo_group: odoo
 
@@ -55,7 +55,7 @@ odoo_role_odoo_venv_path: /opt/.odoo_venv
 
 * Directories structure
 
-```
+```yml
 odoo_role_odoo_path: /opt/odoo
 odoo_role_odoo_bin_path: "{{ odoo_role_odoo_path }}/build/scripts-2.7/odoo"
 odoo_role_odoo_python_path: "{{ odoo_venv_path }}/bin/python"
@@ -66,7 +66,7 @@ odoo_role_odoo_modules_path: /opt/odoo/modules
 
 * Database
 
-```
+```yml
 odoo_role_odoo_db_name: odoo
 # This not a DB user password, but a password for Odoo to deal with DB.
 odoo_role_odoo_db_admin_password: 1234
@@ -76,14 +76,14 @@ odoo_role_demo_data: false
 
 * Core modules list to install/update
 
-```
+```yml
 # Comma-separated list of modules to install before running the server
 odoo_role_odoo_core_modules: "base"
 ```
 
 * Community modules list to install/update
 
-```
+```yml
 # Comma-separated list of modules to install before running the server
 odoo_role_odoo_community_modules: ""
 ```
@@ -111,7 +111,7 @@ Once the modules are in the server, you need to install them in the database.
 
 Define a `odoo_role_odoo_community_modules` var with the list of the modules names you want to install.
 
-```
+```yml
 # invenotry/group_vars/all.yml
 odoo_role_odoo_community_modules: 'contract,contract_sale_invoicing'
 ```
