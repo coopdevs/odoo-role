@@ -42,3 +42,7 @@ odoo_daemon: "odoo.service"
 
 # Whether to populate db with example data or not.
 odoo_role_demo_data: false
+
+# HTTP server settings
+odoo_role_odoo_http_interface: "0.0.0.0"
+odoo_role_odoo_proxy_mode: false
