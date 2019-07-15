@@ -72,6 +72,8 @@ odoo_role_odoo_db_name: odoo
 odoo_role_odoo_db_admin_password: 1234
 # Whether to populate db with example data or not.
 odoo_role_demo_data: false
+# Wether or not to give the chance to select another existing database that has not been filtered by dbfilter
+odoo_role_show_db_list: false
 ```
 
 * Odoo HTTP server settings
