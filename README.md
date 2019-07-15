@@ -64,11 +64,12 @@ odoo_role_odoo_log_path: /var/log/odoo
 odoo_role_odoo_modules_path: /opt/odoo/modules
 ```
 
-* Database
+* Databases
 
 ```yml
-odoo_role_odoo_db_name: odoo
-# This not a DB user password, but a password for Odoo to deal with DB.
+# Array of DBs that the role will create. 
+odoo_role_odoo_dbs: [ "odoo" ]
+# This is the password Odoo asks to user allow them to create, delete, etc. DBs
 odoo_role_odoo_db_admin_password: 1234
 # Whether to populate db with example data or not.
 odoo_role_demo_data: false
