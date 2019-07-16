@@ -38,6 +38,8 @@ odoo_role_odoo_db_name: odoo
 odoo_role_odoo_dbs: [ "{{ odoo_role_odoo_db_name }}" ]
 # This not a DB user password, but a password for Odoo to deal with DB.
 odoo_role_odoo_db_admin_password: iT0ohDuoth6ONgahDeepaich0aeka5ul
+# Wether or not to give the chance to select another existing database that has not been filtered by dbfilter
+odoo_role_show_db_list: False
 
 # Comma-separated list of modules to install before running the server
 odoo_role_odoo_core_modules: "base"
