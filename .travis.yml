@@ -16,6 +16,7 @@ install:
 script:
   # Check the role/playbook's syntax.
   - ansible-playbook -i tests/inventory tests/test.yml --syntax-check
+  - ansible-lint .
 
 webhooks: https://galaxy.ansible.com/api/v1/notifications/
 

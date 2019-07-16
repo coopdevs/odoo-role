@@ -55,6 +55,7 @@
 
 # Odoo from the OCA/OCB repository: https://github.com/OCA/OCB
 - name: "Git clone git reference {{ odoo_role_odoo_git_ref }}"
+  become: yes
   become_user: "{{ odoo_role_odoo_user }}"
   git:
     repo: "{{ odoo_role_odoo_git_url }}"
@@ -64,4 +65,3 @@
     force: yes
   register: odoo_role_desired_git_download
   when: odoo_role_download_strategy == "git"
-
