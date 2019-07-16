@@ -11,10 +11,10 @@ install:
   # Install Ansible and linters
   - pip install ansible
   - pip install ansible-lint
-  - sudo apt-get install yamllint
+  - pip install yamllint
 
   # Add ansible.cfg to pick up roles path.
-  - printf '[defaults]\nroles_path=../' >ansible.cfg
+  - printf '[defaults]\nroles_path=../' > ansible.cfg
 
 script:
   # Check the role/playbook's syntax.
