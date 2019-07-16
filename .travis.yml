@@ -1,14 +1,17 @@
 ---
+dist: xenial
 language: python
-python: "2.7"
+python: "3.7"
 
 before_install:
   # Make sure everything's up to date.
   - sudo apt-get update -qq
 
 install:
-  # Install Ansible.
+  # Install Ansible and linters
   - pip install ansible
+  - pip install ansible-lint
+  - sudo apt-get install yamllint
 
   # Add ansible.cfg to pick up roles path.
   - printf '[defaults]\nroles_path=../' >ansible.cfg
@@ -16,6 +19,8 @@ install:
 script:
   # Check the role/playbook's syntax.
   - ansible-playbook -i tests/inventory tests/test.yml --syntax-check
+  - ansible-lint .
+  - yamllint -c .yamllint.yaml .
 
 webhooks: https://galaxy.ansible.com/api/v1/notifications/
 

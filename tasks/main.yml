@@ -19,7 +19,9 @@
     state: present
 
 - name: Check if wkhtmltopdf is installed
-  shell: dpkg -s wkhtmltox | grep 'install ok installed'
+  shell: set -o pipefail && dpkg -s wkhtmltox | grep 'install ok installed'
+  args:
+    executable: /bin/bash
   register: wkhtmltox_installed
   failed_when: false
   changed_when: no
@@ -92,6 +94,7 @@
   when: ansible_distribution == "Ubuntu" and not ansible_distribution_version == "18.04"
 
 - name: Install Odoo
+  become: yes
   become_user: "{{ odoo_role_odoo_user }}"
   shell: "cd {{ odoo_role_odoo_path }} && {{ odoo_role_odoo_python_path }} setup.py install"
   when: odoo_role_desired_tar_download.changed or odoo_role_desired_git_download.changed
@@ -116,6 +119,7 @@
     WHERE table_name='ir_module_module';"
   register: db_initialized
   with_items: "{{ odoo_role_odoo_dbs }}"
+  changed_when: false
 
 - name: "Init Odoo database(s): odoo_role_odoo_dbs"
   become: yes
@@ -155,6 +159,7 @@
   vars:
     - separator: "'), ('"
   with_items: "{{ odoo_role_odoo_dbs }}"
+  changed_when: false
 
 - name: Install only new Odoo modules
   become: yes

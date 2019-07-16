@@ -1,0 +1,4 @@
+# Skip some picky ansible lint warnings
+skip_list:
+  - '503' # Tasks that run when changed should likely be handlers
+  - '602' # Don’t compare to empty string
