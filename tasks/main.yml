@@ -121,7 +121,7 @@
   with_items: "{{ odoo_role_odoo_dbs }}"
   changed_when: false
 
-- name: "Init Odoo database(s): odoo_role_odoo_dbs"
+- name: "Init Odoo database(s): {{ odoo_role_odoo_dbs }}"
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
   command: >
@@ -173,8 +173,8 @@
     {% if not odoo_role_demo_data %}
     --without-demo=all
     {% endif %}
-    --logfile=/dev/stdout
-    --log-level=warn
+    --logfile /dev/stdout
+    --log-level warn
   when: modules_to_install.results[index].stdout
   with_items: "{{ odoo_role_odoo_dbs }}"
   loop_control:

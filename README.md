@@ -48,14 +48,12 @@ odoo_role_odoo_git_ref: "11.0"
 ```yml
 odoo_role_odoo_user: odoo
 odoo_role_odoo_group: odoo
-
-
-odoo_role_odoo_venv_path: /opt/.odoo_venv
 ```
 
 * Directories structure
 
 ```yml
+odoo_role_odoo_venv_path: /opt/.odoo_venv
 odoo_role_odoo_path: /opt/odoo
 odoo_role_odoo_bin_path: "{{ odoo_role_odoo_path }}/build/scripts-2.7/odoo"
 odoo_role_odoo_python_path: "{{ odoo_venv_path }}/bin/python"
@@ -67,7 +65,7 @@ odoo_role_odoo_modules_path: /opt/odoo/modules
 * Databases
 
 ```yml
-# Array of DBs that the role will create. 
+# Array of DBs that the role will create.
 odoo_role_odoo_dbs: [ "odoo" ]
 # This is the password Odoo asks to user allow them to create, delete, etc. DBs
 odoo_role_odoo_db_admin_password: 1234
@@ -98,6 +96,13 @@ odoo_role_odoo_core_modules: "base"
 ```yml
 # Comma-separated list of modules to install before running the server
 odoo_role_odoo_community_modules: ""
+```
+
+* Other command line parameters
+
+Odoo loads alternative languages at start up. Listing more languages to load will increase the restart/start time, but at the same time it will show that there are more languages available to choose and it will be easy for the user to switch to one of them. Coma separated list of ISO language codes with optional country code ([source](https://github.com/odoo/odoo/blob/c868da4de607d48d27d5cf9852871ed4698627f8/odoo/tools/translate.py#L1191-L1200)). There are translations for [many languages](https://github.com/odoo/odoo/blob/c868da4de607d48d27d5cf9852871ed4698627f8/odoo/tools/translate.py#L1191-L1200).
+```yaml
+odoo_role_loaded_languages: ca_ES,es_ES # Also available: eu_ES,gl_ES,pt_PT
 ```
 
 Community Roles
