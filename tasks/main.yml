@@ -121,7 +121,7 @@
   with_items: "{{ odoo_role_odoo_dbs }}"
   changed_when: false
 
-- name: "Init Odoo database(s): odoo_role_odoo_dbs"
+- name: "Init Odoo database(s): {{ odoo_role_odoo_dbs }}"
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
   command: >

@@ -33,6 +33,7 @@ odoo_role_odoo_modules_path: /opt/odoo_modules
 
 odoo_role_odoo_log_path: /var/log/odoo
 odoo_role_odoo_log_level: debug
+odoo_role_loaded_languages: ca_ES,es_ES # Also available: eu_ES,gl_ES,pt_PT
 
 odoo_role_odoo_db_name: odoo
 odoo_role_odoo_dbs: [ "{{ odoo_role_odoo_db_name }}" ]
