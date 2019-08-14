@@ -65,6 +65,8 @@
 - import_tasks: download.yml
 
 - name: Install Odoo python requirements
+  become: yes
+  become_user: "{{ odoo_role_odoo_user }}"
   pip:
     requirements: "{{ odoo_role_odoo_path }}/requirements.txt"
     virtualenv: "{{ odoo_role_odoo_venv_path }}"

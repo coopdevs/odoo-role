@@ -11,12 +11,17 @@
     requirements: "{{ odoo_role_odoo_modules_path }}/requirements.txt"
     virtualenv: "{{ odoo_role_odoo_venv_path }}"
   register: reg_pip
+  become: yes
+  become_user: "{{ odoo_role_odoo_user }}"
 
 - name: Detect upgraded packages
   shell: >
     grep 'Successfully installed' |
-    sed -r 's/Successfully installed odoo1[0-9]-addon-(.+)-[^-]+$/\1/' |
-    tr '-' '_'
+    sed -r 's/ /\n/g' |
+    egrep '^odoo1[0-9]-addon-[^ ]+-[0-9\.]+' |
+    sed -r 's/odoo1[0-9]-addon-([^ ]+)-[0-9\.]+/\1/g' |
+    tr -- '-' '_'
+
   args:
     stdin: "{{ reg_pip.stdout }}"
     executable: bash
