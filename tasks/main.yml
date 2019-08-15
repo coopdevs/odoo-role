@@ -65,6 +65,8 @@
 - import_tasks: download.yml
 
 - name: Install Odoo python requirements
+  become: yes
+  become_user: "{{ odoo_role_odoo_user }}"
   pip:
     requirements: "{{ odoo_role_odoo_path }}/requirements.txt"
     virtualenv: "{{ odoo_role_odoo_venv_path }}"
@@ -179,6 +181,21 @@
   with_items: "{{ odoo_role_odoo_dbs }}"
   loop_control:
     index_var: index
+  notify: restart odoo
+
+- name: Update in Odoo pip upgraded community modules
+  become: yes
+  become_user: "{{ odoo_role_odoo_user }}"
+  command: >
+    {{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }}
+    -c {{ odoo_role_odoo_config_path }}/odoo.conf
+    -d {{ item }}
+    --update {{ reg_pip_upgraded.stdout_lines | join(',') }}
+    --stop-after-init
+    --logfile=/dev/stdout
+    --log-level=warn
+  when: reg_pip_upgraded.stdout
+  with_items: "{{ odoo_role_odoo_dbs }}"
   notify: restart odoo
 
 - import_tasks: add-service.yml
