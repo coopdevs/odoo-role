@@ -151,7 +151,7 @@
   shell: >
     psql {{ item }} -tAc
     "SELECT name
-    FROM (VALUES ('{{ (odoo_role_odoo_core_modules + ',' + odoo_role_community_odoo_modules).split(',') | join(separator) }}'))
+    FROM (VALUES ('{{ (odoo_role_odoo_core_modules + ',' + odoo_role_odoo_community_modules).split(',') | join(separator) }}'))
     AS t (name)
     EXCEPT
     SELECT name
