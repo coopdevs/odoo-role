@@ -67,6 +67,9 @@ odoo_role_odoo_modules_path: /opt/odoo/modules
 ```yml
 # Array of DBs that the role will create.
 odoo_role_odoo_dbs: [ "odoo" ]
+# In a multidb environment, where more than one group use the same instance with isolated views,
+# each db name must match the DNS name it will accessed from in order for Odoo to direct the queries to the right DB.
+odoo_role_odoo_dbs: [ "odoo.some.coop", "erp.another.org" ]
 # This is the password Odoo asks to user allow them to create, delete, etc. DBs
 odoo_role_odoo_db_admin_password: 1234
 # Whether to populate db with example data or not.
