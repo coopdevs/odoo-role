@@ -39,8 +39,13 @@ odoo_role_odoo_db_name: odoo
 odoo_role_odoo_dbs: [ "{{ odoo_role_odoo_db_name }}" ]
 # This not a DB user password, but a password for Odoo to deal with DB.
 odoo_role_odoo_db_admin_password: iT0ohDuoth6ONgahDeepaich0aeka5ul
-# Wether or not to give the chance to select another existing database that has not been filtered by dbfilter
-odoo_role_show_db_list: False
+# Give the chance to select a database before login not filtered out by dbfilter, and enable db manager web interface.
+# In multi db mode, this is only relevant to db manager, as we force list_db to avoid an unaccessible website when dbfilter is disabled.
+# In single db mode,we disable dbfilter and respect list_db.
+odoo_role_list_db: False
+# Security option that disables the web-base database manager and filters available DBs to list before login.
+# We ignore this setting in single DB mode to allow simpler db names such as "odoo" instead of domain name.
+odoo_role_dbfilter_enabled: True
 
 # Comma-separated list of modules to install before running the server
 odoo_role_odoo_core_modules: "base"
