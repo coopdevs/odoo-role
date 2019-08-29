@@ -51,5 +51,5 @@ odoo_daemon: "odoo.service"
 odoo_role_demo_data: false
 
 # HTTP server settings
-odoo_role_odoo_http_interface: "127.0.1.1"
+odoo_role_odoo_http_interface: "127.0.0.1"
 odoo_role_odoo_proxy_mode: true
