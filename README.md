@@ -67,12 +67,17 @@ odoo_role_odoo_modules_path: /opt/odoo/modules
 ```yml
 # Array of DBs that the role will create.
 odoo_role_odoo_dbs: [ "odoo" ]
+# In a multidb environment, where more than one group use the same instance with isolated views,
+# each db name must match the DNS name it will accessed from in order for Odoo to direct the queries to the right DB.
+odoo_role_odoo_dbs: [ "odoo.some.coop", "erp.another.org" ]
+# Only in multidb environment, select DB based on the HTTP Host header.
+odoo_role_dbfilter_enabled: true
 # This is the password Odoo asks to user allow them to create, delete, etc. DBs
 odoo_role_odoo_db_admin_password: 1234
 # Whether to populate db with example data or not.
 odoo_role_demo_data: false
-# Wether or not to give the chance to select another existing database that has not been filtered by dbfilter
-odoo_role_show_db_list: false
+# Give the chance to select a database before login (when dbfilter disabled), and enable db manager web interface
+odoo_role_list_db: false
 ```
 
 * Odoo HTTP server settings

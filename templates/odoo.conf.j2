@@ -13,11 +13,14 @@ admin_passwd = {{ odoo_role_odoo_db_admin_password }}
 http_interface = {{ odoo_role_odoo_http_interface | default('0.0.0.0') }}
 proxy_mode = {{ odoo_role_odoo_proxy_mode | default(false) }}
 
-{% if ( odoo_role_odoo_dbs | count ) > 1 %}
-; Before login, use only the database that matches subdomain of Host header
-dbfilter = ^%d$
+{% if ( odoo_role_odoo_dbs | count ) > 1 and odoo_role_dbfilter_enabled %}
+; Before login, use only the database that matches full domain of Host header
+dbfilter = ^%h$
 {% endif %}
-{% if odoo_role_show_db_list == False %}
-; Give the chance to select another (not filtered by dbfilter) existing database
-list_db = False
+; Allow to select another (not filtered by dbfilter) existing database and enable db manager
+{# Avoid situation where odoo doesn't know what to show (dbfilter) nor can ask to (list_db) #}
+{% if ( odoo_role_odoo_dbs | count ) > 1 and not odoo_role_dbfilter_enabled %}
+list_db = True
+{% else %}
+list_db = {{ odoo_role_list_db }}
 {% endif %}
