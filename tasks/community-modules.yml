@@ -34,6 +34,11 @@
   #
   # account-financial-report
   # l10n-es-aeat-mod303
+
+  # About sed:
+  # - option `-r` switches to standard perl regexp, instead of GNU ones. Similar to `egrep` or `grep -E`
+  # - option `-n` combined with flag `/p` prints "nothing" except the result of the script. Therefore, unmatching lines are hidden, and matching lines are shown after processed.
+  # - capturing groups `(something)` can be referenced inside the matching part or at the replacing part with \1, \2, in order of appearence. 
   shell: >
     grep 'Successfully installed' |
     sed -r 's/ /\n/g' |
