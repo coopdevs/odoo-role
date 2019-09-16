@@ -14,17 +14,31 @@
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
 
+  # Using the output of pip, detect which packages have been installed,
+  # both fresh or upgraded. Save the list with a register so that we can
+  # feed better odoo with it.
 - name: Detect upgraded packages
+  args:
+    # Example input (delete '# ' from each line below)
+    #
+    # Installing collected packages: odoo11-addon-account-financial-report
+    # Found existing installation: odoo11-addon-account-financial-report 11.0.2.4.3
+    # Uninstalling odoo11-addon-account-financial-report-11.0.2.4.3:
+    #  Successfully uninstalled odoo11-addon-account-financial-report-11.0.2.4.3
+    # Successfully installed odoo11-addon-account-financial-report-11.0.2.5.1.99.dev12 odoo11-addon-l10n-es-aeat-mod303-11.0.2.1.0
+    stdin: "{{ reg_pip.stdout }}"
+    executable: bash
+  # Expected "output" using input from above (delete '# ' from each line below)
+  # note: "output" means `reg_pip_upgraded.stdout`
+  # note: to debug the second regexp you can use https://regexr.com/4l2c3
+  #
+  # account-financial-report
+  # l10n-es-aeat-mod303
   shell: >
     grep 'Successfully installed' |
     sed -r 's/ /\n/g' |
-    egrep '^odoo1[0-9]-addon-[^ ]+-[0-9\.]+' |
-    sed -r 's/odoo1[0-9]-addon-([^ ]+)-[0-9\.]+/\1/g' |
-    tr -- '-' '_'
-
-  args:
-    stdin: "{{ reg_pip.stdout }}"
-    executable: bash
+    sed -rn 's/^odoo(1[0-9])-addon-(.+)-\1\..+$/\2/p' |
+    tr '-' '_'
   register: reg_pip_upgraded
   changed_when: reg_pip_upgraded.stdout
   failed_when: false # noqa 306 "shell and pipefail". Both grep and sed must be able to fail
