@@ -52,6 +52,7 @@ odoo_role_dbfilter_enabled: True
 odoo_role_odoo_core_modules: "base"
 
 odoo_daemon: "odoo.service"
+odoo_cron_daemon: "odoo-cron.service"
 
 # Whether to populate db with example data or not.
 odoo_role_demo_data: false

@@ -1,6 +1,6 @@
 [options]
 ; Log Settings
-logfile = {{ odoo_role_odoo_log_path }}/odoo.log
+logfile = {{ odoo_role_odoo_log_path }}/odoo-cron.log
 log_level = {{ odoo_role_odoo_log_level }}
 
 ; Custom Modules
@@ -28,4 +28,5 @@ list_db = True
 {% else %}
 list_db = {{ odoo_role_list_db }}
 {% endif %}
-max_cron_threads = 0
+workers = 0
+http_enable = False

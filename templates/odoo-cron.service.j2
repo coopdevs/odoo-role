@@ -1,0 +1,22 @@
+# Odoo systemd service
+
+[Unit]
+Description=Odoo server
+
+[Service]
+ExecStart={{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }} -c {{ odoo_role_odoo_config_path }}/odoo-cron.conf --load-language='{{ odoo_role_loaded_languages }}'
+# Execute service like user
+User={{ odoo_role_odoo_user }}
+Group={{ odoo_role_odoo_group }}
+
+# Restart service after all crashes but wait 5 secontds between restarts.
+Restart=always
+RestartSec=5
+
+# output stdout and stderr to syslog. (/var/log/messages)
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=odoo
+
+[Install]
+WantedBy=multi-user.target

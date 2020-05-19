@@ -62,6 +62,14 @@
     state: touch
     mode: 02775
 
+- name: Create log cron file
+  become: yes
+  file:
+    path: "{{ odoo_role_odoo_log_path }}/odoo-cron.log"
+    group: "{{ odoo_role_odoo_group }}"
+    state: touch
+    mode: 02775
+
 - import_tasks: download.yml
 
 - name: Install Odoo python requirements
@@ -106,6 +114,16 @@
   template:
     src: odoo.conf.j2
     dest: "{{ odoo_role_odoo_config_path }}/odoo.conf"
+    mode: 0774
+    owner: "{{ odoo_role_odoo_user }}"
+    group: "{{  odoo_role_odoo_group }}"
+  notify: restart odoo
+
+- name: Add Odoo cron config
+  become: yes
+  template:
+    src: odoo-cron.conf.j2
+    dest: "{{ odoo_role_odoo_config_path }}/odoo-cron.conf"
     mode: 0774
     owner: "{{ odoo_role_odoo_user }}"
     group: "{{  odoo_role_odoo_group }}"
