@@ -16,6 +16,7 @@
       - libldap2-dev
       - libsasl2-dev
       - git
+      - libjpeg-dev
     state: present
 
 - name: Check if wkhtmltopdf is installed
@@ -64,6 +65,14 @@
 
 - import_tasks: download.yml
 
+- name: Apply patch to requirements.txt if Ubuntu 20.04 (Python 3.8)
+  become: yes
+  become_user: "{{ odoo_role_odoo_user }}"
+  patch:
+    src: "requirements.patch"
+    dest: "{{ odoo_role_odoo_path }}/requirements.txt"
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version == "20.04" 
+
 - name: Install Odoo python requirements
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
@@ -93,7 +102,7 @@
     src: /usr/bin/nodejs
     dest: /usr/bin/node
     state: link
-  when: ansible_distribution == "Ubuntu" and not ansible_distribution_version == "18.04"
+  when: ansible_distribution == "Ubuntu" and not ansible_distribution_version == "18.04" and not ansible_distribution_version == "20.04"
 
 - name: Install Odoo
   become: yes
