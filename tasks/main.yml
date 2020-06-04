@@ -31,7 +31,8 @@
     deb: "https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.{{ ansible_distribution_release }}_amd64.deb"
   when: wkhtmltox_installed.rc == 1
 
-- import_tasks: virtualenv.yml
+- import_tasks: pyenv.yml
+  become: yes
 
 - name: Create Odoo directories
   become: yes
