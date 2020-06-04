@@ -1,0 +1,14 @@
+---
+- name: Install Pyenv
+  import_role:
+    name: avanov.pyenv
+  vars:
+    pyenv_path: "/home/{{ odoo_role_odoo_user }}/pyenv/"
+    pyenv_owner: "{{ odoo_role_odoo_user }}"
+    pyenv_global: "{{ pyenv_global_python_version }}"
+    pyenv_python_versions:
+      - "{{ pyenv_odoo_python_version }}"
+      - "{{ pyenv_global_python_version }}"
+    pyenv_virtualenvs:
+      - venv_name: "{{ pyenv_venv_name }}"
+        py_version: "{{ pyenv_odoo_python_version }}"
