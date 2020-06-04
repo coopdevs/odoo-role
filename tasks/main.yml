@@ -31,7 +31,8 @@
     deb: "https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.{{ ansible_distribution_release }}_amd64.deb"
   when: wkhtmltox_installed.rc == 1
 
-- import_tasks: virtualenv.yml
+- import_tasks: pyenv.yml
+  become: yes
 
 - name: Create Odoo directories
   become: yes
@@ -78,6 +79,7 @@
       - nodejs
       - npm
     state: present
+  when: odoo_role_odoo_version < "12.0"
 
 - name: Install Less CSS via nodejs
   become: yes
@@ -85,15 +87,16 @@
     name: less
     version: 2.7.2
     global: yes
+  when: odoo_role_odoo_version < "12.0"
 
-# This link is needed in Ubuntu 16.04 and in Ubuntu 18.04 raise and error.
+# This link is needed in Ubuntu 16.04 and in Ubuntu 18.04 raise an error.
 - name: Create node symlink
   become: yes
   file:
     src: /usr/bin/nodejs
     dest: /usr/bin/node
     state: link
-  when: ansible_distribution == "Ubuntu" and not ansible_distribution_version == "18.04"
+  when: odoo_role_odoo_version < "12.0" and ansible_distribution == "Ubuntu" and not ansible_distribution_version >= "18.04"
 
 - name: Install Odoo
   become: yes
