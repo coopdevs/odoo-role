@@ -94,7 +94,7 @@
     src: /usr/bin/nodejs
     dest: /usr/bin/node
     state: link
-  when: ansible_distribution == "Ubuntu" and not ansible_distribution_version == "18.04"
+  when: ansible_distribution == "Ubuntu" and not ansible_distribution_version >= "18.04"
 
 - name: Install Odoo
   become: yes
