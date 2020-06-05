@@ -1,14 +1,89 @@
 ---
-- name: Install Pyenv
-  import_role:
-    name: avanov.pyenv
-  vars:
-    pyenv_path: "/home/{{ odoo_role_odoo_user }}/pyenv/"
-    pyenv_owner: "{{ odoo_role_odoo_user }}"
-    pyenv_global: "{{ pyenv_global_python_version }}"
-    pyenv_python_versions:
-      - "{{ pyenv_odoo_python_version }}"
-      - "{{ pyenv_global_python_version }}"
-    pyenv_virtualenvs:
-      - venv_name: "{{ pyenv_venv_name }}"
-        py_version: "{{ pyenv_odoo_python_version }}"
+- name: Ensure apt cache is up to date
+  become: true
+  apt:
+    update_cache: yes
+    cache_valid_time: "{{ 48 * 60 * 60 }}"  # consider the cache to be valid within 48 hours
+
+- name: Install development packages necessary for building Python
+  become: true
+  apt:
+    pkg:
+      - build-essential
+      - git
+      - curl
+      - libssl-dev
+      - libbz2-dev
+      - libsqlite3-dev
+      - libreadline-dev
+      - zlib1g-dev
+      - wget 
+      - llvm 
+      - libncurses5-dev 
+      - xz-utils
+      - tk-dev
+      - libxml2-dev
+      - libxmlsec1-dev
+      - libffi-dev
+    state: present
+
+- name: Install PyEnv
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  git:
+    repo: https://github.com/pyenv/pyenv.git
+    dest: "/home/{{ odoo_role_odoo_user }}/pyenv"
+    update: no
+
+- name: Install PyEnv-virtualenv plugin
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  git:
+    repo: https://github.com/yyuu/pyenv-virtualenv.git
+    dest: "/home/{{ odoo_role_odoo_user }}/pyenv/plugins/pyenv-virtualenv"
+    update: no
+
+- name: Install PyEnv-update plugin
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  git:
+    repo: https://github.com/pyenv/pyenv-update.git
+    dest: "/home/{{ odoo_role_odoo_user }}/pyenv/plugins/pyenv-update"
+    update: no
+
+- name: Install .pyenvrc
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  template:
+    src: ".pyenvrc.j2"
+    dest: "/home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc"
+    mode: "0644"
+
+- name: "Load pyenv env variables in .bashrc"
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  lineinfile: dest="/home/{{ odoo_role_odoo_user }}/.bashrc"
+              regexp="\.pyenvrc$"
+              line="source /home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc"
+              state=present
+              create=yes
+
+- name: Update Pyenv interpreter list
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  shell: . /home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc && pyenv update
+  
+- name: "Install Python interpreter {{ odoo_role_python_version }}"
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  shell: . /home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc && pyenv install {{ odoo_role_python_version }}
+  args:
+    creates: "/home/{{ odoo_role_odoo_user }}/pyenv/versions/{{ odoo_role_python_version }}/bin/python"
+
+- name: "Create virtual environment {{ odoo_role_venv_name }}"
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  shell: . /home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc && pyenv virtualenv {{ odoo_role_python_version  }} {{ odoo_role_venv_name }}
+  args:
+    creates: "/home/{{ odoo_role_odoo_user }}/pyenv/versions/{{ odoo_role_venv_name }}/bin/python"
+

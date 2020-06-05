@@ -25,6 +25,4 @@ galaxy_info:
     - erp
     - python
 
-dependencies:
-  - name: avanov.pyenv
-    version: 1.1.0
+dependencies: []

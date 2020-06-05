@@ -4,10 +4,9 @@ odoo_role_odoo_user: odoo
 odoo_role_odoo_group: odoo
 
 # VirtualEnv vars
-pyenv_odoo_python_version: "3.7.7"
-pyenv_global_python_version: "3.8.2"
-pyenv_venv_name: "odoo"
-odoo_role_odoo_venv_path: "/home/{{ odoo_role_odoo_user }}/pyenv/versions/{{ pyenv_venv_name }}/"
+odoo_role_python_version: "3.7.7"
+odoo_role_venv_name: "odoo"
+odoo_role_odoo_venv_path: "/home/{{ odoo_role_odoo_user }}/pyenv/versions/{{ odoo_role_venv_name }}/"
 
 # Odoo releases download strategy: tar or git
 odoo_role_download_strategy: tar
