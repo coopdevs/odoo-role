@@ -108,13 +108,6 @@ odoo_role_odoo_core_modules: "base"
 odoo_role_odoo_community_modules: ""
 ```
 
-* Other command line parameters
-
-Odoo loads alternative languages at start up. Listing more languages to load will increase the restart/start time, but at the same time it will show that there are more languages available to choose and it will be easy for the user to switch to one of them. Coma separated list of ISO language codes with optional country code ([source](https://github.com/odoo/odoo/blob/c868da4de607d48d27d5cf9852871ed4698627f8/odoo/tools/translate.py#L1191-L1200)). There are translations for [many languages](https://github.com/odoo/odoo/blob/c868da4de607d48d27d5cf9852871ed4698627f8/odoo/tools/translate.py#L1191-L1200).
-```yaml
-odoo_role_loaded_languages: ca_ES,es_ES # Also available: eu_ES,gl_ES,pt_PT
-```
-
 Community Roles
 ---------------
 
