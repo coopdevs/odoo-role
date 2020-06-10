@@ -57,6 +57,9 @@ odoo_daemon: "odoo.service"
 # Whether to populate db with example data or not.
 odoo_role_demo_data: false
 
+# Start the server in development mode: https://www.odoo.com/documentation/12.0/reference/cmdline.html#developer-features
+odoo_role_dev_mode: false
+
 # HTTP server settings
 odoo_role_odoo_http_interface: "127.0.0.1"
 odoo_role_odoo_proxy_mode: true
