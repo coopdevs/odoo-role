@@ -108,6 +108,13 @@ odoo_role_odoo_core_modules: "base"
 odoo_role_odoo_community_modules: ""
 ```
 
+* Development mode
+
+Odoo has a mode to auto-reload the server when the code changes and read the views from the code to agile the development process. Using the command line parameter [`--dev`](https://www.odoo.com/documentation/12.0/reference/cmdline.html#developer-features) we can run Odoo in a development mode.
+```yaml
+odoo_role_dev_mode: true
+```
+
 Community Roles
 ---------------
 
