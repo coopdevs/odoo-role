@@ -201,4 +201,12 @@
   with_items: "{{ odoo_role_odoo_dbs }}"
   notify: restart odoo
 
+- name: Install whatchdog in development environment
+  become: yes
+  become_user: "{{ odoo_role_odoo_user }}"
+  pip:
+    name: watchdog
+    virtualenv: "{{ odoo_role_odoo_venv_path }}"
+  when: odoo_role_dev_mode | bool
+
 - import_tasks: add-service.yml
