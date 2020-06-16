@@ -114,7 +114,7 @@ Odoo has a mode to auto-reload the server when the code changes and read the vie
 ```yaml
 odoo_role_dev_mode: true
 ```
-If this mode is active, the systed unit is not created and you need run the Odoo process manyally.
+If this mode is active, the systemd unit is not created and you need to run the Odoo process manually.
 You can start it with the next command:
 
 ```sh
