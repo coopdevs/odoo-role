@@ -1,6 +1,8 @@
 [options]
 ; Log Settings
+{% if not odoo_role_dev_mode %}
 logfile = {{ odoo_role_odoo_log_path }}/odoo.log
+{% endif %}
 log_level = {{ odoo_role_odoo_log_level }}
 
 ; Custom Modules
