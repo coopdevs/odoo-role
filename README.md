@@ -115,7 +115,7 @@ Odoo has a mode to auto-reload the server when the code changes and read the vie
 odoo_role_dev_mode: true
 ```
 If this mode is active, the systemd unit is not created and you need to run the Odoo process manually.
-You can start it with the next command:
+You can start it with the following command:
 
 ```sh
 $ ./odoo-bin -c /etc/odoo/odoo.conf --dev all
