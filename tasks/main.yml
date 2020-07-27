@@ -65,6 +65,13 @@
 
 - import_tasks: download.yml
 
+- name: Add Python Magic to requirements
+  become: yes
+  become_user: "{{ odoo_role_odoo_user }}"
+  lineinfile:
+    path: "{{ odoo_role_odoo_path }}/requirements.txt"
+    line: python-magic
+
 - name: Install Odoo python requirements
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
