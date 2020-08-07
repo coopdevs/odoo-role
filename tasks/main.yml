@@ -16,6 +16,9 @@
       - libldap2-dev
       - libsasl2-dev
       - libjpeg9-dev
+      - libcairo-dev
+      - libgirepository1.0-dev
+      - libgpgme-dev
       - git
     state: present
 
@@ -100,7 +103,6 @@
     global: yes
   when: odoo_role_odoo_version < "12.0" and odoo_role_odoo_version > "8.0"
 
-
 # This link is needed in Ubuntu 16.04 and in Ubuntu 18.04 raise an error.
 - name: Create node symlink
   become: yes
@@ -158,46 +160,46 @@
   loop_control:
     index_var: index
 
-    #- import_tasks: community-modules.yml
+- import_tasks: community-modules.yml
 
-    #- name: Build the list of new modules to install
-    #become: yes
-    #become_user: "{{ odoo_role_odoo_user }}"
-    #shell: >
-    #  psql {{ item }} -tAc
-    #  "SELECT name
-    #  FROM (VALUES ('{{ (odoo_role_odoo_core_modules + ',' + odoo_role_odoo_community_modules).split(',') | join(separator) }}'))
-    #  AS t (name)
-    #  EXCEPT
-    #  SELECT name
-    #  FROM ir_module_module
-    #  WHERE state = 'installed';"
-    #register: modules_to_install
-    #vars:
-    #  - separator: "'), ('"
-    #with_items: "{{ odoo_role_odoo_dbs }}"
-    #changed_when: false
-    #
-    #name: Install only new Odoo modules
-    #become: yes
-    #become_user: "{{ odoo_role_odoo_user }}"
-    #command: >
-    #  {{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }}
-    #  -c {{ odoo_role_odoo_config_path }}/odoo.conf
-    #  -d {{ item }}
-    #  --init {{ modules_to_install.results[index].stdout_lines | join(',') }}
-    #  --stop-after-init
-    #  {% if not odoo_role_demo_data %}
-    #  --without-demo=all
-    #  {% endif %}
-    #  --logfile=/dev/stdout
-    #  --log-level=warn
-    #when: modules_to_install.results[index].stdout
-    #with_items: "{{ odoo_role_odoo_dbs }}"
-    #loop_control:
-    #  index_var: index
-    #notify: restart odoo
-    #
+- name: Build the list of new modules to install
+  become: yes
+  become_user: "{{ odoo_role_odoo_user }}"
+  shell: >
+    psql {{ item }} -tAc
+    "SELECT name
+    FROM (VALUES ('{{ (odoo_role_odoo_core_modules + ',' + odoo_role_odoo_community_modules).split(',') | join(separator) }}'))
+    AS t (name)
+    EXCEPT
+    SELECT name
+    FROM ir_module_module
+    WHERE state = 'installed';"
+  register: modules_to_install
+  vars:
+    - separator: "'), ('"
+  with_items: "{{ odoo_role_odoo_dbs }}"
+  changed_when: false
+
+- name: Install only new Odoo modules
+  become: yes
+  become_user: "{{ odoo_role_odoo_user }}"
+  command: >
+    {{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }}
+    -c {{ odoo_role_odoo_config_path }}/odoo.conf
+    -d {{ item }}
+    --init {{ modules_to_install.results[index].stdout_lines | join(',') }}
+    --stop-after-init
+    {% if not odoo_role_demo_data %}
+    --without-demo=all
+    {% endif %}
+    --logfile=/dev/stdout
+    --log-level=warn
+  when: modules_to_install.results[index].stdout
+  with_items: "{{ odoo_role_odoo_dbs }}"
+  loop_control:
+    index_var: index
+  notify: restart odoo
+
     #name: Update in Odoo pip upgraded community modules
     #become: yes
     #become_user: "{{ odoo_role_odoo_user }}"
