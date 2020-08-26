@@ -7,12 +7,12 @@ log_level = {{ odoo_role_odoo_log_level }}
 
 ; Custom Modules
 addons_path:
-  {{ odoo_role_odoo_path }}/addons,
-  {{ odoo_role_odoo_path }}/openerp/addons,
-  {{ odoo_role_odoo_modules_path }},
   {{ odoo_role_odoo_path }}/v8/other-addons,
   {{ odoo_role_odoo_path }}/v8/github-links,
   {{ odoo_role_odoo_path }}/v8/OCA-links,
+  {{ odoo_role_odoo_path }}/addons,
+  {{ odoo_role_odoo_path }}/openerp/addons,
+  {{ odoo_role_odoo_modules_path }},
 
 
 ; Master password to manage dbs
