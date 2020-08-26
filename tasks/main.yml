@@ -201,6 +201,29 @@
   with_items: "{{ odoo_role_odoo_dbs }}"
   notify: restart odoo
 
+- name: Check if unaccent extension has been installed ("0" false, "1" true)
+  become: yes
+  become_user: "{{ odoo_role_odoo_user }}"
+  shell: >
+    psql {{ item }} -tAc
+    "SELECT COUNT(*)
+    FROM pg_extension
+    WHERE extname='unaccent';"
+  register: unaccent_installed
+  with_items: "{{ odoo_role_odoo_dbs }}"
+  changed_when: false
+
+- name: "Install unaccent extension: {{ odoo_role_odoo_dbs }}"
+  become: yes
+  become_user: postgres
+  command: >
+    psql {{ item }} -tAc
+    "CREATE EXTENSION \"unaccent\""
+  when: unaccent_installed.results[index].stdout == "0"
+  notify: restart odoo
+  with_items: "{{ odoo_role_odoo_dbs }}"
+  loop_control:
+    index_var: index
 - name: Install whatchdog in development environment
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
