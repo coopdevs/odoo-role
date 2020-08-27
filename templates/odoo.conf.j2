@@ -30,4 +30,9 @@ list_db = True
 {% else %}
 list_db = {{ odoo_role_list_db }}
 {% endif %}
+
+; Ignore accents in searchs
 unaccent = True
+
+; Hack to avoid LC_COLLATE="C"
+db_template = template1
