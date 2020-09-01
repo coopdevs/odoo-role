@@ -121,6 +121,15 @@ You can start it with the following command:
 $ ./odoo-bin -c /etc/odoo/odoo.conf --dev all
 ```
 
+* [Rest Framework](https://github.com/OCA/rest-framework/tree/12.0/base_rest) support
+
+If you need to use the Rest Framework and want to start the server in development mode, use:
+```yaml
+odoo_role_enable_rest_framework: true
+```
+
+This option add to the Odoo configuration file the section and option to development mode: https://github.com/OCA/rest-framework/tree/12.0/base_rest#configuration
+
 Community Roles
 ---------------
 

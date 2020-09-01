@@ -36,3 +36,8 @@ unaccent = True
 
 ; Hack to avoid LC_COLLATE="C"
 db_template = template1
+
+{% if odoo_role_dev_mode and odoo_role_enabled_rest_framework %}
+[base_rest]
+dev_mode=True
+{% endif %}
