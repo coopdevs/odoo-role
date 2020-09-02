@@ -127,8 +127,16 @@ If you need to use the Rest Framework and want to start the server in developmen
 ```yaml
 odoo_role_enable_rest_framework: true
 ```
-
 This option add to the Odoo configuration file the section and option to development mode: https://github.com/OCA/rest-framework/tree/12.0/base_rest#configuration
+
+* [Queue Job](https://github.com/OCA/queue/blob/12.0/queue_job) support
+
+If you need to use the module queue\_job, use. Don't forget to install the module using *Community Roles*:
+```yaml
+odoo_role_enable_queue_job: true
+```
+
+This option add to the Odoo configuration file the option to enable queue\_job as a new thread/process: https://github.com/OCA/queue/blob/12.0/queue\_job/README.rst#id12
 
 Community Roles
 ---------------
