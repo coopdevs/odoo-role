@@ -34,6 +34,10 @@
 - import_tasks: pyenv.yml
   become: yes
 
+- import_tasks: environment_variables.yml
+  become: yes
+  when: environment_variables is defined
+
 - name: Create Odoo directories
   become: yes
   file:
