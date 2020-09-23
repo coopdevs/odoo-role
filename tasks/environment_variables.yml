@@ -1,0 +1,8 @@
+---
+- name: "Set environment variables default file"
+  template:
+    dest: "/etc/default/odoo"
+    mode: 0440
+    owner: "{{ odoo_role_odoo_user }}"
+    group: "{{ odoo_role_odoo_group }}"
+    src: default.j2
