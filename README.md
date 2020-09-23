@@ -138,6 +138,20 @@ odoo_role_enable_queue_job: true
 
 This option add to the Odoo configuration file the option to enable queue\_job as a new thread/process: https://github.com/OCA/queue/blob/12.0/queue\_job/README.rst#id12
 
+* Environment variables
+
+If you need to define a set of environment variables for your server, you can use the `environment_variables` dict var:
+
+```yaml
+environment_variables:
+  var_name1: "var_value1"
+  var_name2: "var_value2"
+  var_name3: "var_value3"
+```
+
+This option add a file in `/etc/default/odoo` with the vars and add to the Systemd service the `EnvironmentFile` attribute pointing to `/etc/default/odoo.
+
+
 Community Roles
 ---------------
 
