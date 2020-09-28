@@ -5,7 +5,7 @@ Description=Odoo server
 
 [Service]
 ExecStart={{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }} -c {{ odoo_role_odoo_config_path }}/odoo.conf
-{% if environment_variables %}
+{% if environment_variables is defined %}
 EnvironmentFile=/etc/default/odoo
 {% endif %}
 
