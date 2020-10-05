@@ -57,7 +57,7 @@
   template:
     src: ".pyenvrc.j2"
     dest: "/home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc"
-    mode: "0644"
+    mode: 0644
 
 - name: "Load pyenv env variables in .bashrc"
   become: true
@@ -67,6 +67,7 @@
               line="source /home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc"
               state=present
               create=yes
+              mode="0644"
 
 - name: Update Pyenv interpreter list
   become: true

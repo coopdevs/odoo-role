@@ -8,6 +8,7 @@
       state: directory
       owner: "{{ odoo_role_odoo_user }}"
       group: "{{ odoo_role_odoo_group }}"
+      mode: 0755
 
   - name: Download Odoo
     get_url:
@@ -35,6 +36,7 @@
       state: "{{ item }}"
       owner: "{{ odoo_role_odoo_user }}"
       group: "{{ odoo_role_odoo_group }}"
+      mode: 02775
     with_items:
       - absent
       - directory
@@ -47,6 +49,7 @@
       remote_src: yes
       owner: "{{ odoo_role_odoo_user }}"
       group: "{{ odoo_role_odoo_group }}"
+      mode: 0775
       extra_opts: [--strip-components=1]
     when: odoo_role_desired_tar_download.changed
 
