@@ -16,6 +16,7 @@
       - libldap2-dev
       - libsasl2-dev
       - git
+      - libmagic-dev
     state: present
 
 - name: Check if wkhtmltopdf is installed
