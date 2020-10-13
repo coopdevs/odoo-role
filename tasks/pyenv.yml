@@ -17,9 +17,9 @@
       - libsqlite3-dev
       - libreadline-dev
       - zlib1g-dev
-      - wget 
-      - llvm 
-      - libncurses5-dev 
+      - wget
+      - llvm
+      - libncurses5-dev
       - xz-utils
       - tk-dev
       - libxml2-dev
@@ -57,7 +57,7 @@
   template:
     src: ".pyenvrc.j2"
     dest: "/home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc"
-    mode: "0644"
+    mode: 0644
 
 - name: "Load pyenv env variables in .bashrc"
   become: true
@@ -67,12 +67,13 @@
               line="source /home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc"
               state=present
               create=yes
+              mode="0644"
 
 - name: Update Pyenv interpreter list
   become: true
   become_user: "{{ odoo_role_odoo_user }}"
   shell: . /home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc && pyenv update
-  
+
 - name: "Install Python interpreter {{ odoo_role_python_version }}"
   become: true
   become_user: "{{ odoo_role_odoo_user }}"
@@ -86,4 +87,3 @@
   shell: . /home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc && pyenv virtualenv {{ odoo_role_python_version  }} {{ odoo_role_venv_name }}
   args:
     creates: "/home/{{ odoo_role_odoo_user }}/pyenv/versions/{{ odoo_role_venv_name }}/bin/python"
-

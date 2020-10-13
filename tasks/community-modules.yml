@@ -5,6 +5,7 @@
     dest: "{{ odoo_role_odoo_modules_path }}/requirements.txt"
     owner: "{{ odoo_role_odoo_user }}"
     group: "{{ odoo_role_odoo_group }}"
+    mode: 0644
 
 - name: Deploy community roles with pip
   pip:

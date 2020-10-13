@@ -2,3 +2,6 @@
 skip_list:
   - '503' # Tasks that run when changed should likely be handlers
   - '602' # Don’t compare to empty string
+  - '106'  # Role name {} does not match ``^[a-z][a-z0-9_]+$`` pattern
+  - '301'  # Commands should not change things if nothing needs doing
+  - '401'  # Git checkouts must contain explicit version
