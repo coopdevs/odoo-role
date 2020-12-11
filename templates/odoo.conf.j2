@@ -4,8 +4,12 @@
 logfile = {{ odoo_role_odoo_log_path }}/odoo.log
 {% endif %}
 log_level = {{ odoo_role_odoo_log_level }}
-{% if odoo_role_enable_queue_job %}
+{% if odoo_role_enable_queue_job and not odoo_role_enable_dbfilter_from_header %}
 server_wide_modules = web,queue_job
+{% elif not odoo_role_enable_queue_job and odoo_role_enable_dbfilter_from_header %}
+server_wide_modules = web,dbfilter_from_header
+{% elif odoo_role_enable_queue_job and odoo_role_enable_dbfilter_from_header %}
+server_wide_modules = web,dbfilter_from_header,queue_job
 {% endif %}
 ; Custom Modules
 addons_path = {{ odoo_role_odoo_path }}/addons,{{ odoo_role_odoo_modules_path }}
@@ -17,7 +21,7 @@ admin_passwd = {{ odoo_role_odoo_db_admin_password }}
 http_interface = {{ odoo_role_odoo_http_interface }}
 proxy_mode = {{ odoo_role_odoo_proxy_mode }}
 
-{% if ( odoo_role_odoo_dbs | count ) > 1 and odoo_role_dbfilter_enabled %}
+{% if not odoo_role_enable_dbfilter_from_header and ( odoo_role_odoo_dbs | count ) > 1 and odoo_role_dbfilter_enabled %}
 {# We found troubles filtering by %h. It implies creating databases with dots in the name,
    and ansible resists to create dbs with such names, even though postgres suppports it #}
 {#; Before login, use only the database that matches full domain of Host header
