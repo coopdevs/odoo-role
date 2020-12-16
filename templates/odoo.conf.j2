@@ -37,6 +37,10 @@ list_db = True
 list_db = {{ odoo_role_list_db }}
 {% endif %}
 
+{% if odoo_role_db_port is defined %}
+db_port = {{ odoo_role_db_port }}
+{% endif %}
+
 ; Ignore accents in searchs
 unaccent = True
 
