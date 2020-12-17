@@ -37,7 +37,7 @@ list_db = True
 list_db = {{ odoo_role_list_db }}
 {% endif %}
 
-{% if odoo_role_db_port is defined %}
+{% if odoo_role_db_port %}
 db_port = {{ odoo_role_db_port }}
 {% endif %}
 
