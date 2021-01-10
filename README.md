@@ -92,6 +92,8 @@ odoo_role_list_db: false
 odoo_role_odoo_http_interface: 0.0.0.0
 # Set this to true when Odoo runs behind a reverse proxy
 odoo_role_odoo_proxy_mode: false
+# Specify how many HTTP workers you need (default is 1)
+odoo_role_workers: 2
 ```
 
 * Core modules list to install/update
@@ -131,12 +133,17 @@ This option add to the Odoo configuration file the section and option to develop
 
 * [Queue Job](https://github.com/OCA/queue/blob/12.0/queue_job) support
 
-If you need to use the module queue\_job, use. Don't forget to install the module using *Community Roles*:
+If you need to use the module [queue\_job](https://github.com/OCA/queue/blob/12.0/queue_job), use:
 ```yaml
 odoo_role_enable_queue_job: true
 ```
 
 This option add to the Odoo configuration file the option to enable queue\_job as a new thread/process: https://github.com/OCA/queue/blob/12.0/queue\_job/README.rst#id12
+
+You can also define how many workers you want to use to execute the jobs:
+```yaml
+odoo_role_channels: root:2
+```
 
 * Environment variables
 
