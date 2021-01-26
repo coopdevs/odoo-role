@@ -52,6 +52,10 @@ db_template = template1
 workers = {{ odoo_role_workers }}
 {% endif %}
 
+; Customize the Odoo timeouts
+limit_time_cpu = {{ odoo_role_limit_time_cpu }}
+limit_time_real = {{ odoo_role_limit_time_real }}
+
 {% if odoo_role_enable_queue_job and odoo_role_channels %}
 [queue_job]
 channels = {{ odoo_role_channels }}
