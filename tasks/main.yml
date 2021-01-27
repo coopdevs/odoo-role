@@ -209,6 +209,7 @@
     --stop-after-init
     --logfile=/dev/stdout
     --log-level=warn
+    --no-http
   when: reg_pip_upgraded.stdout
   with_items: "{{ odoo_role_odoo_dbs }}"
   notify: restart odoo
