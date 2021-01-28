@@ -47,7 +47,7 @@ unaccent = True
 ; Hack to avoid LC_COLLATE="C"
 db_template = template1
 
-{% if odoo_role_workers and odoo_role_workers > 1 %}
+{% if odoo_role_workers is defined and odoo_role_workers > 1 %}
 ; If workers > 1 are defined, add a /location in Nginx server for LongPolling
 workers = {{ odoo_role_workers }}
 {% endif %}
