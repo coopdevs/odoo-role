@@ -192,6 +192,7 @@
     {% endif %}
     --logfile=/dev/stdout
     --log-level=warn
+    --no-http
   when: modules_to_install.results[index].stdout
   with_items: "{{ odoo_role_odoo_dbs }}"
   loop_control:
