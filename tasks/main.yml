@@ -232,6 +232,30 @@
   with_items: "{{ odoo_role_odoo_dbs }}"
   notify: restart odoo
 
+- name: Set ribbon name for test dbs
+  become: yes
+  become_user: "{{ odoo_role_odoo_user }}"
+  command: >
+    psql
+    -d {{ item }}
+    -c "UPDATE ir_config_parameter set value = 'TEST<br/>({db_name})' where key = 'ribbon.name'"
+  when:
+    - item in odoo_role_test_dbs and "web_environment_ribbon" in odoo_role_odoo_community_modules
+  with_items: "{{ odoo_role_odoo_dbs }}"
+  notify: restart odoo
+
+- name: Disable ribbon name for prod dbs
+  become: yes
+  become_user: "{{ odoo_role_odoo_user }}"
+  command: >
+    psql
+    -d {{ item }}
+    -c "UPDATE ir_config_parameter set value = 'False' where key = 'ribbon.name'"
+  when:
+    - item not in odoo_role_test_dbs and "web_environment_ribbon" in odoo_role_odoo_community_modules
+  with_items: "{{ odoo_role_odoo_dbs }}"
+  notify: restart odoo
+
 - name: Install whatchdog in development environment
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
