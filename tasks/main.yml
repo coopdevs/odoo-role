@@ -198,6 +198,7 @@
 - name: Install only new Odoo modules
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
+  environment: "{{ environment_variables | default({}) }}"
   command: >
     {{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }}
     -c {{ odoo_role_odoo_config_path }}/odoo.conf
@@ -219,6 +220,7 @@
 - name: Update in Odoo pip upgraded community modules
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
+  environment: "{{ environment_variables | default({}) }}"
   command: >
     {{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }}
     -c {{ odoo_role_odoo_config_path }}/odoo.conf
