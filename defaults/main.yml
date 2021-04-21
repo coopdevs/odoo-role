@@ -79,3 +79,8 @@ odoo_role_limit_time_real: 120
 
 # Force getting db name from leftmost subdomain (different inventories for each DB)
 odoo_role_force_leftmost_subdomain: false
+
+# Sessions path: data_dir/sessions
+# https://github.com/OCA/OCB/blob/12.0/odoo/tools/appdirs.py#L48
+odoo_role_odoo_sessions_path: "/home/{{ odoo_role_odoo_user }}/.local/share/Odoo/sessions"
+odoo_role_remove_sessions: false
