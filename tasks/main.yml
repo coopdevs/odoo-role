@@ -177,13 +177,41 @@
 
 - import_tasks: community-modules.yml
 
+- name: Populate community db modules
+  set_fact:
+    community_db_modules: "{{community_db_modules | default({}) | combine ({ item : odoo_role_odoo_community_modules_dict[item] | default([]) }) }}"
+  with_items: "{{ odoo_role_odoo_dbs }}"
+
+- name: Populate community shared modules
+  set_fact:
+    community_shared_modules: "{{ odoo_role_odoo_community_modules_dict['shared'] | default(odoo_role_odoo_community_modules.split(',')) }}"
+
+- name: Join db + shared community modules
+  set_fact:
+    community_modules: "{{community_modules | default({}) | combine ({ item : community_shared_modules + community_db_modules[item] }) }}"
+  with_items: "{{ odoo_role_odoo_dbs }}"
+
+- name: Populate core db modules
+  set_fact:
+    core_db_modules: "{{core_db_modules | default({}) | combine ({ item : odoo_role_odoo_core_modules_dict[item] | default([]) }) }}"
+  with_items: "{{ odoo_role_odoo_dbs }}"
+
+- name: Populate core shared modules
+  set_fact:
+    core_shared_modules: "{{ odoo_role_odoo_core_modules_dict['shared'] | default(odoo_role_odoo_core_modules.split(',')) }}"
+
+- name: Join db + shared core modules
+  set_fact:
+    core_modules: "{{ core_modules | default({}) | combine ({ item : core_shared_modules + core_db_modules[item] }) }}"
+  with_items: "{{ odoo_role_odoo_dbs }}"
+
 - name: Build the list of new modules to install
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
   shell: >
     psql {{ item }} -tAc
     "SELECT name
-    FROM (VALUES ('{{ (odoo_role_odoo_core_modules + ',' + odoo_role_odoo_community_modules).split(',') | join(separator) }}'))
+    FROM (VALUES ('{{ (core_modules[item] + community_modules[item]) | join(separator) }}'))
     AS t (name)
     EXCEPT
     SELECT name
@@ -246,7 +274,7 @@
     -d {{ item }}
     -c "UPDATE ir_config_parameter set value = 'TEST<br/>({db_name})' where key = 'ribbon.name'"
   when:
-    - item in odoo_role_test_dbs and "web_environment_ribbon" in odoo_role_odoo_community_modules
+    - item in odoo_role_test_dbs and "web_environment_ribbon" in community_modules
   with_items: "{{ odoo_role_odoo_dbs }}"
   notify: restart odoo
 
@@ -258,7 +286,7 @@
     -d {{ item }}
     -c "UPDATE ir_config_parameter set value = 'False' where key = 'ribbon.name'"
   when:
-    - item not in odoo_role_test_dbs and "web_environment_ribbon" in odoo_role_odoo_community_modules
+    - item not in odoo_role_test_dbs and "web_environment_ribbon" in community_modules
   with_items: "{{ odoo_role_odoo_dbs }}"
   notify: restart odoo
 
