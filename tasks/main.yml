@@ -215,7 +215,9 @@
   with_items: "{{ odoo_role_odoo_dbs }}"
   loop_control:
     index_var: index
-  notify: restart odoo
+  notify:
+    - restart odoo
+    - remove sessions
 
 - name: Update in Odoo pip upgraded community modules
   become: yes
@@ -232,7 +234,9 @@
     --no-http
   when: reg_pip_upgraded.stdout
   with_items: "{{ odoo_role_odoo_dbs }}"
-  notify: restart odoo
+  notify:
+    - restart odoo
+    - remove sessions
 
 - name: Set ribbon name for test dbs
   become: yes

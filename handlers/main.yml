@@ -5,3 +5,17 @@
     name: "{{ odoo_daemon }}"
     state: restarted
   when: not odoo_role_dev_mode | bool
+
+- name: remove sessions
+  file:
+    state: "{{ item }}"
+    path: "{{ odoo_role_odoo_sessions_path }}"
+    owner: "{{ odoo_role_odoo_user }}"
+    group:  "{{ odoo_role_odoo_group }}"
+    mode: '0775'
+  with_items:
+    - absent
+    - directory
+  when:
+    - not odoo_role_dev_mode | bool
+    - odoo_role_remove_sessions | bool
