@@ -179,7 +179,7 @@
 
 - name: Populate community db modules
   set_fact:
-    community_db_modules: "{{community_db_modules | default({}) | combine ({ item : odoo_role_odoo_community_modules_dict[item] | default([]) }) }}"
+    community_db_modules: "{{ community_db_modules | default({}) | combine ({ item : odoo_role_odoo_community_modules_dict[item] | default([]) }) }}"
   with_items: "{{ odoo_role_odoo_dbs }}"
 
 - name: Populate community shared modules
@@ -188,12 +188,12 @@
 
 - name: Join db + shared community modules
   set_fact:
-    community_modules: "{{community_modules | default({}) | combine ({ item : community_shared_modules + community_db_modules[item] }) }}"
+    community_modules: "{{ community_modules | default({}) | combine ({ item : community_shared_modules + community_db_modules[item] }) }}"
   with_items: "{{ odoo_role_odoo_dbs }}"
 
 - name: Populate core db modules
   set_fact:
-    core_db_modules: "{{core_db_modules | default({}) | combine ({ item : odoo_role_odoo_core_modules_dict[item] | default([]) }) }}"
+    core_db_modules: "{{ core_db_modules | default({}) | combine ({ item : odoo_role_odoo_core_modules_dict[item] | default([]) }) }}"
   with_items: "{{ odoo_role_odoo_dbs }}"
 
 - name: Populate core shared modules
