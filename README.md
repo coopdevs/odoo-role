@@ -99,15 +99,24 @@ odoo_role_workers: 2
 * Core modules list to install/update
 
 ```yml
-# Comma-separated list of modules to install before running the server
-odoo_role_odoo_core_modules: "base"
+# List of modules to install before running the server. "Shared" part is common to all db's, specific db modules goes into their "db" part
+odoo_role_odoo_core_modules_dict:
+  shared:
+    - base
+  db1:
+    - account
 ```
 
 * Community modules list to install/update
 
 ```yml
-# Comma-separated list of modules to install before running the server
-odoo_role_odoo_community_modules: ""
+# List of modules to install before running the server. "Shared" part is common to all db's, specific db modules goes into their "db" part
+
+odoo_role_odoo_community_modules_dict:
+  shared:
+    - web_responsive
+  db1:
+    - mis_reports
 ```
 
 * Development mode
