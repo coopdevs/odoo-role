@@ -274,7 +274,7 @@
     -d {{ item }}
     -c "UPDATE ir_config_parameter set value = 'TEST<br/>({db_name})' where key = 'ribbon.name'"
   when:
-    - item in odoo_role_test_dbs and "web_environment_ribbon" in community_modules
+    - item in odoo_role_test_dbs and "web_environment_ribbon" in community_modules[item]
   with_items: "{{ odoo_role_odoo_dbs }}"
   notify: restart odoo
 
@@ -286,7 +286,7 @@
     -d {{ item }}
     -c "UPDATE ir_config_parameter set value = 'False' where key = 'ribbon.name'"
   when:
-    - item not in odoo_role_test_dbs and "web_environment_ribbon" in community_modules
+    - item not in odoo_role_test_dbs and "web_environment_ribbon" in community_modules[item]
   with_items: "{{ odoo_role_odoo_dbs }}"
   notify: restart odoo
 
