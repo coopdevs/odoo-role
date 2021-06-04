@@ -65,3 +65,9 @@ channels = {{ odoo_role_channels }}
 [base_rest]
 dev_mode=True
 {% endif %}
+
+{% if odoo_role_enable_sentry and odoo_role_sentry_dsn %}
+[sentry]
+sentry_dsn = odoo_role_sentry_dsn
+sentry_enabled = True
+{% endif %}
