@@ -154,6 +154,14 @@ You can also define how many workers you want to use to execute the jobs:
 odoo_role_channels: root:2
 ```
 
+* [sentry](https://github.com/OCA/server-tools/tree/12.0/sentry) support
+
+If you want to use the module [setnry](https://github.com/OCA/server-tools/tree/12.0/sentry), use:
+```yaml
+odoo_role_enable_sentry: true
+odoo_role_sentry_dsn: https://your_sentry_url
+```
+
 * Environment variables
 
 If you need to define a set of environment variables for your server, you can use the `environment_variables` dict var:
