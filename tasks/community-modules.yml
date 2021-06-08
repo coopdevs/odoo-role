@@ -1,7 +1,7 @@
 ---
 - name: Copy requirements.txt
-  copy: # 'noqa' below disables [E404] Don’t compare to empty string
-    src: "{{ inventory_dir }}/../files/requirements.txt" # noqa 404
+  copy:
+    src: "{{ odoo_role_community_modules_requirements_path }}"
     dest: "{{ odoo_role_odoo_modules_path }}/requirements.txt"
     owner: "{{ odoo_role_odoo_user }}"
     group: "{{ odoo_role_odoo_group }}"
