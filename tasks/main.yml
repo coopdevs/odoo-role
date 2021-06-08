@@ -86,14 +86,6 @@
     path: "{{ odoo_role_odoo_path }}/requirements.txt"
     line: python-magic
 
-- name: Force python-stdnum==1.9
-  become: yes
-  become_user: "{{ odoo_role_odoo_user }}"
-  lineinfile:
-    path: "{{ odoo_role_odoo_path }}/requirements.txt"
-    line: python-stdnum==1.9
-  when: odoo_role_odoo_version < "12.0"
-
 - name: Install Odoo python requirements
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
