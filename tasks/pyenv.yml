@@ -81,6 +81,14 @@
   args:
     creates: "/home/{{ odoo_role_odoo_user }}/pyenv/versions/{{ odoo_role_python_version }}/bin/python"
 
+- name: Check virtualenv python version
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  shell: pyenv virtualenvs
+  register: virtualenvs_output
+
+- debug: msg="{{ virtualenvs.stdout }}"
+
 - name: "Create virtual environment {{ odoo_role_venv_name }}"
   become: true
   become_user: "{{ odoo_role_odoo_user }}"
