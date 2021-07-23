@@ -91,3 +91,7 @@ odoo_role_remove_sessions: false
 
 odoo_role_odoo_community_modules: ""
 odoo_role_enable_sentry: false
+
+# Overwrites existing translation terms on updating a module or importing a CSV or a PO file using the option --i18n-overwrite in the module update.
+# https://www.odoo.com/documentation/12.0/developer/reference/cmdline.html#cmdoption-odoo-bin-i18n-overwrite
+odoo_role_i18n_overwrite: false

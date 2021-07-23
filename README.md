@@ -162,6 +162,19 @@ odoo_role_enable_sentry: true
 odoo_role_sentry_dsn: https://your_sentry_url
 ```
 
+* i18n Overwrite
+
+We can force the i18n overwrite using the next variable:
+```yaml
+odoo_role_i18n_overwrite: true
+```
+
+You can define this var in the inventory or use it when execute a playbook:
+
+```
+ansible-playbook playbooks/provision.yml -i ../my-inventory/inventory/hosts --ask-vault-pass --limit=host -e "{odoo_role_i18n_overwrite: true}"
+```
+
 * Environment variables
 
 If you need to define a set of environment variables for your server, you can use the `environment_variables` dict var:
