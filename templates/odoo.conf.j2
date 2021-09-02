@@ -12,7 +12,7 @@ server_wide_modules = web,dbfilter_from_header
 server_wide_modules = web,dbfilter_from_header,queue_job
 {% endif %}
 ; Custom Modules
-addons_path = {{ odoo_role_odoo_path }}/addons,{{ odoo_role_odoo_modules_path }}
+addons_path = {{ odoo_role_odoo_path }}/addons,{{ odoo_role_odoo_modules_path }},/opt/odoo-custom
 
 ; Master password to manage dbs
 admin_passwd = {{ odoo_role_odoo_db_admin_password }}
@@ -45,7 +45,7 @@ db_port = {{ odoo_role_db_port }}
 unaccent = True
 
 ; Hack to avoid LC_COLLATE="C"
-db_template = template1
+;db_template = template1
 
 {% if odoo_role_workers is defined and odoo_role_workers > 1 %}
 ; If workers > 1 are defined, add a /location in Nginx server for LongPolling
