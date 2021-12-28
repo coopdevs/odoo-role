@@ -2,4 +2,4 @@
     path: "/etc/logrotate.d/{{ item.path }}"
     block: "{{ item.conf }}"
     create: true
-  loop: "{{ logrotate_odoo }}
+  loop: "{{ logrotate_odoo }}"
