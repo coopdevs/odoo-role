@@ -98,7 +98,7 @@ odoo_role_i18n_overwrite: false
 logrotate_odoo:
   path: odoo
   conf: |
-    /var/log/odoo.log {
+    /var/log/odoo/odoo.log {
            weekly
            rotate 20
            size 300M
