@@ -1,4 +1,5 @@
-- blockinfile:
+- name: "Configure logrotate for Odoo"
+  blockinfile:
     path: "/etc/logrotate.d/{{ item.path }}"
     block: "{{ item.conf }}"
     create: true
