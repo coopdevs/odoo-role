@@ -119,6 +119,12 @@ odoo_role_odoo_community_modules_dict:
     - mis_reports
 ```
 
+* Force update odoo modules
+In order to force update an odoo module or a list of modules execute provisioning with the command 
+```
+-e "odoo_role_core_modules_force_update=['l10n_es']"
+```
+
 * Development mode
 
 Odoo has a mode to auto-reload the server when the code changes and read the views from the code to agile the development process. Using the command line parameter [`--dev`](https://www.odoo.com/documentation/12.0/reference/cmdline.html#developer-features) we can run Odoo in a development mode.
