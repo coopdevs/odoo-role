@@ -197,6 +197,25 @@
     core_modules: "{{ core_modules | default({}) | combine ({ item : core_shared_modules + core_db_modules[item] }) }}"
   with_items: "{{ odoo_role_odoo_dbs }}"
 
+- name: Force update odoo modules
+  become: yes
+  become_user: "{{ odoo_role_odoo_user }}"
+  environment: "{{ environment_variables | default({}) }}"
+  command: >
+    {{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }}
+    -c {{ odoo_role_odoo_config_path }}/odoo.conf
+    -d {{ item }}
+    --update {{ odoo_role_modules_force_update | join(',') }}
+    --stop-after-init
+    --logfile=/dev/stdout
+    --log-level=warn
+    --no-http
+  when: odoo_role_modules_force_update is defined
+  with_items: "{{ odoo_role_odoo_dbs }}"
+  notify:
+    - restart odoo
+    - remove sessions
+
 - name: Update in Odoo pip upgraded community modules
   become: yes
   become_user: "{{ odoo_role_odoo_user }}"
