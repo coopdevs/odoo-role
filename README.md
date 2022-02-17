@@ -122,7 +122,7 @@ odoo_role_odoo_community_modules_dict:
 * Force update odoo modules
 In order to force update an odoo module or a list of modules execute provisioning with the command 
 ```
--e "odoo_role_core_modules_force_update=['l10n_es']"
+-e "odoo_role_modules_force_update=['l10n_es']"
 ```
 
 * Development mode
