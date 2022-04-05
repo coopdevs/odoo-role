@@ -6,18 +6,20 @@
     owner: "{{ odoo_role_odoo_user }}"
     group: "{{ odoo_role_odoo_group }}"
     mode: 0644
+  tags: community-modules
 
 - name: Deploy community roles with pip
   pip:
     requirements: "{{ odoo_role_odoo_modules_path }}/requirements.txt"
     virtualenv: "{{ odoo_role_odoo_venv_path }}"
   register: reg_pip
-  become: yes
+  become: true
   become_user: "{{ odoo_role_odoo_user }}"
-
+  tags: community-modules
   # Using the output of pip, detect which packages have been installed,
   # both fresh or upgraded. Save the list with a register so that we can
   # feed better odoo with it.
+  
 - name: Detect upgraded packages
   args:
     # Example input (delete '# ' from each line below)
@@ -48,3 +50,4 @@
   register: reg_pip_upgraded
   changed_when: reg_pip_upgraded.stdout
   failed_when: false # noqa 306 "shell and pipefail". Both grep and sed must be able to fail
+  tags: community-modules
