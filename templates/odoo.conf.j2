@@ -12,7 +12,7 @@ server_wide_modules = web,dbfilter_from_header
 server_wide_modules = web,dbfilter_from_header,queue_job
 {% endif %}
 ; Custom Modules
-addons_path = {{ odoo_role_odoo_path }}/addons,{{ odoo_role_odoo_modules_path }}
+addons_path = {{ odoo_role_odoo_modules_path }}, {{ odoo_role_odoo_path }}/addons
 
 ; Master password to manage dbs
 admin_passwd = {{ odoo_role_odoo_db_admin_password }}
