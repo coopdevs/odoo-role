@@ -301,10 +301,15 @@
   with_items: "{{ odoo_role_odoo_dbs }}"
   notify: restart odoo
 
+- name: Install development environment pip packages
   become: true
   become_user: "{{ odoo_role_odoo_user }}"
   pip:
     name: watchdog
+    with_items:
+      - name: pytest
+      - name: pytest-odoo
+      - name: coverage
     virtualenv: "{{ odoo_role_odoo_venv_path }}"
   when: odoo_role_dev_mode | bool
 
