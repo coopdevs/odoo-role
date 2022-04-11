@@ -2,7 +2,7 @@
 - import_tasks: create-user.yml
 
 - name: Install system packages
-  become: yes
+  become: true
   apt:
     update_cache: yes
     pkg:
@@ -20,7 +20,7 @@
     state: present
 
 - name: Install libjpeg-dev
-  become: yes
+  become: true
   apt:
     update_cache: yes
     pkg:
@@ -42,14 +42,14 @@
   when: wkhtmltox_installed.rc == 1
 
 - import_tasks: pyenv.yml
-  become: yes
+  become: true
 
 - import_tasks: environment_variables.yml
-  become: yes
+  become: true
   when: environment_variables is defined
 
 - name: Create Odoo directories
-  become: yes
+  become: true
   file:
     path: "{{ item }}"
     state: directory
@@ -62,7 +62,7 @@
     - "{{ odoo_role_odoo_modules_path }}"
 
 - name: Create log dir
-  become: yes
+  become: true
   file:
     path: "{{ odoo_role_odoo_log_path }}"
     state: directory
@@ -70,7 +70,7 @@
     mode: 02775
 
 - name: Create log file
-  become: yes
+  become: true
   file:
     path: "{{ odoo_role_odoo_log_path }}/odoo.log"
     group: "{{ odoo_role_odoo_group }}"
@@ -80,21 +80,21 @@
 - import_tasks: download.yml
 
 - name: Add Python Magic to requirements
-  become: yes
+  become: true
   become_user: "{{ odoo_role_odoo_user }}"
   lineinfile:
     path: "{{ odoo_role_odoo_path }}/requirements.txt"
     line: python-magic
 
 - name: Install Odoo python requirements
-  become: yes
+  become: true
   become_user: "{{ odoo_role_odoo_user }}"
   pip:
     requirements: "{{ odoo_role_odoo_path }}/requirements.txt"
     virtualenv: "{{ odoo_role_odoo_venv_path }}"
 
 - name: Install nodejs packages
-  become: yes
+  become: true
   apt:
     pkg:
       - nodejs
@@ -103,7 +103,7 @@
   when: odoo_role_odoo_version < "12.0"
 
 - name: Install Less CSS via nodejs
-  become: yes
+  become: true
   npm:
     name: less
     version: 2.7.2
@@ -112,7 +112,7 @@
 
 # This link is needed in Ubuntu 16.04 and in Ubuntu 18.04 raise an error.
 - name: Create node symlink
-  become: yes
+  become: true
   file:
     src: /usr/bin/nodejs
     dest: /usr/bin/node
@@ -120,13 +120,13 @@
   when: odoo_role_odoo_version < "12.0" and ansible_distribution == "Ubuntu" and not ansible_distribution_version >= "18.04"
 
 - name: Install Odoo
-  become: yes
+  become: true
   become_user: "{{ odoo_role_odoo_user }}"
   shell: "cd {{ odoo_role_odoo_path }} && {{ odoo_role_odoo_python_path }} setup.py install"
   when: odoo_role_desired_tar_download.changed or odoo_role_desired_git_download.changed
 
 - name: Add Odoo config
-  become: yes
+  become: true
   template:
     src: odoo.conf.j2
     dest: "{{ odoo_role_odoo_config_path }}/odoo.conf"
@@ -136,7 +136,7 @@
   notify: restart odoo
 
 - name: Check if Odoo database has been initialized ("0" false, "1" true)
-  become: yes
+  become: true
   become_user: "{{ odoo_role_odoo_user }}"
   shell: >
     psql {{ item }} -tAc
@@ -148,7 +148,7 @@
   changed_when: false
 
 - name: "Init Odoo database(s): {{ odoo_role_odoo_dbs }}"
-  become: yes
+  become: true
   become_user: "{{ odoo_role_odoo_user }}"
   command: >
     {{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }}
@@ -198,7 +198,7 @@
   with_items: "{{ odoo_role_odoo_dbs }}"
 
 - name: Force update odoo modules
-  become: yes
+  become: true
   become_user: "{{ odoo_role_odoo_user }}"
   environment: "{{ environment_variables | default({}) }}"
   command: >
@@ -217,7 +217,7 @@
     - remove sessions
 
 - name: Update in Odoo pip upgraded community modules
-  become: yes
+  become: true
   become_user: "{{ odoo_role_odoo_user }}"
   environment: "{{ environment_variables | default({}) }}"
   command: >
@@ -236,7 +236,7 @@
     - remove sessions
 
 - name: Build the list of new modules to install
-  become: yes
+  become: true
   become_user: "{{ odoo_role_odoo_user }}"
   shell: >
     psql {{ item }} -tAc
@@ -254,7 +254,7 @@
   changed_when: false
 
 - name: Install only new Odoo modules
-  become: yes
+  become: true
   become_user: "{{ odoo_role_odoo_user }}"
   environment: "{{ environment_variables | default({}) }}"
   command: >
@@ -278,7 +278,7 @@
     - remove sessions
 
 - name: Set ribbon name for test dbs
-  become: yes
+  become: true
   become_user: "{{ odoo_role_odoo_user }}"
   command: >
     psql
@@ -290,7 +290,7 @@
   notify: restart odoo
 
 - name: Disable ribbon name for prod dbs
-  become: yes
+  become: true
   become_user: "{{ odoo_role_odoo_user }}"
   command: >
     psql
@@ -301,8 +301,7 @@
   with_items: "{{ odoo_role_odoo_dbs }}"
   notify: restart odoo
 
-- name: Install whatchdog in development environment
-  become: yes
+  become: true
   become_user: "{{ odoo_role_odoo_user }}"
   pip:
     name: watchdog
