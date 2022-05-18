@@ -74,6 +74,20 @@
   become_user: "{{ odoo_role_odoo_user }}"
   shell: . /home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc && pyenv update
 
+- name: Remove existing Python version
+  become: true
+  file:
+    path: /home/{{ odoo_role_odoo_user }}/pyenv/versions
+    state: absent
+  when: remove_python_version | default(false)
+
+- name: Remove existing odoo_release version
+  become: true
+  file:
+    path: /opt/odoo_releases
+    state: absent
+  when: remove_odoo_release | default(false)
+
 - name: "Install Python interpreter {{ odoo_role_python_version }}"
   become: true
   become_user: "{{ odoo_role_odoo_user }}"
