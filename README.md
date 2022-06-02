@@ -243,6 +243,22 @@ Example Playbook
         odoo_role_odoo_release: 20180424
 ```
 
+Release
+-------
+
+To publish a new release: 
+- Go to [releases](https://github.com/coopdevs/odoo-role/releases) and click  on `Draft a new release`.
+- Create a new tag on `Choose a tag` and update the description with the changelog, as the example below:
+```
+## What's Changed
+* feat: invert add-ons paths order by @oyale in https://github.com/coopdevs/odoo-role/pull/135
+* Add pytest and coverage packages to dev environments by @oyale in https://github.com/coopdevs/odoo-role/pull/136
+
+
+**Full Changelog**: https://github.com/coopdevs/odoo-role/compare/v0.3.4...v0.3.5
+```
+- After publishing the release go to [`ansible galaxy`](https://galaxy.ansible.com/) to import the new release. You should find the odoo-role repository under `My content`.
+
 License
 -------
 
