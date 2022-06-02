@@ -6,7 +6,7 @@ This an Ansible role for provisioning Odoo. It supports:
 * Odoo 11
 * Odoo 10
 
-I has not been tested yet with Odoo 13.
+It has not been tested yet newer Odoo versions.
 
 Requirements
 ------------
@@ -123,6 +123,14 @@ odoo_role_odoo_community_modules_dict:
 In order to force update an odoo module or a list of modules execute provisioning with the command 
 ```
 -e "odoo_role_modules_force_update=['l10n_es']"
+```
+
+* Remove python version and odoo release
+
+In order to update python version and odoo release we remove the installed versions first defining on the inventory the ansible variables that are listed below as true.
+```yml
+remove_python_version: true
+remove_odoo_release: true
 ```
 
 * Development mode
