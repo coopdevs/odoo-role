@@ -25,6 +25,7 @@
       - libxml2-dev
       - libxmlsec1-dev
       - libffi-dev
+      - cargo
     state: present
 
 - name: Install PyEnv
