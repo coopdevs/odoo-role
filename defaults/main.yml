@@ -82,8 +82,8 @@ odoo_role_limit_time_cpu: 60
 odoo_role_limit_time_real: 120
 
 # Customize the Odoo memory limits
-odoo_role_limit_memory_hard : 805306368
-odoo_role_limit_memory_soft : 671088640
+odoo_role_limit_memory_hard : 2684354560
+odoo_role_limit_memory_soft : 2147483648
 
 # Force getting db name from leftmost subdomain (different inventories for each DB)
 odoo_role_force_leftmost_subdomain: false
