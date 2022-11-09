@@ -104,8 +104,8 @@ odoo_role_limit_time_cpu: 60
 odoo_role_limit_time_real: 120
 
 # Customize the Odoo memory limits
-odoo_role_limit_memory_hard : 5368706371
-odoo_role_limit_memory_soft : 4831835734
+odoo_role_limit_memory_hard : 805306368
+odoo_role_limit_memory_soft : 671088640
 ```
 
 * Core modules list to install/update
