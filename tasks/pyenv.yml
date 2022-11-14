@@ -2,7 +2,7 @@
 - name: Ensure apt cache is up to date
   become: true
   apt:
-    update_cache: yes
+    update_cache: true
     cache_valid_time: "{{ 48 * 60 * 60 }}"  # consider the cache to be valid within 48 hours
 
 - name: Install development packages necessary for building Python
@@ -34,7 +34,7 @@
   git:
     repo: https://github.com/pyenv/pyenv.git
     dest: "/home/{{ odoo_role_odoo_user }}/pyenv"
-    update: no
+    update: false
 
 - name: Install PyEnv-virtualenv plugin
   become: true
@@ -42,7 +42,7 @@
   git:
     repo: https://github.com/yyuu/pyenv-virtualenv.git
     dest: "/home/{{ odoo_role_odoo_user }}/pyenv/plugins/pyenv-virtualenv"
-    update: no
+    update: false
 
 - name: Install PyEnv-update plugin
   become: true
@@ -50,7 +50,7 @@
   git:
     repo: https://github.com/pyenv/pyenv-update.git
     dest: "/home/{{ odoo_role_odoo_user }}/pyenv/plugins/pyenv-update"
-    update: no
+    update: false
 
 - name: Install .pyenvrc
   become: true

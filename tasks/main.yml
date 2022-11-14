@@ -4,7 +4,7 @@
 - name: Install system packages
   become: true
   apt:
-    update_cache: yes
+    update_cache: true
     pkg:
       - build-essential
       - python3-dev
@@ -22,7 +22,7 @@
 - name: Install libjpeg-dev
   become: true
   apt:
-    update_cache: yes
+    update_cache: true
     pkg:
       - libjpeg-dev
     state: present
@@ -34,7 +34,7 @@
     executable: /bin/bash
   register: wkhtmltox_installed
   failed_when: false
-  changed_when: no
+  changed_when: false
 
 - name: Download and install wkhtmltopdf only if not already present at any version
   apt:
@@ -107,7 +107,7 @@
   npm:
     name: less
     version: 2.7.2
-    global: yes
+    global: true
   when: odoo_role_odoo_version < "12.0"
 
 # This link is needed in Ubuntu 16.04 and in Ubuntu 18.04 raise an error.

@@ -3,4 +3,5 @@
     path: "/etc/logrotate.d/{{ item.path }}"
     block: "{{ item.conf }}"
     create: true
+    mode: 0644
   loop: "{{ odoo_role_logrotate_odoo }}"
