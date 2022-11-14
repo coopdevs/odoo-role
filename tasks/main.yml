@@ -125,6 +125,10 @@
   shell: "cd {{ odoo_role_odoo_path }} && {{ odoo_role_odoo_python_path }} setup.py install"
   when: odoo_role_desired_tar_download.changed or odoo_role_desired_git_download.changed
 
+- name: Check server wide configuration
+  import_tasks: check-role-conf.yml
+  tags: ['server-wide']
+  
 - name: Add Odoo config
   become: true
   template:
