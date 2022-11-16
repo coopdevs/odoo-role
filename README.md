@@ -87,13 +87,25 @@ odoo_role_list_db: false
 
 * Odoo HTTP server settings
 
-```
+```yml
 # Set this to 127.0.0.1 when Odoo runs behind a reverse proxy
 odoo_role_odoo_http_interface: 0.0.0.0
 # Set this to true when Odoo runs behind a reverse proxy
 odoo_role_odoo_proxy_mode: false
 # Specify how many HTTP workers you need (default is 1)
 odoo_role_workers: 2
+```
+
+* Odoo other server settings
+
+```yml
+# Customize the Odoo timeouts
+odoo_role_limit_time_cpu: 60
+odoo_role_limit_time_real: 120
+
+# Customize the Odoo memory limits
+odoo_role_limit_memory_hard: 2684354560
+odoo_role_limit_memory_soft: 2147483648
 ```
 
 * Core modules list to install/update
