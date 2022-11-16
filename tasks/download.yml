@@ -46,7 +46,7 @@
     unarchive:
       src: "{{ odoo_role_odoo_download_path }}"
       dest: "{{ odoo_role_odoo_path }}"
-      remote_src: yes
+      remote_src: true
       owner: "{{ odoo_role_odoo_user }}"
       group: "{{ odoo_role_odoo_group }}"
       mode: 0775
@@ -58,13 +58,13 @@
 
 # Odoo from the OCA/OCB repository: https://github.com/OCA/OCB
 - name: "Git clone git reference {{ odoo_role_odoo_git_ref }}"
-  become: yes
+  become: true
   become_user: "{{ odoo_role_odoo_user }}"
   git:
     repo: "{{ odoo_role_odoo_git_url }}"
     dest: "{{ odoo_role_odoo_path }}"
     version: "{{ odoo_role_odoo_git_ref }}"
     depth: 1
-    force: yes
+    force: true
   register: odoo_role_desired_git_download
   when: odoo_role_download_strategy == "git"

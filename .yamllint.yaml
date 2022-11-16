@@ -12,10 +12,10 @@ rules:
   document-start: disable
   empty-lines: {max: 3, level: error}
   hyphens: {level: error}
-  indentation: disable
+  indentation: enable
   key-duplicates: enable
   line-length: disable
-  new-line-at-end-of-file: disable
+  new-line-at-end-of-file: enable
   new-lines: {type: unix}
-  trailing-spaces: disable
-  truthy: disable
+  trailing-spaces: enable
+  truthy: enable

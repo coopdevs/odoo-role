@@ -12,7 +12,7 @@
   become: true
   systemd:
     name: "{{ odoo_daemon }}"
-    enabled: yes
+    enabled: true
     state: started
-    daemon_reload: yes
+    daemon_reload: true
   notify: restart odoo

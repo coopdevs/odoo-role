@@ -1,22 +1,22 @@
 ---
 - name:  Create "{{ odoo_role_odoo_group }}" group
-  become: yes
+  become: true
   group:
     name: "{{ odoo_role_odoo_group }}"
     state: present
 
 - name: Create "{{ odoo_role_odoo_user }}" user
-  become: yes
+  become: true
   user:
     name: "{{ odoo_role_odoo_user }}"
     groups: "{{ odoo_role_odoo_group }}"
     group: "{{ odoo_role_odoo_group }}"
-    append: yes
+    append: true
     state: present
     shell: /bin/bash
 
 - name: "Create sudoers config for {{ odoo_role_odoo_user }} user"
-  become: yes
+  become: true
   template:
     dest: "/etc/sudoers.d/{{ odoo_role_odoo_user }}"
     mode: 0440

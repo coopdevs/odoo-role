@@ -45,10 +45,10 @@ odoo_role_odoo_db_admin_password: iT0ohDuoth6ONgahDeepaich0aeka5ul
 # Give the chance to select a database before login not filtered out by dbfilter, and enable db manager web interface.
 # In multi db mode, this is only relevant to db manager, as we force list_db to avoid an unaccessible website when dbfilter is disabled.
 # In single db mode,we disable dbfilter and respect list_db.
-odoo_role_list_db: False
+odoo_role_list_db: false
 # Security option that disables the web-base database manager and filters available DBs to list before login.
 # We ignore this setting in single DB mode to allow simpler db names such as "odoo" instead of domain name.
-odoo_role_dbfilter_enabled: True
+odoo_role_dbfilter_enabled: true
 
 # Comma-separated list of modules to install before running the server
 odoo_role_odoo_core_modules: "base"
