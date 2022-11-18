@@ -21,4 +21,5 @@
   ansible.builtin.fail:
     msg: "Role Error: {{ item }} module is configured as a server wide module but it is not present in modules dict"
   with_items: "{{ odoo_role_odoo_server_wide_modules }}"
-  when: (item not in odoo_role_odoo_community_modules_dict['shared']) and (item != 'web') and (item != 'base')
+  when: (item not in all_modules)
+  tags: ['server-wide']

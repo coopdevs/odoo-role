@@ -125,10 +125,51 @@
   shell: "cd {{ odoo_role_odoo_path }} && {{ odoo_role_odoo_python_path }} setup.py install"
   when: odoo_role_desired_tar_download.changed or odoo_role_desired_git_download.changed
 
+- name: Populate community db modules
+  set_fact:
+    community_db_modules: "{{ community_db_modules | default({}) | combine ({ item : odoo_role_odoo_community_modules_dict[item] | default([]) }) }}"
+  with_items: "{{ odoo_role_odoo_dbs }}"
+
+- name: Populate community shared modules
+  set_fact:
+    community_shared_modules: "{{ odoo_role_odoo_community_modules_dict['shared'] | default(odoo_role_odoo_community_modules.split(',')) }}"
+
+- name: Join db + shared community modules
+  set_fact:
+    community_modules: "{{ community_modules | default({}) | combine ({ item : community_shared_modules + community_db_modules[item] }) }}"
+  with_items: "{{ odoo_role_odoo_dbs }}"
+
+- name: Populate core db modules
+  set_fact:
+    core_db_modules: "{{ core_db_modules | default({}) | combine ({ item : odoo_role_odoo_core_modules_dict[item] | default([]) }) }}"
+  with_items: "{{ odoo_role_odoo_dbs }}"
+
+- name: Populate core shared modules
+  set_fact:
+    core_shared_modules: "{{ odoo_role_odoo_core_modules_dict['shared'] | default(odoo_role_odoo_core_modules.split(',')) }}"
+
+- name: Join db + shared core modules
+  set_fact:
+    core_modules: "{{ core_modules | default({}) | combine ({ item : core_shared_modules + core_db_modules[item] }) }}"
+  with_items: "{{ odoo_role_odoo_dbs }}"
+
+- name: Join core + community modules
+  set_fact:
+    modules: "{{ modules | default([]) + item.value }}"
+  with_dict:
+    - "{{ core_modules }}"
+    - "{{ community_modules }}"
+  no_log: True
+
+- name: Create unique list of modules
+  set_fact:
+    all_modules: "{{ modules | unique | sort }}"
+  when: modules is defined
+
 - name: Check server wide configuration
-  import_tasks: check-role-conf.yml
+  import_tasks: server-wide-conf.yml
   tags: ['server-wide']
-  
+
 - name: Add Odoo config
   become: true
   template:
@@ -172,34 +213,6 @@
     index_var: index
 
 - import_tasks: community-modules.yml
-
-- name: Populate community db modules
-  set_fact:
-    community_db_modules: "{{ community_db_modules | default({}) | combine ({ item : odoo_role_odoo_community_modules_dict[item] | default([]) }) }}"
-  with_items: "{{ odoo_role_odoo_dbs }}"
-
-- name: Populate community shared modules
-  set_fact:
-    community_shared_modules: "{{ odoo_role_odoo_community_modules_dict['shared'] | default(odoo_role_odoo_community_modules.split(',')) }}"
-
-- name: Join db + shared community modules
-  set_fact:
-    community_modules: "{{ community_modules | default({}) | combine ({ item : community_shared_modules + community_db_modules[item] }) }}"
-  with_items: "{{ odoo_role_odoo_dbs }}"
-
-- name: Populate core db modules
-  set_fact:
-    core_db_modules: "{{ core_db_modules | default({}) | combine ({ item : odoo_role_odoo_core_modules_dict[item] | default([]) }) }}"
-  with_items: "{{ odoo_role_odoo_dbs }}"
-
-- name: Populate core shared modules
-  set_fact:
-    core_shared_modules: "{{ odoo_role_odoo_core_modules_dict['shared'] | default(odoo_role_odoo_core_modules.split(',')) }}"
-
-- name: Join db + shared core modules
-  set_fact:
-    core_modules: "{{ core_modules | default({}) | combine ({ item : core_shared_modules + core_db_modules[item] }) }}"
-  with_items: "{{ odoo_role_odoo_dbs }}"
 
 - name: Force update odoo modules
   become: true
