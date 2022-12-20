@@ -167,6 +167,17 @@ odoo_role_enable_queue_job: true
 
 This option add to the Odoo configuration file the option to enable queue\_job as a new thread/process: https://github.com/OCA/queue/blob/12.0/queue\_job/README.rst#id12
 
+* Server-wide modules  
+
+If you need to install some wide-server modules apart from `db_filter` and `queue_job`, use:
+```yaml
+odoo_role_odoo_server_wide_modules: ['module1', 'module2']
+```
+
+By default, it configures as a server-wide modules `web` and `base` -as long as they are mandatory from Odoo v12- in every case and `db_filter` and `queue_job` if the corresponding variables are set to `true` .
+
+* Workers configuration
+
 You can also define how many workers you want to use to execute the jobs:
 ```yaml
 odoo_role_channels: root:2
