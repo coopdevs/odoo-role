@@ -1,0 +1,10 @@
+---
+- name: Create dev helpers aliases
+  become: true
+  template:
+    src: "00-aliases.sh"
+    dest: "/etc/profile.d/00-aliases.sh"
+    mode: 0644
+    owner: root
+    group: root
+    
