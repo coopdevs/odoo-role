@@ -222,6 +222,16 @@ environment_variables:
 
 This option add a file in `/etc/default/odoo` with the vars and add to the Systemd service the `EnvironmentFile` attribute pointing to `/etc/default/odoo.
 
+* Developer aids
+
+A [template](/templates/00-aliases.sh) with alias is rendered to `/etc/profile.d/`.
+
+You can skip this by setting the `odoo_role_dev_helpers` var to `false`.
+
+```yaml
+odoo_role_dev_helpers: true
+```
+
 Role Tags
 ---------------
 #### Using the `only-modules` Tag
