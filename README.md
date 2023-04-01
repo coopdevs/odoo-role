@@ -217,6 +217,15 @@ environment_variables:
 
 This option add a file in `/etc/default/odoo` with the vars and add to the Systemd service the `EnvironmentFile` attribute pointing to `/etc/default/odoo.
 
+Role Tags
+---------------
+#### Using the `only-modules` Tag
+
+This tag helps you install or update Odoo modules without performing a full setup. Run the playbook with the `--tags` option:
+
+```bash
+ansible-playbook playbook.yml --tags "only-modules"
+```
 
 Community Roles
 ---------------
@@ -242,7 +251,7 @@ Once the modules are in the server, you need to install them in the database.
 Define a `odoo_role_odoo_community_modules` var with the list of the modules names you want to install.
 
 ```yml
-# invenotry/group_vars/all.yml
+# inventory/group_vars/all.yml
 odoo_role_odoo_community_modules: 'contract,contract_sale_invoicing'
 ```
 
