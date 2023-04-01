@@ -129,29 +129,35 @@
   set_fact:
     community_db_modules: "{{ community_db_modules | default({}) | combine ({ item : odoo_role_odoo_community_modules_dict[item] | default([]) }) }}"
   with_items: "{{ odoo_role_odoo_dbs }}"
+  tags: ['only-modules']
 
 - name: Populate community shared modules
   set_fact:
     community_shared_modules: "{{ odoo_role_odoo_community_modules_dict['shared'] | default(odoo_role_odoo_community_modules.split(',')) }}"
+  tags: ['only-modules']
 
 - name: Join db + shared community modules
   set_fact:
     community_modules: "{{ community_modules | default({}) | combine ({ item : community_shared_modules + community_db_modules[item] }) }}"
   with_items: "{{ odoo_role_odoo_dbs }}"
+  tags: ['only-modules']
 
 - name: Populate core db modules
   set_fact:
     core_db_modules: "{{ core_db_modules | default({}) | combine ({ item : odoo_role_odoo_core_modules_dict[item] | default([]) }) }}"
   with_items: "{{ odoo_role_odoo_dbs }}"
+  tags: ['only-modules']
 
 - name: Populate core shared modules
   set_fact:
     core_shared_modules: "{{ odoo_role_odoo_core_modules_dict['shared'] | default(odoo_role_odoo_core_modules.split(',')) }}"
+  tags: ['only-modules']
 
 - name: Join db + shared core modules
   set_fact:
     core_modules: "{{ core_modules | default({}) | combine ({ item : core_shared_modules + core_db_modules[item] }) }}"
   with_items: "{{ odoo_role_odoo_dbs }}"
+  tags: ['only-modules']
 
 - name: Join core + community modules
   set_fact:
@@ -159,16 +165,18 @@
   with_dict:
     - "{{ core_modules }}"
     - "{{ community_modules }}"
-  no_log: True
+  no_log: true
+  tags: ['only-modules']
 
 - name: Create unique list of modules
   set_fact:
     all_modules: "{{ modules | unique | sort }}"
   when: modules is defined
+  tags: ['only-modules']
 
 - name: Check server wide configuration
   import_tasks: server-wide-conf.yml
-  tags: ['server-wide']
+  tags: ['server-wide', 'only-modules']
 
 - name: Add Odoo config
   become: true
@@ -179,6 +187,7 @@
     owner: "{{ odoo_role_odoo_user }}"
     group: "{{  odoo_role_odoo_group }}"
   notify: restart odoo
+  tags: ['only-modules']
 
 - name: Check if Odoo database has been initialized ("0" false, "1" true)
   become: true
@@ -191,6 +200,7 @@
   register: db_initialized
   with_items: "{{ odoo_role_odoo_dbs }}"
   changed_when: false
+  tags: ['only-modules']
 
 - name: "Init Odoo database(s): {{ odoo_role_odoo_dbs }}"
   become: true
@@ -211,6 +221,7 @@
   with_items: "{{ odoo_role_odoo_dbs }}"
   loop_control:
     index_var: index
+  tags: ['only-modules']
 
 - import_tasks: community-modules.yml
 
@@ -232,6 +243,7 @@
   notify:
     - restart odoo
     - remove sessions
+  tags: ['only-modules']
 
 - name: Update in Odoo pip upgraded community modules
   become: true
@@ -251,6 +263,7 @@
   notify:
     - restart odoo
     - remove sessions
+  tags: ['only-modules']
 
 - name: Build the list of new modules to install
   become: true
@@ -269,6 +282,7 @@
     - separator: "'), ('"
   with_items: "{{ odoo_role_odoo_dbs }}"
   changed_when: false
+  tags: ['only-modules']
 
 - name: Install only new Odoo modules
   become: true
@@ -293,6 +307,7 @@
   notify:
     - restart odoo
     - remove sessions
+  tags: ['only-modules']
 
 - name: Set ribbon name for test dbs
   become: true
@@ -305,6 +320,7 @@
     - item in odoo_role_test_dbs and "web_environment_ribbon" in community_modules[item]
   with_items: "{{ odoo_role_odoo_dbs }}"
   notify: restart odoo
+  tags: ['only-modules']
 
 - name: Disable ribbon name for prod dbs
   become: true
@@ -317,6 +333,7 @@
     - item not in odoo_role_test_dbs and "web_environment_ribbon" in community_modules[item]
   with_items: "{{ odoo_role_odoo_dbs }}"
   notify: restart odoo
+  tags: ['only-modules']
 
 - name: Install development environment pip packages
   become: true
