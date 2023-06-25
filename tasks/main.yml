@@ -119,11 +119,19 @@
     state: link
   when: odoo_role_odoo_version < "12.0" and ansible_distribution == "Ubuntu" and not ansible_distribution_version >= "18.04"
 
+- name: Check if Odoo is already installed in virtualenv
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  ansible.builtin.shell: >
+    {{ odoo_role_odoo_python_path }} -m pip list | grep odoo
+  register: odoo_package_is_installed
+  failed_when: odoo_package_is_installed.rc not in [0,1]
+
 - name: Install Odoo
   become: true
   become_user: "{{ odoo_role_odoo_user }}"
   shell: "cd {{ odoo_role_odoo_path }} && {{ odoo_role_odoo_python_path }} setup.py install"
-  when: odoo_role_desired_tar_download.changed or odoo_role_desired_git_download.changed
+  when: odoo_role_desired_tar_download.changed or odoo_role_desired_git_download.changed or odoo_package_is_installed.stdout == ''
 
 - name: Populate community db modules
   set_fact:
