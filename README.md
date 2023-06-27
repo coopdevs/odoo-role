@@ -83,6 +83,9 @@ odoo_role_odoo_db_admin_password: 1234
 odoo_role_demo_data: false
 # Give the chance to select a database before login (when dbfilter disabled), and enable db manager web interface
 odoo_role_list_db: false
+# Not defined, but you can set it to change the db parameters. By default, it will use no password, and connect to localhost.
+odoo_role_db_password: <unset by default>
+odoo_role_db_host: <unset by default>
 ```
 
 * Odoo HTTP server settings

@@ -31,6 +31,12 @@ list_db = True
 list_db = {{ odoo_role_list_db }}
 {% endif %}
 
+{% if odoo_role_db_host %}
+db_host = {{ odoo_role_db_host }}
+{% endif %}
+{% if odoo_role_db_password %}
+db_password = {{ odoo_role_db_password }}
+{% endif %}
 {% if odoo_role_db_port %}
 db_port = {{ odoo_role_db_port }}
 {% endif %}
