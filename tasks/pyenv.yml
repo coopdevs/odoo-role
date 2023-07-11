@@ -88,3 +88,11 @@
   shell: . /home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc && pyenv virtualenv {{ odoo_role_python_version  }} {{ odoo_role_venv_name }}
   args:
     creates: "/home/{{ odoo_role_odoo_user }}/pyenv/versions/{{ odoo_role_venv_name }}/bin/python"
+
+- name: Upgrade pip
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  pip:
+    name: pip
+    state: latest
+    virtualenv: "{{ odoo_role_odoo_venv_path }}"
