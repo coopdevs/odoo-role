@@ -96,3 +96,12 @@
     name: pip
     state: latest
     virtualenv: "{{ odoo_role_odoo_venv_path }}"
+
+- name: Define pip specific version
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  pip:
+    name: pip
+    version: "{{ odoo_role_pip_version }}"
+    virtualenv: "{{ odoo_role_odoo_venv_path }}"
+  when: odoo_role_pip_version is defined
