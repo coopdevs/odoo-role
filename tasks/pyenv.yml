@@ -96,6 +96,7 @@
     name: pip
     state: latest
     virtualenv: "{{ odoo_role_odoo_venv_path }}"
+  when: odoo_role_pip_version is not defined
 
 - name: Define pip specific version
   become: true
