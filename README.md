@@ -46,6 +46,8 @@ odoo_role_odoo_download_path: "{{ odoo_role_odoo_path }}/../odoo_releases/odoo_{
 odoo_role_odoo_git_url: "https://github.com/OCA/OCB.git"
 # OCA's OCB, branch 11.0. LTS probably until 14.0 release. 13.0 is scheduled for October 2019.
 odoo_role_odoo_git_ref: "11.0"
+# Variable to define pip version
+odoo_role_pip_version: "23.1.2"
 ```
 
 * Users and group
