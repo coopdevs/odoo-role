@@ -144,7 +144,7 @@
   become: true
   become_user: "{{ odoo_role_odoo_user }}"
   shell: "cd {{ odoo_role_odoo_path }} && {{ odoo_role_odoo_python_path }} setup.py install"
-  when: odoo_role_desired_tar_download.changed or odoo_role_desired_git_download.changed or odoo_package_is_installed.rc == 1
+  when: odoo_install_required
 
 - name: Populate community db modules
   set_fact:
