@@ -119,13 +119,26 @@
     state: link
   when: odoo_role_odoo_version < "12.0" and ansible_distribution == "Ubuntu" and not ansible_distribution_version >= "18.04"
 
+
 - name: Check if Odoo is already installed in virtualenv
   become: true
   become_user: "{{ odoo_role_odoo_user }}"
   ansible.builtin.shell: >
     {{ odoo_role_odoo_python_path }} -m pip show odoo
-  register: odoo_package_is_installed
+  register: odoo_package_check
   failed_when: odoo_package_is_installed.rc not in [0,1]
+  
+- name: Set boolean for Odoo package installation
+  set_fact:
+    odoo_package_not_installed: "{{ odoo_package_check.rc == 1 }}"
+    
+- name: Determine if Odoo needs to be installed or reinstalled
+  set_fact:
+    odoo_install_required: >-
+      (odoo_role_desired_tar_download.changed) or
+      (odoo_role_desired_git_download.changed) or
+      (odoo_package_not_installed) or
+      (odoo_role_force_install | default(false))
 
 - name: Install Odoo
   become: true
