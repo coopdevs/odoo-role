@@ -25,6 +25,14 @@ Role Variables
 --------------
 Available variables are listed below, along with default values:
 
+* Python VirtualEnv
+
+```yaml
+odoo_role_python_version: "3.8.17"
+odoo_role_venv_name: "odoo"
+odoo_role_odoo_venv_path: "/home/{{ odoo_role_odoo_user }}/pyenv/versions/{{ odoo_role_venv_name }}/"
+```
+
 * Edition
 
 This role supports installing Odoo following two different strategies: `git` (from a git repository) and `tar` (a package or compressed release file).
