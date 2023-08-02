@@ -30,7 +30,6 @@ Available variables are listed below, along with default values:
 ```yaml
 odoo_role_python_version: "3.8.17"
 odoo_role_venv_name: "odoo"
-odoo_role_odoo_venv_path: "/home/{{ odoo_role_odoo_user }}/pyenv/versions/{{ odoo_role_venv_name }}/"
 ```
 
 * Edition
