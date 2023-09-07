@@ -1,11 +1,15 @@
 ---
-- name: Copy requirements.txt
-  copy:
-    src: "{{ odoo_role_community_modules_requirements_path }}"
+- name: Create requirements.txt from template
+  ansible.builtin.template:
+    src: "{{ lookup('ansible.builtin.first_found', template_sources) }}"
     dest: "{{ odoo_role_odoo_modules_path }}/requirements.txt"
     owner: "{{ odoo_role_odoo_user }}"
     group: "{{ odoo_role_odoo_group }}"
     mode: 0644
+  vars:
+    template_sources:
+      - "{{ inventory_dir }}/../files/requirements.txt"
+      - templates/requirements.txt.j2
   tags: ['community-modules', 'only-modules']
 
 - name: Deploy community roles with pip

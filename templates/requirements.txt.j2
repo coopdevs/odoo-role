@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+
+{% for package in odoo_role_odoo_community_packages|default([]) %}
+{{ package }}
+{% endfor %}
+
+{% for package in odoo_role_odoo_project_packages|default([]) %}
+{{ package }}
+{% endfor %}

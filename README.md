@@ -229,28 +229,46 @@ This tag helps you install or update Odoo modules without performing a full setu
 ansible-playbook playbook.yml --tags "only-modules"
 ```
 
-Community Roles
----------------
+Odoo modules
+------------
 
 #### Deploy
-To use community roles, you need to deploy this modules in the server. This role manage the modules deployment with `pip`.
+To use Odoo modules (from OCA or custom modules), you need to deploy modules packages to the server. This role manages the modules deployment with `pip`.
+In your inventory you can define up to two variables in order to add python packages to the target `requirements.txt` that will be generated.
 
-You can define a `requirements.txt` file to manage the modules and ensure the version installed:
+Define the `odoo_role_odoo_community_packages` variable to install packages not maintained by you. For example when you're deploying an Odoo instance that just requires OCA modules:
 
+```yml
+# inventory/group_vars/all.yml
+odoo_role_odoo_community_packages:
+  - odoo11-addon-contract==11.0.2.1.0
+  - odoo11-addon-contract-sale-invoicing==11.0.1.0.0
+  - odoo11-addon-contract-variable-qty-timesheet==11.0.1.0.0
+  - odoo11-addon-contract-variable-quantity==11.0.1.2.1
 ```
-# requirements.txt
-odoo11-addon-contract==11.0.2.1.0
-odoo11-addon-contract-sale-invoicing==11.0.1.0.0
-odoo11-addon-contract-variable-qty-timesheet==11.0.1.0.0
-odoo11-addon-contract-variable-quantity==11.0.1.2.1
+
+In some case you want to deploy different versions of the same module to different hosts.
+A typical case is when you have developed a custom module and need to deploy a packaged version of it to production but in local development environment you need to install it es editable.
+In this case you can define the `odoo_role_odoo_project_packages` variable:
+```yml
+# inventory/host_vars/production.yml
+odoo_role_odoo_project_packages:
+  - odoo14-my-custom-module==14.0.0.1.0
 ```
 
-> The default the `requirements.txt` file path is `"{{ inventory_dir }}/../files/requirements.txt"`.
+```yml
+# inventory/host_vars/development.yml
+odoo_role_odoo_project_packages:
+  - '-e file:///opt/odoo_modules/setup/my_custom_module'
+```
 
-# Install
-Once the modules are in the server, you need to install them in the database.
+For backward compatibility, the Ansible template will look first for a `files/requirements.txt` file in your inventory and use it as the source of the template.
+If you have a `files/requirements.txt` file defined in your inventory, the two variables just described will not take any effect.
 
-Define a `odoo_role_odoo_community_modules` var with the list of the modules names you want to install.
+#### Install
+Once the modules packages are installed in the server, you need to install them in the Odoo database.
+
+Define a `odoo_role_odoo_community_modules` variable with the list of the modules names you want to install.
 
 ```yml
 # inventory/group_vars/all.yml
