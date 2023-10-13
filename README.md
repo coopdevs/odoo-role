@@ -2,11 +2,13 @@ An Odoo Ansible Provisioning Role
 =========================================
 
 This an Ansible role for provisioning Odoo. It supports:
+* Odoo 14
+* Odoo 13
 * Odoo 12
 * Odoo 11
 * Odoo 10
 
-I has not been tested yet with Odoo 13.
+It has not been production-tested yet with Odoo 15.
 
 Requirements
 ------------
@@ -22,6 +24,13 @@ For instance, you can create an `odoo` user in PostgreSQL with access to the cre
 Role Variables
 --------------
 Available variables are listed below, along with default values:
+
+* Python VirtualEnv
+
+```yaml
+odoo_role_python_version: "3.8.17"
+odoo_role_venv_name: "odoo"
+```
 
 * Edition
 
@@ -235,7 +244,7 @@ Community Roles
 #### Deploy
 To use community roles, you need to deploy this modules in the server. This role manage the modules deployment with `pip`.
 
-You can define a `requirements.txt` file to manage the modules and ensure the version installed:
+You can define a `requirements.txt` file to manage the modules and ensure the version installed with:
 
 ```
 # requirements.txt
@@ -246,6 +255,7 @@ odoo11-addon-contract-variable-quantity==11.0.1.2.1
 ```
 
 > The default the `requirements.txt` file path is `"{{ inventory_dir }}/../files/requirements.txt"`.
+> You can choose a different one by setting `odoo_role_community_modules_requirements_path` variable.
 
 # Install
 Once the modules are in the server, you need to install them in the database.
