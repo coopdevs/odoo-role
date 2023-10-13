@@ -245,7 +245,15 @@ odoo11-addon-contract-variable-qty-timesheet==11.0.1.0.0
 odoo11-addon-contract-variable-quantity==11.0.1.2.1
 ```
 
-> The default the `requirements.txt` file path is `"{{ inventory_dir }}/../files/requirements.txt"`.
+> The default `requirements.txt` file path is `"{{ inventory_dir }}/../files/requirements.txt"`.
+>
+> You can change it with the `odoo_role_community_modules_requirements_path` var.
+>
+> This allows you to have different `requirements.txt` files and use them on a conditional way.
+>
+> For example, you could set it `{{ inventory_dir }}/../files/requirements-dev.txt` 
+> and use it for dev envs redefining the variable at `host_vars` level.
+
 
 # Install
 Once the modules are in the server, you need to install them in the database.
