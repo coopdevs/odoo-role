@@ -38,7 +38,7 @@
 
 - name: Download and install wkhtmltopdf only if not already present at any version
   apt:
-    deb: "https://github.com/wkhtmltopdf/packaging/releases/download/{{ wkhtmltox_version }}/wkhtmltox_{{ wkhtmltox_version }}.{{ ansible_distribution_release }}_amd64.deb"
+    deb: "https://github.com/wkhtmltopdf/packaging/releases/download/{{ wkhtmltox_version }}/wkhtmltox_{{ wkhtmltox_version }}.{{ ansible_distribution_release }}_arm64.deb"
   when: wkhtmltox_installed.rc == 1
 
 - import_tasks: pyenv.yml
