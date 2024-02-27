@@ -75,17 +75,38 @@
   become_user: "{{ odoo_role_odoo_user }}"
   shell: . /home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc && pyenv update
 
+- name: "Check if virtual environment exists"
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  stat:
+    path: "/home/{{ odoo_role_odoo_user }}/pyenv/versions/{{ odoo_role_venv_name }}/bin/python"
+  register: venv_python
+
+- name: "Check Python version in virtual environment"
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  shell: "/home/{{ odoo_role_odoo_user }}/pyenv/versions/{{ odoo_role_venv_name }}/bin/python --version"
+  register: python_version
+  when: venv_python.stat.exists
+
+- name: "Delete existing virtual environment with different Python version"
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  shell: ". /home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc && pyenv virtualenv-delete -f {{ odoo_role_venv_name }}"
+  register: python_version_changed
+  when: venv_python.stat.exists and (python_version.stdout.split()[1] != odoo_role_python_version)
+
 - name: "Install Python interpreter {{ odoo_role_python_version }}"
   become: true
   become_user: "{{ odoo_role_odoo_user }}"
-  shell: . /home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc && pyenv install {{ odoo_role_python_version }}
+  shell: ". /home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc && pyenv install {{ odoo_role_python_version }}"
   args:
     creates: "/home/{{ odoo_role_odoo_user }}/pyenv/versions/{{ odoo_role_python_version }}/bin/python"
 
 - name: "Create virtual environment {{ odoo_role_venv_name }}"
   become: true
   become_user: "{{ odoo_role_odoo_user }}"
-  shell: . /home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc && pyenv virtualenv {{ odoo_role_python_version  }} {{ odoo_role_venv_name }}
+  shell: ". /home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc && pyenv virtualenv {{ odoo_role_python_version }} {{ odoo_role_venv_name }}"
   args:
     creates: "/home/{{ odoo_role_odoo_user }}/pyenv/versions/{{ odoo_role_venv_name }}/bin/python"
 
