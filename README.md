@@ -219,6 +219,25 @@ environment_variables:
 
 This option add a file in `/etc/default/odoo` with the vars and add to the Systemd service the `EnvironmentFile` attribute pointing to `/etc/default/odoo.
 
+* Test databases
+
+The array `odoo_role_test_dbs` contains the names of the test databases.
+
+```yaml
+odoo_role_test_dbs: []
+```
+
+By default, the role will perform some actions to test databases:
+
+- If `web_environment_ribbon` module is present, it will be activated with the name of the DB.
+- Mail servers and scheduled actions will be disabled.
+
+Last one can be disabled setting `odoo_role_disable_mail_on_test_dbs` variable to `false`.
+
+```yaml
+odoo_role_disable_mail_on_test_dbs: true
+```
+
 Role Tags
 ---------------
 #### Using the `only-modules` Tag

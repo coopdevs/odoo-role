@@ -116,3 +116,6 @@ odoo_role_logrotate_odoo:
 wkhtmltox_version_jammy: "0.12.6.1-2"
 wkhtmltox_version_bionic: "0.12.6-1"
 wkhtmltox_version: "{% if ansible_distribution_release in ['jammy', 'bullseye'] %}{{ wkhtmltox_version_jammy }}{% else %}{{wkhtmltox_version_bionic}}{% endif %}"
+
+# disable mail servers
+odoo_role_disable_mail_on_test_dbs: true
