@@ -1,0 +1,20 @@
+---
+- hosts: devenv
+  remote_user: root
+  become: true
+  # This is needed to be able to test the role without postgresql role
+  tasks:
+    - include_tasks: setup_postgresql.yml
+
+- hosts: devenv
+  remote_user: root
+  become: true
+  roles:
+    - odoo-role
+  vars:
+    odoo_role_odoo_url: "https://git.coopdevs.org/coopdevs/odoo/OCB/-/archive/{{ odoo_role_odoo_release }}/OCB-{{ odoo_role_odoo_release }}.tar.gz"
+    odoo_role_odoo_version: "14.0"
+    odoo_role_odoo_release:  "{{ odoo_role_odoo_version }}"
+    odoo_role_community_modules_requirements_path: requirements.txt
+    odoo_role_odoo_http_interface: 0.0.0.0
+    odoo_role_odoo_community_modules: "web_responsive,web_environment_ribbon"

@@ -1,2 +1,4 @@
-localhost
-
+[devenv]
+odoo-role-test.local ansible_host=odoo-role-test.local
+[all]
+localhost ansible_connection=local

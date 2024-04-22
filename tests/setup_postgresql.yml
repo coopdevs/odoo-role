@@ -1,0 +1,37 @@
+---
+- name: Install pip
+  apt:
+    name: python3-pip
+
+- name: Install psycopg2
+  pip:
+    name: psycopg2-binary
+
+- name: Install PostgreSQL
+  apt:
+    name: postgresql
+    state: present
+    update_cache: true
+  when: ansible_os_family == "Debian"
+
+- name: Ensure PostgreSQL is running
+  service:
+    name: postgresql
+    state: started
+    enabled: true
+
+- name: Create a database user for Odoo
+  become: true
+  become_user: postgres
+  postgresql_user:
+    name: odoo
+    state: present
+    role_attr_flags: LOGIN,CREATEDB
+
+- name: Create a database for Odoo
+  become: true
+  become_user: postgres
+  postgresql_db:
+    name: odoo
+    owner: odoo
+    state: present

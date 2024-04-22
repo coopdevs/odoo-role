@@ -285,6 +285,25 @@ Example Playbook
         odoo_role_odoo_release: 20180424
 ```
 
+Developing & Testing
+-------
+
+For developing and testing the role, we use [`devenv`](https://github.com/coopdevs/devenv) to manage local virtual machines in Linux environments.
+
+You can use the `.devenv` file in `tests` folder to create a virtual machine.
+
+```bash
+devenv
+```
+
+Then, you can test the role with the following command:
+
+```bash
+ansible-playbook devenv.yml -i inventory
+```
+
+It will provision a virtual machine with postgresql and then, execute the role.
+
 Release
 -------
 
