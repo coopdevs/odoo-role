@@ -51,7 +51,7 @@ odoo_role_list_db: false
 odoo_role_dbfilter_enabled: true
 
 # Comma-separated list of modules to install before running the server
-odoo_role_odoo_core_modules: "base"
+odoo_role_odoo_core_modules: "base,web"
 
 # path of where to find the community modules requirements.txt
 odoo_role_community_modules_requirements_path: "{{ inventory_dir }}/../files/requirements.txt"
