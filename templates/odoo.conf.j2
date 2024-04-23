@@ -6,7 +6,7 @@ logfile = {{ odoo_role_odoo_log_path }}/odoo.log
 log_level = {{ odoo_role_odoo_log_level }}
 server_wide_modules = {{ odoo_role_odoo_server_wide_modules | join(',') }}
 ; Custom Modules
-addons_path = {{ odoo_role_odoo_modules_path }}, {{ odoo_role_odoo_path }}/addons
+addons_path= {{ ([odoo_role_odoo_modules_path, odoo_role_odoo_path + '/addons'] + odoo_role_odoo_modules_extra_paths) | join(', ') }}
 
 ; Master password to manage dbs
 admin_passwd = {{ odoo_role_odoo_db_admin_password }}

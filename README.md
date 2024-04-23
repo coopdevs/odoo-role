@@ -66,8 +66,11 @@ odoo_role_odoo_bin_path: "{{ odoo_role_odoo_path }}/build/scripts-2.7/odoo"
 odoo_role_odoo_python_path: "{{ odoo_venv_path }}/bin/python"
 odoo_role_odoo_config_path: /etc/odoo
 odoo_role_odoo_log_path: /var/log/odoo
-odoo_role_odoo_modules_path: /opt/odoo/modules
+odoo_role_odoo_modules_path: /opt/odoo_modules
+odoo_role_odoo_modules_extra_paths: []
 ```
+
+> Use `odoo_role_odoo_modules_extra_paths` to add more paths to the `addons_path` in the Odoo configuration file.
 
 * Databases
 
