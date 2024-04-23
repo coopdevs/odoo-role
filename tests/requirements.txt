@@ -1,0 +1,2 @@
+odoo14-addon-web_responsive==14.0.1.2.3.dev4
+odoo14-addon-web_environment_ribbon==14.0.1.0.1.dev11

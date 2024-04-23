@@ -1,0 +1,10 @@
+# File created with devenv init command
+
+NAME="odoo-role-test"
+DISTRIBUTION="ubuntu"
+RELEASE="jammy"
+ARCH="amd64"
+HOST="$NAME.local"
+
+# Select the python interpeter python2.7 or python3
+PYTHON_INTERPRETER=python3
