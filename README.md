@@ -48,6 +48,9 @@ odoo_role_odoo_git_url: "https://github.com/OCA/OCB.git"
 odoo_role_odoo_git_ref: "11.0"
 # Variable to define pip version
 odoo_role_pip_version: "23.1.2"
+
+# Variable for force reinstall existing python version in pyenv. When set to false, the role will not reinstall the python version (using `--skip-existing` flag).
+odoo_role_force_pyenv_version: false
 ```
 
 * Users and group
@@ -134,7 +137,7 @@ odoo_role_odoo_community_modules_dict:
 ```
 
 * Force update odoo modules
-In order to force update an odoo module or a list of modules execute provisioning with the command 
+In order to force update an odoo module or a list of modules execute provisioning with the command
 ```
 -e "odoo_role_modules_force_update=['l10n_es']"
 ```
@@ -169,7 +172,7 @@ odoo_role_enable_queue_job: true
 
 This option add to the Odoo configuration file the option to enable queue\_job as a new thread/process: https://github.com/OCA/queue/blob/12.0/queue\_job/README.rst#id12
 
-* Server-wide modules  
+* Server-wide modules
 
 If you need to install some wide-server modules apart from `db_filter` and `queue_job`, use:
 ```yaml
@@ -251,7 +254,7 @@ odoo11-addon-contract-variable-quantity==11.0.1.2.1
 >
 > This allows you to have different `requirements.txt` files and use them on a conditional way.
 >
-> For example, you could set it `{{ inventory_dir }}/../files/requirements-dev.txt` 
+> For example, you could set it `{{ inventory_dir }}/../files/requirements-dev.txt`
 > and use it for dev envs redefining the variable at `host_vars` level.
 
 
@@ -307,7 +310,7 @@ It will provision a virtual machine with postgresql and then, execute the role.
 Release
 -------
 
-To publish a new release: 
+To publish a new release:
 - Go to [releases](https://github.com/coopdevs/odoo-role/releases) and click  on `Draft a new release`.
 - Create a new tag on `Choose a tag` and update the description with the changelog, as the example below:
 ```

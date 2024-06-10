@@ -5,6 +5,8 @@ odoo_role_odoo_group: odoo
 
 # VirtualEnv vars
 odoo_role_python_version: "3.7.7"
+odoo_role_force_pyenv_version: False
+odoo_role_pyenv_extra_args: "--skip-existing"
 odoo_role_venv_name: "odoo"
 odoo_role_odoo_venv_path: "/home/{{ odoo_role_odoo_user }}/pyenv/versions/{{ odoo_role_venv_name }}/"
 

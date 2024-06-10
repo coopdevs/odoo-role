@@ -75,10 +75,15 @@
   become_user: "{{ odoo_role_odoo_user }}"
   shell: . /home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc && pyenv update
 
+- name: "Set force or skip if pyenv version is already installed"
+  set_fact:
+    odoo_role_pyenv_extra_args: "--force"
+  when: odoo_role_force_pyenv_version == True | default(False)
+
 - name: "Install Python interpreter {{ odoo_role_python_version }}"
   become: true
   become_user: "{{ odoo_role_odoo_user }}"
-  shell: . /home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc && pyenv install {{ odoo_role_python_version }}
+  shell: . /home/{{ odoo_role_odoo_user }}/pyenv/.pyenvrc && pyenv install {{ odoo_role_pyenv_extra_args }} {{ odoo_role_python_version }}
   args:
     creates: "/home/{{ odoo_role_odoo_user }}/pyenv/versions/{{ odoo_role_python_version }}/bin/python"
 
