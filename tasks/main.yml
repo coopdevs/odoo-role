@@ -279,7 +279,7 @@
     WHERE state = 'installed';"
   register: modules_to_install
   vars:
-    - separator: "'), ('"
+    separator: "'), ('"
   with_items: "{{ odoo_role_odoo_dbs }}"
   changed_when: false
   tags: ['only-modules']
