@@ -2,6 +2,7 @@ An Odoo Ansible Provisioning Role
 =========================================
 
 This an Ansible role for provisioning Odoo. It supports:
+
 * Odoo 12
 * Odoo 11
 * Odoo 10
@@ -21,6 +22,7 @@ For instance, you can create an `odoo` user in PostgreSQL with access to the cre
 
 Role Variables
 --------------
+
 Available variables are listed below, along with default values:
 
 * Edition
@@ -138,6 +140,7 @@ odoo_role_odoo_community_modules_dict:
 
 * Force update odoo modules
 In order to force update an odoo module or a list of modules execute provisioning with the command
+
 ```
 -e "odoo_role_modules_force_update=['l10n_es']"
 ```
@@ -145,36 +148,42 @@ In order to force update an odoo module or a list of modules execute provisionin
 * Development mode
 
 Odoo has a mode to auto-reload the server when the code changes and read the views from the code to agile the development process. Using the command line parameter [`--dev`](https://www.odoo.com/documentation/12.0/reference/cmdline.html#developer-features) we can run Odoo in a development mode.
+
 ```yaml
 odoo_role_dev_mode: true
 ```
+
 If this mode is active, the systemd unit is not created and you need to run the Odoo process manually.
 You can start it with the following command:
 
 ```sh
-$ ./odoo-bin -c /etc/odoo/odoo.conf --dev all
+./odoo-bin -c /etc/odoo/odoo.conf --dev all
 ```
 
 * [Rest Framework](https://github.com/OCA/rest-framework/tree/12.0/base_rest) support
 
 If you need to use the Rest Framework and want to start the server in development mode, use:
+
 ```yaml
 odoo_role_enable_rest_framework: true
 ```
-This option add to the Odoo configuration file the section and option to development mode: https://github.com/OCA/rest-framework/tree/12.0/base_rest#configuration
+
+This option add to the Odoo configuration file the section and option to development mode: <https://github.com/OCA/rest-framework/tree/12.0/base_rest#configuration>
 
 * [Queue Job](https://github.com/OCA/queue/blob/12.0/queue_job) support
 
 If you need to use the module [queue\_job](https://github.com/OCA/queue/blob/12.0/queue_job), use:
+
 ```yaml
 odoo_role_enable_queue_job: true
 ```
 
-This option add to the Odoo configuration file the option to enable queue\_job as a new thread/process: https://github.com/OCA/queue/blob/12.0/queue\_job/README.rst#id12
+This option add to the Odoo configuration file the option to enable queue\_job as a new thread/process: <https://github.com/OCA/queue/blob/12.0/queue\_job/README.rst#id12>
 
 * Server-wide modules
 
 If you need to install some wide-server modules apart from `db_filter` and `queue_job`, use:
+
 ```yaml
 odoo_role_odoo_server_wide_modules: ['module1', 'module2']
 ```
@@ -184,6 +193,7 @@ By default, it configures as a server-wide modules `web` and `base` -as long as 
 * Workers configuration
 
 You can also define how many workers you want to use to execute the jobs:
+
 ```yaml
 odoo_role_channels: root:2
 ```
@@ -191,6 +201,7 @@ odoo_role_channels: root:2
 * [sentry](https://github.com/OCA/server-tools/tree/12.0/sentry) support
 
 If you want to use the module [setnry](https://github.com/OCA/server-tools/tree/12.0/sentry), use:
+
 ```yaml
 odoo_role_enable_sentry: true
 odoo_role_sentry_dsn: https://your_sentry_url
@@ -199,13 +210,14 @@ odoo_role_sentry_dsn: https://your_sentry_url
 * i18n Overwrite
 
 We can force the i18n overwrite using the next variable:
+
 ```yaml
 odoo_role_i18n_overwrite: true
 ```
 
 You can define this var in the inventory or use it when execute a playbook:
 
-```
+```bash
 ansible-playbook playbooks/provision.yml -i ../my-inventory/inventory/hosts --ask-vault-pass --limit=host -e "{odoo_role_i18n_overwrite: true}"
 ```
 
@@ -222,7 +234,19 @@ environment_variables:
 
 This option add a file in `/etc/default/odoo` with the vars and add to the Systemd service the `EnvironmentFile` attribute pointing to `/etc/default/odoo.
 
-* Developer aids
+Role Tags
+---------------
+
+* Using the `only-modules` Tag
+
+This tag helps you install or update Odoo modules without performing a full setup. Run the playbook with the `--tags` option:
+
+```bash
+ansible-playbook playbook.yml --tags "only-modules"
+```
+
+Developer aids
+---------------
 
 A [template](/templates/00-aliases.sh) with alias is rendered to `/etc/profile.d/`.
 
@@ -246,6 +270,7 @@ Community Roles
 ---------------
 
 #### Deploy
+
 To use community roles, you need to deploy this modules in the server. This role manage the modules deployment with `pip`.
 
 You can define a `requirements.txt` file to manage the modules and ensure the version installed:
@@ -267,8 +292,8 @@ odoo11-addon-contract-variable-quantity==11.0.1.2.1
 > For example, you could set it `{{ inventory_dir }}/../files/requirements-dev.txt`
 > and use it for dev envs redefining the variable at `host_vars` level.
 
-
 # Install
+
 Once the modules are in the server, you need to install them in the database.
 
 Define a `odoo_role_odoo_community_modules` var with the list of the modules names you want to install.
@@ -321,8 +346,10 @@ Release
 -------
 
 To publish a new release:
-- Go to [releases](https://github.com/coopdevs/odoo-role/releases) and click  on `Draft a new release`.
-- Create a new tag on `Choose a tag` and update the description with the changelog, as the example below:
+
+* Go to [releases](https://github.com/coopdevs/odoo-role/releases) and click  on `Draft a new release`.
+* Create a new tag on `Choose a tag` and update the description with the changelog, as the example below:
+
 ```
 ## What's Changed
 * feat: invert add-ons paths order by @oyale in https://github.com/coopdevs/odoo-role/pull/135
@@ -331,7 +358,8 @@ To publish a new release:
 
 **Full Changelog**: https://github.com/coopdevs/odoo-role/compare/v0.3.4...v0.3.5
 ```
-- After publishing the release go to [`ansible galaxy`](https://galaxy.ansible.com/) to import the new release. You should find the odoo-role repository under `My content`.
+
+* After publishing the release go to [`ansible galaxy`](https://galaxy.ansible.com/) to import the new release. You should find the odoo-role repository under `My content`.
 
 License
 -------
@@ -342,4 +370,4 @@ Author Information
 ------------------
 
 @ygneo
-http://coopdevs.org
+<http://coopdevs.org>
