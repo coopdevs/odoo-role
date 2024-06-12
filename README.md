@@ -248,7 +248,8 @@ ansible-playbook playbook.yml --tags "only-modules"
 Developer aids
 ---------------
 
-A [template](/templates/00-aliases.sh) with alias is rendered to `/etc/profile.d/`.
+* A [template](/templates/00-aliases.sh) with [`ct`](https://xardin.netlify.app/sys-admin/color-tail-output-in-odoo-logs/) alias is rendered to `/etc/profile.d/`.
+* Add [`odoo-backup`](https://janikvonrotz.ch/2020/04/02/automate-odoo-backups-with-this-script/) and [`odoo-restore`](https://janikvonrotz.ch/2020/05/19/restore-odoo-database-with-this-script/) scripts.
 
 You can skip this by setting the `odoo_role_dev_helpers` var to `false`.
 
@@ -256,16 +257,7 @@ You can skip this by setting the `odoo_role_dev_helpers` var to `false`.
 odoo_role_dev_helpers: true
 ```
 
-Role Tags
----------------
-#### Using the `only-modules` Tag
-
-This tag helps you install or update Odoo modules without performing a full setup. Run the playbook with the `--tags` option:
-
-```bash
-ansible-playbook playbook.yml --tags "only-modules"
-```
-
+x
 Community Roles
 ---------------
 
