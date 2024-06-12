@@ -8,3 +8,20 @@
     owner: root
     group: root
     
+- name: Create restore database script
+  become: true
+  template:
+    src: "odoo-restore.sh"
+    dest: "/usr/local/bin/odoo-restore"
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Create backup database script
+  become: true
+  template:
+    src: "odoo-backup.sh"
+    dest: "/usr/local/bin/odoo-backup"
+    mode: 0644
+    owner: root
+    group: root
