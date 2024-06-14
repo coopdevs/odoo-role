@@ -356,4 +356,7 @@
 - import_tasks: add-service.yml
   when: not odoo_role_dev_mode | bool
 
+- import_tasks: dev-helpers.yml
+  when: odoo_role_dev_helpers | bool
+
 - import_tasks: logrotate.yml

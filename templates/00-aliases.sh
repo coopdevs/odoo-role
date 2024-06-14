@@ -1,0 +1,1 @@
+alias ct='sed --unbuffered -e "s/\(.*INFO.*\)/\o033[32m\1\o033[39m/" -e "s/\(.*ERROR.*\)/\o033[31m\1\o033[39m/" -e "s/\(.*CRITICAL.*\)/\o033[33m\1\o033[49m/" -e "s/\(.*DEBUG.*\)/\o033[30m\1\o033[49m/" -e "s/\(.*WARN.*\)/\o033[35m\1\o033[49m/"'

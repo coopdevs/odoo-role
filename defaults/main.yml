@@ -114,6 +114,9 @@ odoo_role_logrotate_odoo:
              delaycompress
       }
 
+# Install dev helpers scripts
+odoo_role_dev_helpers: true
+
 # wkhtmltopdf version
 wkhtmltox_version_jammy: "0.12.6.1-2"
 wkhtmltox_version_bionic: "0.12.6-1"

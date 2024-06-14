@@ -1,0 +1,27 @@
+---
+- name: Create dev helpers aliases
+  become: true
+  template:
+    src: "00-aliases.sh"
+    dest: "/etc/profile.d/00-aliases.sh"
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Create restore database script
+  become: true
+  template:
+    src: "odoo-restore.sh"
+    dest: "/usr/local/bin/odoo-restore"
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Create backup database script
+  become: true
+  template:
+    src: "odoo-backup.sh"
+    dest: "/usr/local/bin/odoo-backup"
+    mode: 0755
+    owner: root
+    group: root
