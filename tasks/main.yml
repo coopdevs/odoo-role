@@ -221,6 +221,7 @@
     {% endif %}
     --logfile=/dev/stdout
     --log-level=warn
+    --no-http
   when: db_initialized.results[index].stdout == "0"
   notify: restart odoo
   with_items: "{{ odoo_role_odoo_dbs }}"
