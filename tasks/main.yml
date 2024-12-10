@@ -352,14 +352,13 @@
   become: true
   become_user: "{{ odoo_role_odoo_user }}"
   pip:
-    name: "{{ item }}"
+    name:
+      - pytest
+      - pytest-odoo
+      - coverage
+      - watchdog
     virtualenv: "{{ odoo_role_odoo_venv_path }}"
   when: odoo_role_dev_mode | bool
-  with_items:
-    - pytest
-    - pytest-odoo
-    - coverage
-    - watchdog
 
 - import_tasks: add-service.yml
   when: not odoo_role_dev_mode | bool
