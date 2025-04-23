@@ -46,11 +46,46 @@
     deb: "https://github.com/wkhtmltopdf/packaging/releases/download/{{ wkhtmltox_version }}/wkhtmltox_{{ wkhtmltox_version }}.{{ ansible_distribution_release }}_amd64.deb"
   when: wkhtmltox_installed.rc == 1 and ansible_distribution_version < "24.04"
 
-- name: Install wkhtmltopdf only if not already present at any version
-  apt:
-    update_cache: true
-    pkg:
-      - "wkhtmltopdf={{ wkhtmltox_version }}"
+- name: Download wkhtmltox dependencies
+  ansible.builtin.get_url:
+    url: http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
+    dest: /tmp/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
+  when: wkhtmltox_installed.rc == 1 and ansible_distribution_version >= "24.04"
+
+- name: Download wkhtmltox
+  ansible.builtin.get_url:
+    url: https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb
+    dest: /tmp/wkhtmltox_0.12.5-1.bionic_amd64.deb
+  when: wkhtmltox_installed.rc == 1 and ansible_distribution_version >= "24.04"
+
+- name: Install wkhtmltox dependencies
+  shell: set -o pipefail && dpkg -i /tmp/libssl1.1_1.1.1f-1ubuntu2_amd64.deb | grep 'install ok installed'
+  args:
+    executable: /bin/bash
+  failed_when: false
+  changed_when: false
+  when: wkhtmltox_installed.rc == 1 and ansible_distribution_version >= "24.04"
+
+- name: Install wkhtmltox
+  shell: set -o pipefail && dpkg -i /tmp/wkhtmltox_0.12.5-1.bionic_amd64.deb | grep 'install ok installed'
+  args:
+    executable: /bin/bash
+  failed_when: false
+  changed_when: false
+  when: wkhtmltox_installed.rc == 1 and ansible_distribution_version >= "24.04"
+
+- name: Copy wkhtmltoimage a /usr/bin
+  ansible.builtin.copy:
+    remote_src: yes
+    src: /usr/local/bin/wkhtmltoimage
+    dest: /usr/bin/wkhtmltoimage
+  when: wkhtmltox_installed.rc == 1 and ansible_distribution_version >= "24.04"
+
+- name: Copy wkhtmltopdf a /usr/bin
+  ansible.builtin.copy:
+    remote_src: yes
+    src: /usr/local/bin/wkhtmltopdf
+    dest: /usr/bin/wkhtmltopdf
   when: wkhtmltox_installed.rc == 1 and ansible_distribution_version >= "24.04"
 
 - import_tasks: pyenv.yml
