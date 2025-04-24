@@ -41,17 +41,9 @@
   failed_when: false
   changed_when: false
 
-- name: Download and install wkhtmltopdf only if not already present at any version
-  apt:
-    deb: "https://github.com/wkhtmltopdf/packaging/releases/download/{{ wkhtmltox_version }}/wkhtmltox_{{ wkhtmltox_version }}.{{ ansible_distribution_release }}_amd64.deb"
-  when: wkhtmltox_installed.rc == 1 and ansible_distribution_version < "24.04"
-
-- name: Install wkhtmltopdf only if not already present at any version
-  apt:
-    update_cache: true
-    pkg:
-      - "wkhtmltopdf={{ wkhtmltox_version }}"
-  when: wkhtmltox_installed.rc == 1 and ansible_distribution_version >= "24.04"
+- import_tasks: wkhtmltopdf.yml
+  become: true
+  when: wkhtmltox_installed.rc == 1
 
 - import_tasks: pyenv.yml
   become: true
