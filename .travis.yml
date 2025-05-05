@@ -1,5 +1,5 @@
 ---
-dist: xenial
+dist: focal
 language: python
 python: "3.7"
 
@@ -22,7 +22,5 @@ script:
   - ansible-lint .
   - yamllint -c .yamllint.yaml .
 
-webhooks: https://galaxy.ansible.com/api/v1/notifications/
-
 notifications:
-  email: false
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
