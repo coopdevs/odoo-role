@@ -58,11 +58,14 @@
   # - option `-n` combined with flag `/p` prints "nothing" except the result of the script. Therefore, unmatching lines are hidden, and matching lines are shown after processed.
   # - capturing groups `(something)` can be referenced inside the matching part or at the replacing part with \1, \2, in order of appearence.
   shell: >
+    echo "{{ reg_pip.stdout | default('') }}" | \
     grep 'Successfully installed' |
     sed -r 's/ /\n/g' |
-    sed -rn 's/^odoo(1[0-9])-addon-(.+)-\1\..+$/\2/p' |
+    sed -rn 's/^odoo1?[0-9]?-addon-(.+)-[0-9].*$/\1/p' |
     tr '-' '_'
   register: reg_pip_upgraded
   changed_when: reg_pip_upgraded.stdout
   failed_when: false # noqa 306 "shell and pipefail". Both grep and sed must be able to fail
   tags: ['community-modules', 'only-modules']
+  args:
+    executable: /bin/bash
