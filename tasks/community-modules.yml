@@ -8,17 +8,32 @@
     mode: 0644
   tags: ['community-modules', 'only-modules']
 
-- name: Deploy community roles with pip
+- name:  Read requirements.txt and filter packages without pinned versions
+  shell: |
+    grep -vE '==[0-9]' {{ odoo_role_odoo_modules_path }}/requirements.txt | grep -v '^#' | grep -v '^\s*$' || true
+  register: upgradable_packages
+  tags: ['community-modules', 'only-modules']
+
+- name: Upgrade non-pinned packages to latest version using virtualenv
   pip:
-    requirements: "{{ odoo_role_odoo_modules_path }}/requirements.txt"
+    name: "{{ item }}"
+    state: latest
     virtualenv: "{{ odoo_role_odoo_venv_path }}"
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  loop: "{{ upgradable_packages.stdout_lines }}"
+  when: upgradable_packages.stdout_lines is defined and upgradable_packages.stdout_lines | length > 0
+  tags: ['community-modules', 'only-modules']
+
+- name: Install pinned packages (without upgrade, using virtualenv)
+  shell: |
+    source "{{ odoo_role_odoo_venv_path }}bin/activate" && grep -E '==[0-9]' {{ odoo_role_odoo_modules_path }}/requirements.txt | grep -v '^#' | grep -v '^\s*$' | xargs -r pip install
   register: reg_pip
   become: true
   become_user: "{{ odoo_role_odoo_user }}"
+  args:
+    executable: /bin/bash    
   tags: ['community-modules', 'only-modules']
-  # Using the output of pip, detect which packages have been installed,
-  # both fresh or upgraded. Save the list with a register so that we can
-  # feed better odoo with it.
 
 - name: Detect upgraded packages
   args:
