@@ -28,6 +28,12 @@
       - cargo
     state: present
 
+- name: Fix broken installs (if any)
+  become: true
+  apt:
+    fix_broken: yes
+    state: present
+
 - name: Install PyEnv
   become: true
   become_user: "{{ odoo_role_odoo_user }}"
