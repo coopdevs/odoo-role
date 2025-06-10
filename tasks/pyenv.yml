@@ -5,6 +5,9 @@
     update_cache: true
     cache_valid_time: "{{ 48 * 60 * 60 }}"  # consider the cache to be valid within 48 hours
 
+- name: Run apt --fix-broken install
+  ansible.builtin.command: apt-get --fix-broken install -y
+    
 - name: Install development packages necessary for building Python
   become: true
   apt:

@@ -8,17 +8,32 @@
     mode: 0644
   tags: ['community-modules', 'only-modules']
 
-- name: Deploy community roles with pip
+- name:  Read requirements.txt and filter packages without pinned versions
+  shell: |
+    grep -vE '==[0-9]' {{ odoo_role_odoo_modules_path }}/requirements.txt | grep -v '^#' | grep -v '^\s*$' || true
+  register: upgradable_packages
+  tags: ['community-modules', 'only-modules']
+
+- name: Upgrade non-pinned packages to latest version using virtualenv
   pip:
-    requirements: "{{ odoo_role_odoo_modules_path }}/requirements.txt"
+    name: "{{ item }}"
+    state: latest
     virtualenv: "{{ odoo_role_odoo_venv_path }}"
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  loop: "{{ upgradable_packages.stdout_lines }}"
+  when: upgradable_packages.stdout_lines is defined and upgradable_packages.stdout_lines | length > 0
+  tags: ['community-modules', 'only-modules']
+
+- name: Install pinned packages (without upgrade, using virtualenv)
+  shell: |
+    source "{{ odoo_role_odoo_venv_path }}bin/activate" && grep -E '==[0-9]' {{ odoo_role_odoo_modules_path }}/requirements.txt | grep -v '^#' | grep -v '^\s*$' | xargs -r pip install
   register: reg_pip
   become: true
   become_user: "{{ odoo_role_odoo_user }}"
+  args:
+    executable: /bin/bash    
   tags: ['community-modules', 'only-modules']
-  # Using the output of pip, detect which packages have been installed,
-  # both fresh or upgraded. Save the list with a register so that we can
-  # feed better odoo with it.
 
 - name: Detect upgraded packages
   args:
@@ -43,11 +58,14 @@
   # - option `-n` combined with flag `/p` prints "nothing" except the result of the script. Therefore, unmatching lines are hidden, and matching lines are shown after processed.
   # - capturing groups `(something)` can be referenced inside the matching part or at the replacing part with \1, \2, in order of appearence.
   shell: >
+    echo "{{ reg_pip.stdout | default('') }}" | \
     grep 'Successfully installed' |
     sed -r 's/ /\n/g' |
-    sed -rn 's/^odoo(1[0-9])-addon-(.+)-\1\..+$/\2/p' |
+    sed -rn 's/^odoo1?[0-9]?-addon-(.+)-[0-9].*$/\1/p' |
     tr '-' '_'
   register: reg_pip_upgraded
   changed_when: reg_pip_upgraded.stdout
   failed_when: false # noqa 306 "shell and pipefail". Both grep and sed must be able to fail
   tags: ['community-modules', 'only-modules']
+  args:
+    executable: /bin/bash
