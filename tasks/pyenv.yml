@@ -28,6 +28,7 @@
       - libxml2-dev
       - libxmlsec1-dev
       - libffi-dev
+      - liblzma-dev
       - cargo
     state: present
 
@@ -105,6 +106,16 @@
     state: latest
     virtualenv: "{{ odoo_role_odoo_venv_path }}"
   when: odoo_role_pip_version is not defined
+
+- name: Install setuptools, wheel
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  pip:
+    name:
+      - wheel
+      - setuptools
+    state: latest
+    virtualenv: "{{ odoo_role_odoo_venv_path }}"
 
 - name: Define pip specific version
   become: true
