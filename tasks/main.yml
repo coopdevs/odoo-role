@@ -97,6 +97,13 @@
     requirements: "{{ odoo_role_odoo_path }}/requirements.txt"
     virtualenv: "{{ odoo_role_odoo_venv_path }}"
 
+- name: Install PDFMiner
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  pip:
+    name: pdfminer
+  when: odoo_role_odoo_version >= "15.0"
+
 - name: Install nodejs packages
   become: true
   apt:
@@ -149,6 +156,12 @@
 - name: Populate core db modules
   set_fact:
     core_db_modules: "{{ core_db_modules | default({}) | combine ({ item : odoo_role_odoo_core_modules_dict[item] | default([]) }) }}"
+  with_items: "{{ odoo_role_odoo_dbs }}"
+  tags: ['only-modules']
+
+- name: Add attachment_indexation
+  set_fact:
+    core_db_modules: "{{ core_db_modules | default({}) | combine ({ item : odoo_role_odoo_attachment_indexation_dict[item] | default([]) }) }}"
   with_items: "{{ odoo_role_odoo_dbs }}"
   tags: ['only-modules']
 
