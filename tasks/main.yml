@@ -9,7 +9,7 @@
       - build-essential
       - python3-dev
       - python3-setuptools
-      - libxml2
+      - libxml2-16
       - libxml2-dev
       - libxslt1-dev
       - libssl-dev
