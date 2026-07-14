@@ -12,22 +12,25 @@
   become: true
   apt:
     pkg:
+      - make
       - build-essential
-      - git
-      - curl
       - libssl-dev
-      - libbz2-dev
-      - libsqlite3-dev
-      - libreadline-dev
       - zlib1g-dev
+      - libbz2-dev
+      - libreadline-dev
+      - libsqlite3-dev
+      - curl
+      - git
+      - libncursesw5-dev
+      - libxmlsec1-dev
+      - libffi-dev
+      - liblzma-dev
+      - libzstd-dev
       - wget
       - llvm
-      - libncurses5-dev
       - xz-utils
       - tk-dev
       - libxml2-dev
-      - libxmlsec1-dev
-      - libffi-dev
       - cargo
     state: present
 
