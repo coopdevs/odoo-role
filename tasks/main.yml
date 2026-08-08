@@ -254,6 +254,9 @@
     --logfile=/dev/stdout
     --log-level=warn
     --no-http
+    {% if odoo_role_i18n_overwrite %}
+    --i18n-overwrite
+    {% endif %}
   when: odoo_role_modules_force_update is defined
   with_items: "{{ odoo_role_odoo_dbs }}"
   notify:
@@ -274,6 +277,9 @@
     --logfile=/dev/stdout
     --log-level=warn
     --no-http
+    {% if odoo_role_i18n_overwrite %}
+    --i18n-overwrite
+    {% endif %}
   when: reg_pip_upgraded.stdout
   with_items: "{{ odoo_role_odoo_dbs }}"
   notify:
