@@ -109,6 +109,16 @@
     virtualenv: "{{ odoo_role_odoo_venv_path }}"
   when: odoo_role_pip_version is not defined
 
+- name: Install setuptools, wheel
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  pip:
+    name:
+      - wheel
+      - setuptools<82
+    state: latest
+    virtualenv: "{{ odoo_role_odoo_venv_path }}"
+
 - name: Define pip specific version
   become: true
   become_user: "{{ odoo_role_odoo_user }}"
