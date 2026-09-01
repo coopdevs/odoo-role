@@ -115,7 +115,7 @@
   pip:
     name:
       - wheel
-      - setuptools
+      - setuptools<82
     state: latest
     virtualenv: "{{ odoo_role_odoo_venv_path }}"
 
