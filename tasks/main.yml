@@ -83,6 +83,15 @@
 
 - import_tasks: download.yml
 
+- name: Fix cbor2 version
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  replace:
+    path: "{{ odoo_role_odoo_path }}/requirements.txt"
+    regexp: "^cbor2==5\\.4\\.2 ; python_version < '3.12'$"
+    replace: "cbor2==5.4.6 ; python_version >= '3.11' and python_version < '3.12'  # (Bookworm)\ncbor2==5.4.2.post1 ; python_version < '3.11'  # (Jammy)"
+  when: odoo_role_odoo_version >= "18.0" and odoo_role_odoo_version < "19.0"
+
 - name: Add Python Magic to requirements
   become: true
   become_user: "{{ odoo_role_odoo_user }}"
