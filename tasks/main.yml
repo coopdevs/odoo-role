@@ -92,6 +92,24 @@
     replace: "cbor2==5.4.6 ; python_version >= '3.11' and python_version < '3.12'  # (Bookworm)\ncbor2==5.4.2.post1 ; python_version < '3.11'  # (Jammy)"
   when: odoo_role_odoo_version >= "18.0" and odoo_role_odoo_version < "19.0"
 
+- name: Fix gevent version
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  replace:
+    path: "{{ odoo_role_odoo_path }}/requirements.txt"
+    regexp: "^gevent==22\\.10\\.2; sys_platform != 'win32' and python_version > '3.10' and python_version < '3.12'$"
+    replace: "gevent==24.2.1; sys_platform != 'win32' and python_version > '3.10' and python_version < '3.12'"
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version == "26.04" and odoo_role_odoo_version >= "18.0" and odoo_role_odoo_version < "19.0"
+
+- name: Fix greenlet version
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  replace:
+    path: "{{ odoo_role_odoo_path }}/requirements.txt"
+    regexp: "^greenlet==2.0.2 ; sys_platform != 'win32' and python_version > '3.10' and python_version < '3.12'$"
+    replace: "greenlet==3.5.5 ; sys_platform != 'win32' and python_version > '3.10' and python_version < '3.12'"
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version == "26.04" and odoo_role_odoo_version >= "18.0" and odoo_role_odoo_version < "19.0"
+
 - name: Add Python Magic to requirements
   become: true
   become_user: "{{ odoo_role_odoo_user }}"
