@@ -1,7 +1,7 @@
 ---
 - import_tasks: create-user.yml
 
-- name: Install system packages
+- name: Install system packages (Ubuntu >= 26.04)
   become: true
   apt:
     update_cache: true
@@ -18,6 +18,26 @@
       - git
       - libmagic-dev
     state: present
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version >= "26.04"
+
+- name: Install system packages (Ubuntu < 26.04)
+  become: true
+  apt:
+    update_cache: true
+    pkg:
+      - build-essential
+      - python3-dev
+      - python3-setuptools
+      - libxml2
+      - libxml2-dev
+      - libxslt1-dev
+      - libssl-dev
+      - libldap2-dev
+      - libsasl2-dev
+      - git
+      - libmagic-dev
+    state: present
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version < "26.04"
 
 - name: Install libjpeg-dev
   become: true
