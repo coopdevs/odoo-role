@@ -8,10 +8,28 @@
     mode: 0644
   tags: ['community-modules', 'only-modules']
 
-- name:  Read requirements.txt and filter packages without pinned versions
+- name: Copy addons fingerprint script
+  copy:
+    src: addons_fingerprint.py
+    dest: "{{ odoo_role_odoo_modules_path }}/addons_fingerprint.py"
+    owner: "{{ odoo_role_odoo_user }}"
+    group: "{{ odoo_role_odoo_group }}"
+    mode: 0644
+  tags: ['community-modules', 'only-modules']
+
+- name: Fingerprint installed addons before installing packages
+  command: "{{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_modules_path }}/addons_fingerprint.py"
+  register: reg_addons_before
+  changed_when: false
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  tags: ['community-modules', 'only-modules']
+
+- name: Read requirements.txt and filter packages without pinned versions from a package index
   shell: |
-    grep -vE '==[0-9]' {{ odoo_role_odoo_modules_path }}/requirements.txt | grep -v '^#' | grep -v '^\s*$' || true
+    grep -vE '==[0-9]' {{ odoo_role_odoo_modules_path }}/requirements.txt | grep -v 'git+' | grep -v '^#' | grep -v '^\s*$' || true
   register: upgradable_packages
+  changed_when: false
   tags: ['community-modules', 'only-modules']
 
 - name: Upgrade non-pinned packages to latest version using virtualenv
@@ -25,6 +43,22 @@
   when: upgradable_packages.stdout_lines is defined and upgradable_packages.stdout_lines | length > 0
   tags: ['community-modules', 'only-modules']
 
+# pip skips a git requirement (e.g. `pkg @ git+https://...@branch`) when the installed
+# version number is the same, even if the branch has new commits. Force the reinstall
+# so the code always matches the referenced branch. Dependencies are not reinstalled.
+- name: Reinstall packages from git references using virtualenv
+  shell: |
+    set -o pipefail
+    { grep 'git+' {{ odoo_role_odoo_modules_path }}/requirements.txt | grep -v '^\s*#' || true; } \
+      | xargs -r -d '\n' {{ odoo_role_odoo_venv_path }}bin/pip install --force-reinstall --no-deps
+  register: reg_pip_vcs
+  changed_when: false
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  args:
+    executable: /bin/bash
+  tags: ['community-modules', 'only-modules']
+
 - name: Install pinned packages (without upgrade, using virtualenv)
   shell: |
     source "{{ odoo_role_odoo_venv_path }}bin/activate" && grep -E '==[0-9]' {{ odoo_role_odoo_modules_path }}/requirements.txt | grep -v '^#' | grep -v '^\s*$' | xargs -r pip install
@@ -32,40 +66,34 @@
   become: true
   become_user: "{{ odoo_role_odoo_user }}"
   args:
-    executable: /bin/bash    
-  tags: ['community-modules', 'only-modules']
-
-- name: Detect upgraded packages
-  args:
-    # Example input (delete '# ' from each line below)
-    #
-    # Installing collected packages: odoo11-addon-account-financial-report
-    # Found existing installation: odoo11-addon-account-financial-report 11.0.2.4.3
-    # Uninstalling odoo11-addon-account-financial-report-11.0.2.4.3:
-    #  Successfully uninstalled odoo11-addon-account-financial-report-11.0.2.4.3
-    # Successfully installed odoo11-addon-account-financial-report-11.0.2.5.1.99.dev12 odoo11-addon-l10n-es-aeat-mod303-11.0.2.1.0
-    stdin: "{{ reg_pip.stdout }}"
-    executable: bash
-  # Expected "output" using input from above (delete '# ' from each line below)
-  # note: "output" means `reg_pip_upgraded.stdout`
-  # note: to debug the second regexp you can use https://regexr.com/4l2c3
-  #
-  # account-financial-report
-  # l10n-es-aeat-mod303
-
-  # About sed:
-  # - option `-r` switches to standard perl regexp, instead of GNU ones. Similar to `egrep` or `grep -E`
-  # - option `-n` combined with flag `/p` prints "nothing" except the result of the script. Therefore, unmatching lines are hidden, and matching lines are shown after processed.
-  # - capturing groups `(something)` can be referenced inside the matching part or at the replacing part with \1, \2, in order of appearence.
-  shell: >
-    echo "{{ reg_pip.stdout | default('') }}" | \
-    grep 'Successfully installed' |
-    sed -r 's/ /\n/g' |
-    sed -rn 's/^odoo1?[0-9]?-addon-(.+)-[0-9].*$/\1/p' |
-    tr '-' '_'
-  register: reg_pip_upgraded
-  changed_when: reg_pip_upgraded.stdout
-  failed_when: false # noqa 306 "shell and pipefail". Both grep and sed must be able to fail
-  tags: ['community-modules', 'only-modules']
-  args:
     executable: /bin/bash
+  tags: ['community-modules', 'only-modules']
+
+- name: Fingerprint installed addons after installing packages
+  command: "{{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_modules_path }}/addons_fingerprint.py"
+  register: reg_addons_after
+  changed_when: false
+  become: true
+  become_user: "{{ odoo_role_odoo_user }}"
+  tags: ['community-modules', 'only-modules']
+
+# Addons whose installed code changed. Newly installed addons are excluded:
+# they are handled by the "Install only new Odoo modules" task.
+- name: Detect upgraded addons
+  set_fact:
+    odoo_role_upgraded_modules: >-
+      {%- set before = reg_addons_before.stdout | from_json -%}
+      {%- set after = reg_addons_after.stdout | from_json -%}
+      {%- set upgraded = [] -%}
+      {%- for addon, fingerprint in after.items() | sort -%}
+      {%-   if addon in before and before[addon] != fingerprint -%}
+      {%-     set _ = upgraded.append(addon) -%}
+      {%-   endif -%}
+      {%- endfor -%}
+      {{ upgraded }}
+  tags: ['community-modules', 'only-modules']
+
+- name: Show upgraded addons
+  debug:
+    var: odoo_role_upgraded_modules
+  tags: ['community-modules', 'only-modules']

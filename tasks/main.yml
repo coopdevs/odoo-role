@@ -316,12 +316,12 @@
     {{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_bin_path }}
     -c {{ odoo_role_odoo_config_path }}/odoo.conf
     -d {{ item }}
-    --update {{ reg_pip_upgraded.stdout_lines | join(',') }}
+    --update {{ odoo_role_upgraded_modules | join(',') }}
     --stop-after-init
     --logfile=/dev/stdout
     --log-level=warn
     --no-http
-  when: reg_pip_upgraded.stdout
+  when: odoo_role_upgraded_modules | default([]) | length > 0
   with_items: "{{ odoo_role_odoo_dbs }}"
   notify:
     - restart odoo
