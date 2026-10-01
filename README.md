@@ -284,6 +284,12 @@ odoo11-addon-contract-variable-quantity==11.0.1.2.1
 > For example, you could set it `{{ inventory_dir }}/../files/requirements-dev.txt`
 > and use it for dev envs redefining the variable at `host_vars` level.
 
+Packages referenced from git (e.g. `odoo-addon-foo @ git+https://...@staging#subdirectory=setup/foo`)
+are always reinstalled (`--force-reinstall --no-deps`), so the installed code follows the referenced branch.
+
+After installing the packages, the role updates in Odoo every installed addon whose code changed,
+even when its version number did not change.
+
 # Install
 
 Once the modules are in the server, you need to install them in the database.
