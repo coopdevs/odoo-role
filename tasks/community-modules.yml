@@ -43,16 +43,30 @@
   when: upgradable_packages.stdout_lines is defined and upgradable_packages.stdout_lines | length > 0
   tags: ['community-modules', 'only-modules']
 
+- name: Read requirements.txt and filter packages from git references
+  shell: |
+    grep 'git+' {{ odoo_role_odoo_modules_path }}/requirements.txt | grep -v '^\s*#' || true
+  register: git_packages
+  changed_when: false
+  tags: ['community-modules', 'only-modules']
+
 # pip skips a git requirement (e.g. `pkg @ git+https://...@branch`) when the installed
 # version number is the same, even if the branch has new commits. Force the reinstall
 # so the code always matches the referenced branch. Dependencies are not reinstalled.
+# The task is reported as changed only when the installed code of the package changed.
 - name: Reinstall packages from git references using virtualenv
   shell: |
-    set -o pipefail
-    { grep 'git+' {{ odoo_role_odoo_modules_path }}/requirements.txt | grep -v '^\s*#' || true; } \
-      | xargs -r -d '\n' {{ odoo_role_odoo_venv_path }}bin/pip install --force-reinstall --no-deps
-  register: reg_pip_vcs
-  changed_when: false
+    set -e
+    fingerprint="{{ odoo_role_odoo_python_path }} {{ odoo_role_odoo_modules_path }}/addons_fingerprint.py"
+    before=$($fingerprint)
+    {{ odoo_role_odoo_venv_path }}bin/pip install --force-reinstall --no-deps '{{ item }}' >&2
+    after=$($fingerprint)
+    if [ "$before" != "$after" ]; then echo changed; fi
+  register: reg_pip_git
+  changed_when: "'changed' in reg_pip_git.stdout"
+  loop: "{{ git_packages.stdout_lines }}"
+  loop_control:
+    label: "{{ item.split(' @ ')[0] }}"
   become: true
   become_user: "{{ odoo_role_odoo_user }}"
   args:
